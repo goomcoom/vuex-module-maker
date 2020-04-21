@@ -84,4 +84,17 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
         mutation(state, test_profile);
         expect(state.profile).toEqual(test_profile);
     });
+
+    test('The array mutation sets the correct value', () => {
+        let state = {words: null};
+        const raw = new Mutation('array', 'words');
+        const mutation = raw.format();
+
+        mutation(state, []);
+        expect(state.words).toEqual(null);
+
+        const test_words = ['some', 'test', 'words'];
+        mutation(state, test_words);
+        expect(state.words).toEqual(test_words);
+    });
 });
