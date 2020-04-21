@@ -1,0 +1,30 @@
+{
+  "name": "module-generator",
+  "version": "1.0.0",
+  "author": "Simon Msara",
+  "license": "MIT",
+  "description": "This package will help with removing the overhead involved in creating vuex modules.",
+  "keywords": [
+    "vue",
+    "vuex",
+    "modules",
+    "module",
+    "generator",
+    "module-generator"
+  ],
+  "private": true,
+  "scripts": {
+    "dev": "npx webpack --config webpack.config.js --mode development",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "jest": "^25.4.0",
+    "path": "^0.12.7",
+    "ts-jest": "^25.4.0",
+    "ts-loader": "^7.0.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
