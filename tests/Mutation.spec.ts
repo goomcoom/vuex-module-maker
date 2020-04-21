@@ -67,5 +67,21 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
         mutation(state, '234567');
         expect(state.name).toEqual(true)
-    })
+    });
+
+    test('The object mutation sets the correct value', () => {
+        let state = {profile: null};
+        const raw = new Mutation('object', 'profile');
+        const mutation = raw.format();
+
+        mutation(state, {});
+        expect(state.profile).toEqual(null);
+
+        const test_profile = {
+            name: 'First Name',
+            age: 22
+        };
+        mutation(state, test_profile);
+        expect(state.profile).toEqual(test_profile);
+    });
 });
