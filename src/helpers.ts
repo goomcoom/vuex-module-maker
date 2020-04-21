@@ -1,8 +1,3 @@
-export function removeReactivity(object: object): object
-{
-    return JSON.parse(JSON.stringify(object))
-}
-
 /**
  * –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * String Helpers
