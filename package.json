@@ -15,7 +15,8 @@
   "private": true,
   "scripts": {
     "dev": "npx webpack --config webpack.config.js --mode development",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage=true"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
