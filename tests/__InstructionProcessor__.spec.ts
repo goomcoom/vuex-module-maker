@@ -1,5 +1,5 @@
 import InstructionProcessor from "~/InstructionProcessor";
-import Getters from "~/Getters";
+import Getter from "~/Getter";
 
 describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
 
@@ -64,7 +64,7 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(processor.process()[0].set_getter).toEqual(false)
     });
 
-    test('getter names are prefixed with "get"', () => {
+    test('Getter names are prefixed with "get"', () => {
         let processor = new InstructionProcessor({id:{type: 'number'}});
         expect(processor.process()[0].getter_name).toEqual('getId')
     });
@@ -75,8 +75,8 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     });
 
     test('The getter can be controlled', () => {
-        const getters = new Getters('number', 'id');
-        const getter = getters.getter().toString();
+        let raw = new Getter('number', 'id');
+        const getter = raw.format().toString();
 
         let processor = new InstructionProcessor({id: {type: 'number'}});
         expect(processor.process()[0].getter.toString()).toEqual(getter);

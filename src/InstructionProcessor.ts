@@ -1,5 +1,5 @@
 import { toCamelCase, toSnakeCase } from "~/helpers";
-import Getters from "~/Getters";
+import Getter from "~/Getter";
 
 interface IRawInstructions {
     [name: string]: IInstruction
@@ -84,8 +84,8 @@ class InstructionProcessor {
     formatGetter(options: IInstruction): (state: {[x: string]: any; }) => any
     {
         if (options.getter) return options.getter;
-        const getters = new Getters(options.type, this.state_name, options.default_value);
-        return getters.getter()
+        const getters = new Getter(options.type, this.state_name, options.default_value);
+        return getters.format()
     }
 }
 
