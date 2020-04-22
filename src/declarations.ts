@@ -103,9 +103,7 @@ export interface ExportModule {
 }
 
 export interface RawModule {
-    instruction?: {
-        [x: string]: Instruction<Types>
-    },
+    instruction?: Instructions,
     state?: Object,
     getters?: Object,
     mutations?: Object,
