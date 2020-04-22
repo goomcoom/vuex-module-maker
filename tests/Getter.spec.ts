@@ -11,19 +11,19 @@ describe('store/ModuleGenerator/Getter.ts', () => {
         ${'array'}   | ${[]}          | ${['an', 'example', 'array']}
         ${'any'}     | ${null}        | ${true}
     `(`Setting the type as "$type" returns the correct default value`, ({type, default_value, manual}) => {
-        let raw = new Getter(type, 'name');
-        let getter = raw.format();
+        let raw = new Getter('name');
+        let getter = raw.format(type);
         expect(getter({name: null})).toEqual(default_value);
 
-        raw = new Getter(type, 'name', manual);
-        getter = raw.format();
+        raw = new Getter('name', manual);
+        getter = raw.format(type);
         expect(getter({name: null})).toEqual(manual);
     });
 
     test('The getter returns the correct state property', () => {
         const state = {name: 'First Name'};
-        const raw = new Getter('string', 'name');
-        const getter = raw.format();
+        const raw = new Getter('name');
+        const getter = raw.format('string');
         expect(getter(state)).toEqual(state.name);
     })
 });
