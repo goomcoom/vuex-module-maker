@@ -1,7 +1,7 @@
 import * as D from '~/declarations'
 
 class ModuleUtilities {
-    private _module: D.Module = {
+    protected _module: D.Module = {
         namespaced: true, state: {}, getters: {}, mutations: {}, actions: {}, modules: {}
     };
 
