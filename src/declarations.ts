@@ -83,3 +83,21 @@ export type FormattedInstructions = FormattedInstruction<Types>[];
 export interface Object {
     [x: string]: any
 }
+
+export interface Module {
+    namespaced: boolean,
+    state: Object,
+    getters: Object,
+    mutations: Object,
+    actions: Object,
+    modules: Object,
+}
+
+export interface ExportModule {
+    namespaced: boolean,
+    state(): Object,
+    getters: Object,
+    mutations: Object,
+    actions: Object,
+    modules: Object,
+}

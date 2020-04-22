@@ -1,24 +1,7 @@
 import * as D from '~/declarations'
 
-interface I_Module {
-    namespaced: boolean,
-    state: D.Object,
-    getters: D.Object,
-    mutations: D.Object,
-    actions: D.Object,
-    modules: D.Object,
-}
-interface IModule {
-    namespaced: boolean,
-    state(): D.Object,
-    getters: D.Object,
-    mutations: D.Object,
-    actions: D.Object,
-    modules: D.Object,
-}
-
 class ModuleGenerator {
-    private _module: I_Module = {
+    private _module: D.Module = {
         namespaced: true, state: {}, getters: {}, mutations: {}, actions: {}, modules: {}
     };
 
@@ -26,7 +9,7 @@ class ModuleGenerator {
         this.namespaced = namespaced
     }
 
-    get module(): IModule {
+    get module(): D.ExportModule {
         return {
             namespaced: this._module.namespaced,
             state: () => this._module.state,
@@ -79,7 +62,7 @@ class ModuleGenerator {
     addAction(key: string, value: (context: object, payload?: any) => void): void {
         this.actions[key] = value
     }
-    addModule(key: string, value: IModule): void {
+    addModule(key: string, value: D.ExportModule): void {
         this.modules[key] = value
     }
 
