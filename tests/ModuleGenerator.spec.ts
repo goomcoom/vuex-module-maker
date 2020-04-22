@@ -24,4 +24,21 @@ describe('src/ModuleGenerator.ts', () => {
         expect(state.hasOwnProperty('name')).toBe(true);
         expect(state.hasOwnProperty('comments')).toBe(false);
     });
+
+    test('Passing instructions sets the getters if set_getter != false', () => {
+        const test = {
+            instruction: {
+                id: {type: 'number'},
+                name: {type: 'string', set_getter: true},
+                comments: {type: 'array', set_getter: false}
+            }
+        };
+
+        const generator = new ModuleGenerator;
+        const getters = generator.generate(test).getters;
+
+        expect(getters.hasOwnProperty('getId')).toBe(true);
+        expect(getters.hasOwnProperty('getName')).toBe(true);
+        expect(getters.hasOwnProperty('getComments')).toBe(false);
+    });
 });

@@ -22,6 +22,7 @@ class ModuleGenerator extends ModuleUtilities {
     {
         instructions.forEach(i => {
             if (i.set_state) this.state[i.state_name] = i.state_value;
+            if (i.set_getter) this.getters[i.getter_name] = i.getter;
         })
     }
 }
