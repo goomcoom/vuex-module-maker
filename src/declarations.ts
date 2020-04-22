@@ -77,9 +77,4 @@ export interface FormattedInstruction<T extends Types> {
     mutation: Mutation<T>
 }
 
-export type FormattedInstructions = (FormattedInstruction<'string'>
-        | FormattedInstruction<'number'>
-        | FormattedInstruction<'boolean'>
-        | FormattedInstruction<'array'>
-        | FormattedInstruction<'object'>
-        | FormattedInstruction<'any'>)[]
+export type FormattedInstructions = FormattedInstruction<Types>[];
