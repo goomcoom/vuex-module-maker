@@ -92,5 +92,17 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
 
         processor = new InstructionProcessor({name: {type: 'string', default_value: 'default text'}});
         expect(processor.process()[0].getter({name: null})).toEqual('default text')
-    })
+    });
+
+    test('The set_mutation property can be controlled', () => {
+        // Default
+        let processor = new InstructionProcessor({comments:{type: 'array'}});
+        expect(processor.process()[0].set_mutation).toEqual(true);
+        // True
+        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: true}});
+        expect(processor.process()[0].set_mutation).toEqual(true);
+        // False
+        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: false}});
+        expect(processor.process()[0].set_mutation).toEqual(false)
+    });
 });

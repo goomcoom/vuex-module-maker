@@ -1,5 +1,6 @@
-import { toCamelCase, toSnakeCase } from "~/helpers";
 import Getter from "~/Getter";
+import Mutation from "~/Mutation";
+import { toCamelCase, toSnakeCase } from "~/helpers";
 
 interface IRawInstructions {
     [name: string]: IInstruction
@@ -16,6 +17,9 @@ interface IInstruction {
     getter_name?: string,
     getter?: (state: {[x: string]: any}, getters?: object) => any,
     default_value?: any,
+    // Mutation options
+    set_mutation?: boolean,
+    mutation_name?: string,
 }
 
 interface IFormattedInstruction {
@@ -27,12 +31,26 @@ interface IFormattedInstruction {
     // Getter options
     set_getter: boolean,
     getter_name: string,
-    getter: (state: {[x: string]: any}, getters?: object) => any
+    getter: (state: {[x: string]: any}, getters?: object) => any,
+    //Mutation options
+    set_mutation: boolean,
+    mutation_name: string,
+    mutation: () => any
 }
+
+type MutationType<T> =
+    T extends 'string' ? (state: {[x: string]: any}, value?: string ) => void :
+        T extends 'number' ? (state: {[x: string]: any}, value?: number ) => void :
+            T extends 'boolean' ? (state: {[x: string]: any}, value?: boolean ) => void :
+                T extends 'array' ? (state: {[x: string]: any}, value?: any[] ) => void :
+                    T extends 'object' ? (state: {[x: string]: any}, value?: object ) => void :
+                        (state: {[x: string]: any}, value?: any ) => void;
+
+type AllowedTypes = 'string'|'number'|'boolean'|'object'|'array'|'any';
 
 
 class InstructionProcessor {
-    private _instructions: IFormattedInstruction[] = [];
+    private _instructions: any[] = [];
     readonly _raw: IRawInstructions;
     private _state_name: string = '';
 
@@ -42,7 +60,7 @@ class InstructionProcessor {
     set state_name(value) { this._state_name = value }
 
     constructor(instructions: IRawInstructions) {
-        this._raw = instructions
+        this._raw = instructions;
     }
 
     process() :IFormattedInstruction[] {
@@ -53,8 +71,9 @@ class InstructionProcessor {
         return this.instructions
     }
 
-    processInstruction(name: string, options: IInstruction): IFormattedInstruction {
-        return {
+    processInstruction(name: string, options: IInstruction): IFormattedInstruction
+    {
+        return <IFormattedInstruction>{
             type: options.type,
             // State options
             set_state: options.set_state == null ? true : options.set_state,
@@ -64,6 +83,10 @@ class InstructionProcessor {
             set_getter: options.set_getter == null ? true : options.set_getter,
             getter_name: this.formatGetterName(options),
             getter: this.formatGetter(options),
+            // Mutation options
+            set_mutation: options.set_mutation == null ? true : options.set_mutation,
+            mutation_name: this.formatMutationName(options),
+            mutation: this.formatMutation(options.type),
         }
     }
 
@@ -86,6 +109,18 @@ class InstructionProcessor {
         if (options.getter) return options.getter;
         const getters = new Getter(options.type, this.state_name, options.default_value);
         return getters.format()
+    }
+
+    formatMutationName(options: IInstruction): string
+    {
+        if (options.mutation_name) return options.mutation_name;
+        return toCamelCase(`set_${this.state_name}`)
+    }
+
+    formatMutation <T extends AllowedTypes> (type: T): MutationType<T>
+    {
+        const raw = new Mutation(this.state_name);
+        return raw.format(type)
     }
 }
 
