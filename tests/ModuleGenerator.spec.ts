@@ -41,4 +41,21 @@ describe('src/ModuleGenerator.ts', () => {
         expect(getters.hasOwnProperty('getName')).toBe(true);
         expect(getters.hasOwnProperty('getComments')).toBe(false);
     });
+
+    test('Passing instructions sets the mutations if set_mutation != false', () => {
+        const test = {
+            instruction: {
+                id: {type: 'number'},
+                name: {type: 'string', set_mutation: true},
+                comments: {type: 'array', set_mutation: false}
+            }
+        };
+
+        const generator = new ModuleGenerator;
+        const mutations = generator.generate(test).mutations;
+
+        expect(mutations.hasOwnProperty('setId')).toBe(true);
+        expect(mutations.hasOwnProperty('setName')).toBe(true);
+        expect(mutations.hasOwnProperty('setComments')).toBe(false);
+    });
 });
