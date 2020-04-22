@@ -105,4 +105,9 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         processor = new InstructionProcessor({comments:{type: 'array', set_mutation: false}});
         expect(processor.process()[0].set_mutation).toEqual(false)
     });
+
+    test('The mutation_name can be controlled', () => {
+        const processor = new InstructionProcessor({id:{type: 'number', mutation_name: 'setUserId'}});
+        expect(processor.process()[0].mutation_name).toEqual('setUserId')
+    });
 });

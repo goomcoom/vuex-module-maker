@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: './src/ModuleGenerator.ts',
     output: {
         filename: 'index.js',
         path: path.resolve(__dirname, 'dist'),
