@@ -5,11 +5,11 @@ import { toCamelCase, toSnakeCase } from "~/helpers";
 
 
 class InstructionProcessor {
-    private _instructions: any[] = [];
+    private _instructions: D.FormattedInstructions = [];
     readonly _raw: D.Instructions;
     private _state_name: string = '';
 
-    get instructions() :D.FormattedInstructions { return this._instructions }
+    get instructions(): D.FormattedInstructions { return this._instructions }
     get raw() :D.Instructions { return this._raw }
     get state_name() { return this._state_name }
     set state_name(value) { this._state_name = value }
