@@ -20,13 +20,13 @@ class InstructionProcessor {
 
     process(): D.FormattedInstructions {
         for (const [name, options] of Object.entries(this.raw)) {
-            this.instructions.push(this.processInstruction(options.type, name, options));
+            this.instructions.push(this.processInstruction(name, options));
             delete this.state_name
         }
         return this.instructions
     }
 
-    processInstruction <T extends D.Types> (type: T, name: string, options: D.Instruction<T>): D.FormattedInstruction<T>
+    processInstruction <T extends D.Types> (name: string, options: D.Instruction<T>): D.FormattedInstruction<T>
     {
         return {
             type: options.type,
