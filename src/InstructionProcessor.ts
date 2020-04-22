@@ -1,4 +1,4 @@
-import * as D from "../index";
+import * as D from "./declarations";
 import Getter from "~/Getter";
 import Mutation from "~/Mutation";
 import { toCamelCase, toSnakeCase } from "~/helpers";
