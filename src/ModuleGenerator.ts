@@ -1,21 +1,20 @@
+import * as D from '~/declarations'
+
 interface I_Module {
     namespaced: boolean,
-    state: IObject,
-    getters: IObject,
-    mutations: IObject,
-    actions: IObject,
-    modules: IObject,
+    state: D.Object,
+    getters: D.Object,
+    mutations: D.Object,
+    actions: D.Object,
+    modules: D.Object,
 }
 interface IModule {
     namespaced: boolean,
-    state(): IObject,
-    getters: IObject,
-    mutations: IObject,
-    actions: IObject,
-    modules: IObject,
-}
-interface IObject {
-    [key: string]: any
+    state(): D.Object,
+    getters: D.Object,
+    mutations: D.Object,
+    actions: D.Object,
+    modules: D.Object,
 }
 
 class ModuleGenerator {
@@ -42,20 +41,20 @@ class ModuleGenerator {
     get namespaced(): boolean { return this._module.namespaced}
     set namespaced(value: boolean) { this._module.namespaced = value }
 
-    get state() :IObject { return this.module.state() }
-    set state(value: IObject) { this._module.state = value }
+    get state() :D.Object { return this.module.state() }
+    set state(value: D.Object) { this._module.state = value }
 
-    get getters() :IObject { return this.module.getters }
-    set getters(value: IObject) { this._module.getters = value }
+    get getters() :D.Object { return this.module.getters }
+    set getters(value: D.Object) { this._module.getters = value }
 
-    get mutations() :IObject { return this.module.mutations }
-    set mutations(value: IObject) { this._module.mutations = value }
+    get mutations() :D.Object { return this.module.mutations }
+    set mutations(value: D.Object) { this._module.mutations = value }
 
-    get actions() :IObject { return this.module.actions }
-    set actions(value: IObject) { this._module.actions = value }
+    get actions() :D.Object { return this.module.actions }
+    set actions(value: D.Object) { this._module.actions = value }
 
-    get modules() :IObject { return this.module.modules }
-    set modules(value: IObject) { this._module.modules = value }
+    get modules() :D.Object { return this.module.modules }
+    set modules(value: D.Object) { this._module.modules = value }
 
     reset(): void {
         this._module = {

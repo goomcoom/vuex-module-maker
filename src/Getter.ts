@@ -53,27 +53,27 @@ class Getter {
         }
     }
 
-    stringGetter: D.Getter<'string'> = (state: { [x: string]: any; }): string => {
+    stringGetter: D.Getter<'string'> = (state: D.Object): string => {
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
-    numberGetter: D.Getter<'number'> = (state: { [x: string]: any; }): number|null => {
+    numberGetter: D.Getter<'number'> = (state: D.Object): number|null => {
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
-    booleanGetter: D.Getter<'boolean'> = (state: { [x: string]: any; }): boolean => {
+    booleanGetter: D.Getter<'boolean'> = (state: D.Object): boolean => {
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
-    arrayGetter: D.Getter<'array'> = (state: { [x: string]: any; }): any[] => {
+    arrayGetter: D.Getter<'array'> = (state: D.Object): any[] => {
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
-    objectGetter: D.Getter<'object'> = (state: { [x: string]: any; }): object|null => {
+    objectGetter: D.Getter<'object'> = (state: D.Object): object|null => {
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
-    anyGetter: D.Getter<'any'> = (state: { [x: string]: any; }): any => {
+    anyGetter: D.Getter<'any'> = (state: D.Object): any => {
         return state[this.state_name] == null ? this.default_value : state[this.state_name]
     }
 }

@@ -31,19 +31,19 @@ class Mutation {
         }
     }
 
-    stringMutation: D.Mutation<'string'> = (state: {[x: string]: any}, value?: string): void => {
+    stringMutation: D.Mutation<'string'> = (state: D.Object, value?: string): void => {
         state[this.state_name] = value ? value : null
     };
 
-    numberMutation: D.Mutation<'number'> = (state: {[x: string]: any}, value?: number): void => {
+    numberMutation: D.Mutation<'number'> = (state: D.Object, value?: number): void => {
         state[this.state_name] = value == null ? null : value
     };
 
-    booleanMutation: D.Mutation<'boolean'> = (state: {[x: string]: any}, value?: any): void => {
+    booleanMutation: D.Mutation<'boolean'> = (state: D.Object, value?: any): void => {
         state[this.state_name] = value == null ? null : !!value
     };
 
-    objectMutation: D.Mutation<'object'> = (state: {[x: string]: any}, value?: object): void => {
+    objectMutation: D.Mutation<'object'> = (state: D.Object, value?: object): void => {
         if (value == null || Object.keys(value).length === 0) {
             state[this.state_name] = null
         } else {
@@ -51,7 +51,7 @@ class Mutation {
         }
     };
 
-    arrayMutation: D.Mutation<'array'> = (state: {[x: string]: any}, value?: any[]): void => {
+    arrayMutation: D.Mutation<'array'> = (state: D.Object, value?: any[]): void => {
         if (value == null || value.length === 0) {
             state[this.state_name] = null
         } else {
@@ -59,7 +59,7 @@ class Mutation {
         }
     };
 
-    anyMutation: D.Mutation<any> = (state: {[x: string]: any}, value?: any): void => {
+    anyMutation: D.Mutation<any> = (state: D.Object, value?: any): void => {
         state[this.state_name] = value === undefined ? null : value
     }
 }

@@ -78,3 +78,8 @@ export interface FormattedInstruction<T extends Types> {
 }
 
 export type FormattedInstructions = FormattedInstruction<Types>[];
+
+/* Modules */
+export interface Object {
+    [x: string]: any
+}
