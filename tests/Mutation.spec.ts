@@ -4,27 +4,28 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
     test.each([['string'],['number'],['boolean'],['object'],['array'],['any']])
     (`Setting the type as %s returns the correct mutation`, (type) => {
         // @ts-ignore
-        const mutations = new Mutation(type, 'name');
-        expect(mutations.format()).toEqual(mutations[`${type}Mutation`])
+        const raw = new Mutation('name');
+        // @ts-ignore
+        expect(raw.format(type)).toEqual(raw[`${type}Mutation`])
     });
 
     test.each([['string'],['number'],['boolean'],['object'],['array'],['any']])
-    (`The %s mutations set undefined and null values as null`, (type) => {
+    (`The %s raw set undefined and null values as null`, (type) => {
         let state = {name: null};
         // @ts-ignore
-        const mutations = new Mutation(type, 'name');
-
-        mutations.format()(state);
+        const raw = new Mutation('name');
+        // @ts-ignore
+        raw.format(type)(state);
         expect(state.name).toEqual(null);
-
-        mutations.format()(state, null);
+        // @ts-ignore
+        raw.format(type)(state, null);
         expect(state.name).toEqual(null)
     });
 
     test('The string mutation sets the correct value', () => {
         let state = {name: null};
-        const mutations = new Mutation('string', 'name');
-        const mutation = mutations.format();
+        const raw = new Mutation('name');
+        const mutation = raw.format('string');
 
         mutation(state, '');
         expect(state.name).toEqual(null);
@@ -35,8 +36,8 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
     test('The number mutation sets the correct value', () => {
         let state = {name: null};
-        const mutations = new Mutation('number', 'name');
-        const mutation = mutations.format();
+        const raw = new Mutation('name');
+        const mutation = raw.format('number');
 
         mutation(state, 0);
         expect(state.name).toEqual(0);
@@ -47,32 +48,20 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
     test('The boolean mutation sets the correct value', () => {
         let state = {name: null};
-        const mutations = new Mutation('boolean', 'name');
-        const mutation = mutations.format();
+        const raw = new Mutation('name');
+        const mutation = raw.format('boolean');
 
         mutation(state, false);
         expect(state.name).toEqual(false);
 
         mutation(state, true);
         expect(state.name).toEqual(true);
-
-        mutation(state, 0);
-        expect(state.name).toEqual(false);
-
-        mutation(state, 1);
-        expect(state.name).toEqual(true);
-
-        mutation(state, '');
-        expect(state.name).toEqual(false);
-
-        mutation(state, '234567');
-        expect(state.name).toEqual(true)
     });
 
     test('The object mutation sets the correct value', () => {
         let state = {profile: null};
-        const raw = new Mutation('object', 'profile');
-        const mutation = raw.format();
+        const raw = new Mutation('profile');
+        const mutation = raw.format('object');
 
         mutation(state, {});
         expect(state.profile).toEqual(null);
@@ -87,8 +76,8 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
     test('The array mutation sets the correct value', () => {
         let state = {words: null};
-        const raw = new Mutation('array', 'words');
-        const mutation = raw.format();
+        const raw = new Mutation('words');
+        const mutation = raw.format('array');
 
         mutation(state, []);
         expect(state.words).toEqual(null);
