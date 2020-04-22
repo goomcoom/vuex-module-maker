@@ -3,7 +3,6 @@ import Getter from "~/Getter";
 import Mutation from "~/Mutation";
 import { toCamelCase, toSnakeCase } from "~/helpers";
 
-
 class InstructionProcessor {
     private _instructions: D.FormattedInstructions = [];
     readonly _raw: D.Instructions;

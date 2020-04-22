@@ -11,15 +11,16 @@ class ModuleGenerator extends ModuleUtilities {
     generate(raw_module: D.RawModule): D.ExportModule
     {
         if (raw_module.instruction) {
-            const processor = new InstructionProcessor(raw_module.instruction);
-            const instructions = processor.process();
-            this.executeInstructions(instructions);
+            this.executeInstructions(raw_module.instruction);
         }
         return this.module;
     }
 
-    private executeInstructions(instructions: D.FormattedInstructions): void
+    private executeInstructions(raw: D.Instructions): void
     {
+        const processor = new InstructionProcessor(raw);
+        const instructions = processor.process();
+
         instructions.forEach(i => {
             if (i.set_state) this.addState(i.state_name, i.state_value);
             if (i.set_getter) this.addGetter(i.getter_name, i.getter);
