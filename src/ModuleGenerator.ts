@@ -1,5 +1,5 @@
+import * as D from '~/declarations';
 import ModuleUtilities from "~/ModuleUtilities";
-import * as D from '~/declarations'
 import InstructionProcessor from "~/InstructionProcessor";
 
 class ModuleGenerator extends ModuleUtilities {
@@ -15,16 +15,16 @@ class ModuleGenerator extends ModuleUtilities {
             const instructions = processor.process();
             this.executeInstructions(instructions);
         }
-        return this.module
+        return this.module;
     }
 
     private executeInstructions(instructions: D.FormattedInstructions): void
     {
         instructions.forEach(i => {
-            if (i.set_state) this.state[i.state_name] = i.state_value;
-            if (i.set_getter) this.getters[i.getter_name] = i.getter;
-            if (i.set_mutation) this.mutations[i.mutation_name] = i.mutation;
-        })
+            if (i.set_state) this.addState(i.state_name, i.state_value);
+            if (i.set_getter) this.addGetter(i.getter_name, i.getter);
+            if (i.set_mutation) this.addMutation(i.mutation_name, i.mutation);
+        });
     }
 }
 

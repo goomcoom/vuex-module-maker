@@ -53,10 +53,10 @@ class ModuleUtilities {
     addState(key: string, value: any): void {
         this.state[key] = value
     }
-    addGetter(key: string, value: (state: object, getters?: object) => any): void {
+    addGetter(key: string, value: D.Getter<D.Types>): void {
         this.getters[key] = value
     }
-    addMutation(key: string, value: (state: object, payload?: any) => void): void {
+    addMutation(key: string, value: D.Mutation<D.Types>): void {
         this.mutations[key] = value
     }
     addAction(key: string, value: (context: object, payload?: any) => void): void {

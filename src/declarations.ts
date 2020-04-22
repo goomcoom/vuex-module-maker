@@ -23,6 +23,10 @@ export type Getter<T> =
                 T extends 'array' ? ArrayGetter :
                     T extends 'object' ? ObjectGetter : AnyGetter;
 
+export interface Getters {
+    [x: string]: Getter<Types>
+}
+
 
 /* Mutations */
 export type StringMutation = (state: {[x: string]: any}, value?: string ) => void;
@@ -39,7 +43,12 @@ export type Mutation<T> =
                 T extends 'array' ? ArrayMutation :
                     T extends 'object' ? ObjectMutation : AnyMutation;
 
-/* Interfaces */
+export interface Mutations {
+    [x: string]: Mutation<Types>
+}
+
+
+/* Instructions */
 export interface Instruction<T extends Types> {
     type: Type<T>,
     // State options
@@ -87,7 +96,7 @@ export interface Object {
 export interface Module {
     namespaced: boolean,
     state: Object,
-    getters: Object,
+    getters: Getters,
     mutations: Object,
     actions: Object,
     modules: Object,
@@ -96,7 +105,7 @@ export interface Module {
 export interface ExportModule {
     namespaced: boolean,
     state(): Object,
-    getters: Object,
+    getters: Getters,
     mutations: Object,
     actions: Object,
     modules: Object,
