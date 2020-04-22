@@ -39,48 +39,42 @@ class Getter {
 
         switch (type) {
             case 'string':
-                // @ts-ignore
-                return this.stringGetter;
+                return this.stringGetter as D.Getter<T>;
             case 'number':
-                // @ts-ignore
-                return this.numberGetter;
+                return this.numberGetter as D.Getter<T>;
             case 'boolean':
-                // @ts-ignore
-                return this.booleanGetter;
+                return this.booleanGetter as D.Getter<T>;
             case 'array':
-                // @ts-ignore
-                return this.arrayGetter;
+                return this.arrayGetter as D.Getter<T>;
             case 'object':
-                // @ts-ignore
-                return this.objectGetter;
+                return this.objectGetter as D.Getter<T>;
             default:
-                // @ts-ignore
-                return this.anyGetter;
+                return this.anyGetter as D.Getter<T>;
         }
     }
 
     stringGetter: D.Getter<'string'> = (state: { [x: string]: any; }): string => {
-        return state[this.state_name] ? state[this.state_name] : this.default_value
+        return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
     numberGetter: D.Getter<'number'> = (state: { [x: string]: any; }): number|null => {
-        return state[this.state_name] ? state[this.state_name] : this.default_value
+        return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
     booleanGetter: D.Getter<'boolean'> = (state: { [x: string]: any; }): boolean => {
-        return state[this.state_name] ? state[this.state_name] : this.default_value
+        return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
     arrayGetter: D.Getter<'array'> = (state: { [x: string]: any; }): any[] => {
-        return state[this.state_name] ? state[this.state_name] : this.default_value
+        return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
     objectGetter: D.Getter<'object'> = (state: { [x: string]: any; }): object|null => {
-        return state[this.state_name] ? state[this.state_name] : this.default_value
+        return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
     anyGetter: D.Getter<'any'> = (state: { [x: string]: any; }): any => {
-        return state[this.state_name] ? state[this.state_name] : this.default_value
+        return state[this.state_name] == null ? this.default_value : state[this.state_name]
     }
 }
 
