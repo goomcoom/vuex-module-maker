@@ -1,4 +1,5 @@
 import ModuleUtilities from "~/ModuleUtilities";
+import * as D from '~/declarations'
 
 class ModuleGenerator extends ModuleUtilities {
 
@@ -6,6 +7,10 @@ class ModuleGenerator extends ModuleUtilities {
         super(namespaced);
     }
 
+    generate(raw_module: D.RawModule): D.ExportModule
+    {
+        return this.module
+    }
 }
 
 

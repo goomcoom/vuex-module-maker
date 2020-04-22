@@ -101,3 +101,14 @@ export interface ExportModule {
     actions: Object,
     modules: Object,
 }
+
+export interface RawModule {
+    instruction?: {
+        [x: string]: Instruction<Types>
+    },
+    state?: Object,
+    getters?: Object,
+    mutations?: Object,
+    actions?: Object,
+    modules?: Object
+}
