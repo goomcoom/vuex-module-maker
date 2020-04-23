@@ -10,9 +10,9 @@ class ModuleGenerator extends ModuleUtilities {
 
     generate(template: D.Template): D.ExportModule
     {
-        if (template.instructions) {
-            this.executeInstructions(template.instructions);
-        }
+        if (template.instructions) this.executeInstructions(template.instructions);
+        if (template.state) this.addStateProperties(template.state);
+
         return this.module;
     }
 
@@ -26,6 +26,13 @@ class ModuleGenerator extends ModuleUtilities {
             if (i.set_getter) this.addGetter(i.getter_name, i.getter);
             if (i.set_mutation) this.addMutation(i.mutation_name, i.mutation);
         });
+    }
+
+    private addStateProperties(properties: Object): void
+    {
+        for (const [key, value] of Object.entries(properties)) {
+            this.addState(key, value)
+        }
     }
 }
 

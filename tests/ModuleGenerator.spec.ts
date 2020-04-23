@@ -76,4 +76,26 @@ describe('src/ModuleGenerator.ts', () => {
         expect(mutations.hasOwnProperty('setName')).toBe(true);
         expect(mutations.hasOwnProperty('setComments')).toBe(false);
     });
+
+    test('template state properties are added to the module and take precedence', () => {
+        const template: D.Template = {
+            instructions: {
+                executed: {
+                    type: 'boolean',
+                    initial_value: true
+                }
+            },
+            state: {
+                example: null,
+                executed: false
+            }
+        };
+
+        const generator = new ModuleGenerator();
+        const state = generator.generate(template).state();
+        if (template.state) {
+            expect(state.example).toEqual(template.state.example);
+            expect(state.executed).toEqual(template.state.executed);
+        }
+    });
 });
