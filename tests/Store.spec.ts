@@ -88,4 +88,12 @@ describe('Store Module Acceptance Tests', () => {
         store.commit('setName', 'New Name');
         expect(state.name).toEqual('New Name');
     });
+
+    test('Actions perform as expected', () => {
+        const state = store.state as D.Object;
+
+        expect(state.name).toEqual(null);
+        store.dispatch('updateUser');
+        expect(state.name).toEqual('Example Name');
+    });
 });
