@@ -55,7 +55,7 @@ class ModuleUtilities {
     addAction(key: string, value: D.Action): void {
         this.actions[key] = value
     }
-    addModule(key: string, value: D.ExportModule): void {
+    addModule(key: string, value: D.SubModule): void {
         this.modules[key] = value
     }
 

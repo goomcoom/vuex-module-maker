@@ -114,10 +114,11 @@ describe('src/ModuleGenerator.ts', () => {
 
         const generator = new ModuleGenerator();
         const getters = generator.generate(template).getters;
-        if (template.getters) {
-            expect(getters.getExample).toEqual(template.getters.getExample);
-            expect(getters.getExecuted).toEqual(template.getters.getExecuted);
-        }
+
+        // @ts-ignore
+        expect(getters.getExample).toEqual(template.getters.getExample);
+        // @ts-ignore
+        expect(getters.getExecuted).toEqual(template.getters.getExecuted);
     });
 
     test('Template mutations are added to the module and take precedence', () => {
@@ -139,16 +140,16 @@ describe('src/ModuleGenerator.ts', () => {
 
         const generator = new ModuleGenerator();
         const mutations = generator.generate(template).mutations;
-        if (template.mutations) {
-            expect(mutations.setExample).toEqual(template.mutations.setExample);
-            expect(mutations.setExecuted).toEqual(template.mutations.setExecuted);
-        }
+        // @ts-ignore
+        expect(mutations.setExample).toEqual(template.mutations.setExample);
+        // @ts-ignore
+        expect(mutations.setExecuted).toEqual(template.mutations.setExecuted);
     });
 
     test('Actions are added to the module', () => {
         const template: D.Template = {
             actions: {
-                grow: (context: { commit: (arg0: string, arg1?: number|undefined) => void; }): void => {
+                grow: (context): void => {
                     context.commit('setAge', 23);
                     context.commit('setExecuted');
                 }
@@ -157,8 +158,23 @@ describe('src/ModuleGenerator.ts', () => {
 
         const generator = new ModuleGenerator();
         const actions = generator.generate(template).actions;
-        if (template.actions) {
-            expect(actions.grow).toEqual(template.actions.grow);
-        }
+        // @ts-ignore
+        expect(actions.grow).toEqual(template.actions.grow);
+    });
+
+    test('Sub modules are added to the module', () => {
+        const template: D.Template = {
+            modules: {
+                user: {
+                    namespaced: true,
+                    state() {return {}}
+                }
+            }
+        };
+
+        const generator = new ModuleGenerator();
+        const modules = generator.generate(template).modules;
+        // @ts-ignore
+        expect(modules.user).toEqual(template.modules.user);
     });
 });

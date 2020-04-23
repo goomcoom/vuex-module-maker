@@ -117,11 +117,23 @@ export interface ExportModule {
     modules: Object,
 }
 
+export type SubModule = {
+    [P in keyof ExportModule]?: ExportModule[P]
+}
+
+export interface Submodules {
+    [x: string]: SubModule
+}
+
 export interface Template {
     instructions?: Instructions,
     state?: Object,
-    getters?: Object,
-    mutations?: Object,
-    actions?: Object,
-    modules?: Object
+    getters?: Getters,
+    mutations?: Mutations,
+    actions?: Actions,
+    modules?: Submodules
+}
+
+export interface Modules {
+    [x: string]: ExportModule
 }
