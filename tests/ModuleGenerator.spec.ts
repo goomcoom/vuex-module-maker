@@ -77,7 +77,7 @@ describe('src/ModuleGenerator.ts', () => {
         expect(mutations.hasOwnProperty('setComments')).toBe(false);
     });
 
-    test('template state properties are added to the module and take precedence', () => {
+    test('Template state properties are added to the module and take precedence', () => {
         const template: D.Template = {
             instructions: {
                 executed: {
@@ -99,7 +99,7 @@ describe('src/ModuleGenerator.ts', () => {
         }
     });
 
-    test('template getters are added to the module and take precedence', () => {
+    test('Template getters are added to the module and take precedence', () => {
         const template: D.Template = {
             instructions: {
                 executed: {
@@ -113,14 +113,14 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleGenerator();
-        const state = generator.generate(template).getters;
+        const getters = generator.generate(template).getters;
         if (template.getters) {
-            expect(state.getExample).toEqual(template.getters.getExample);
-            expect(state.getExecuted).toEqual(template.getters.getExecuted);
+            expect(getters.getExample).toEqual(template.getters.getExample);
+            expect(getters.getExecuted).toEqual(template.getters.getExecuted);
         }
     });
 
-    test('template mutations are added to the module and take precedence', () => {
+    test('Template mutations are added to the module and take precedence', () => {
         const template: D.Template = {
             instructions: {
                 executed: {
@@ -138,10 +138,27 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleGenerator();
-        const state = generator.generate(template).mutations;
+        const mutations = generator.generate(template).mutations;
         if (template.mutations) {
-            expect(state.setExample).toEqual(template.mutations.setExample);
-            expect(state.setExecuted).toEqual(template.mutations.setExecuted);
+            expect(mutations.setExample).toEqual(template.mutations.setExample);
+            expect(mutations.setExecuted).toEqual(template.mutations.setExecuted);
+        }
+    });
+
+    test('Actions are added to the module', () => {
+        const template: D.Template = {
+            actions: {
+                grow: (context: { commit: (arg0: string, arg1?: number|undefined) => void; }): void => {
+                    context.commit('setAge', 23);
+                    context.commit('setExecuted');
+                }
+            }
+        };
+
+        const generator = new ModuleGenerator();
+        const actions = generator.generate(template).actions;
+        if (template.actions) {
+            expect(actions.grow).toEqual(template.actions.grow);
         }
     });
 });

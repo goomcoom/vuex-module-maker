@@ -51,6 +51,12 @@ export interface Mutations {
     [x: string]: Mutation<Types>
 }
 
+export type Action = (context: Object, payload?: any) => any
+
+export interface Actions {
+    [x: string]: Action
+}
+
 
 /* Instructions */
 export interface Instruction<T extends Types> {

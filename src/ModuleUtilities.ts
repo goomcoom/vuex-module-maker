@@ -52,7 +52,7 @@ class ModuleUtilities {
     addMutation(key: string, value: D.Mutation<D.Types>): void {
         this.mutations[key] = value
     }
-    addAction(key: string, value: (context: object, payload?: any) => void): void {
+    addAction(key: string, value: D.Action): void {
         this.actions[key] = value
     }
     addModule(key: string, value: D.ExportModule): void {
