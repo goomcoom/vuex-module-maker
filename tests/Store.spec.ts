@@ -11,17 +11,21 @@ describe('Store Module Acceptance Tests', () => {
     let generator;
     let module;
     let store: Store<unknown>;
+    const instructions: D.Instructions = {
+        id: {
+            type: 'number'
+        },
+        example: {
+            type: 'string',
+            initial_value: 'Example text'
+        },
+        comments: {
+            type: 'array'
+        }
+    };
 
     const template: D.Template = {
-        instructions: {
-            id: {
-                type: 'number'
-            },
-            age: {
-                type: "number",
-                initial_value: 27
-            }
-        },
+        instructions,
         state: {
             name: null
         },
@@ -59,11 +63,17 @@ describe('Store Module Acceptance Tests', () => {
     test('The store has the expected state', () => {
         expect(store.state).toEqual({
             id: null,
-            age: 27,
+            example: instructions.example.initial_value,
             name: null,
+            comments: null,
             user: {
                 title: 'Mrs'
             }
         })
-    })
+    });
+
+    test('The getters return the correct values', () => {
+        expect(store.getters.getComments).toEqual([]);
+        expect(store.getters.getName).toEqual(null)
+    });
 });
