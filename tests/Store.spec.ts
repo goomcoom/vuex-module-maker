@@ -76,4 +76,16 @@ describe('Store Module Acceptance Tests', () => {
         expect(store.getters.getComments).toEqual([]);
         expect(store.getters.getName).toEqual(null)
     });
+
+    test('Mutations set the correct values', () => {
+        const state = store.state as D.Object;
+
+        expect(state.id).toEqual(null);
+        store.commit('setId', 43);
+        expect(state.id).toEqual(43);
+
+        expect(state.name).toEqual(null);
+        store.commit('setName', 'New Name');
+        expect(state.name).toEqual('New Name');
+    });
 });
