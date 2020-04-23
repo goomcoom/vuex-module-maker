@@ -28,16 +28,9 @@ class ModuleUtilities {
     set state(value: D.Object) { this._module.state = value }
 
     get getters() :D.Object { return this.module.getters }
-    set getters(value: D.Object) { this._module.getters = value }
-
     get mutations() :D.Object { return this.module.mutations }
-    set mutations(value: D.Object) { this._module.mutations = value }
-
     get actions() :D.Object { return this.module.actions }
-    set actions(value: D.Object) { this._module.actions = value }
-
     get modules() :D.Object { return this.module.modules }
-    set modules(value: D.Object) { this._module.modules = value }
 
     reset(): void {
         this._module = {
