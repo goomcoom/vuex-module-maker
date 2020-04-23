@@ -11,23 +11,17 @@ class Mutation {
     {
         switch (type) {
             case 'string':
-                // @ts-ignore
-                return this.stringMutation;
+                return this.stringMutation as D.Mutation<T>;
             case 'number':
-                // @ts-ignore
-                return this.numberMutation;
+                return this.numberMutation as D.Mutation<T>;
             case 'boolean':
-                // @ts-ignore
-                return this.booleanMutation;
+                return this.booleanMutation as D.Mutation<T>;
             case 'object':
-                // @ts-ignore
-                return this.objectMutation;
+                return this.objectMutation as D.Mutation<T>;
             case 'array':
-                // @ts-ignore
-                return this.arrayMutation;
+                return this.arrayMutation as D.Mutation<T>;
             default:
-                // @ts-ignore
-                return this.anyMutation
+                return this.anyMutation as D.Mutation<T>;
         }
     }
 
