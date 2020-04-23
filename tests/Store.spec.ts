@@ -1,9 +1,9 @@
 import ModuleGenerator from "~/ModuleGenerator";
 import * as D from "~/declarations";
 // @ts-ignore
-import Vuex, {Store} from 'vuex'
+import Vuex, {Store} from 'vuex';
 // @ts-ignore
-import Vue from 'vue'
+import Vue from 'vue';
 
 Vue.use(Vuex);
 
@@ -16,6 +16,10 @@ describe('Store Module Acceptance Tests', () => {
         instructions: {
             id: {
                 type: 'number'
+            },
+            age: {
+                type: "number",
+                initial_value: 27
             }
         },
         state: {
@@ -52,4 +56,14 @@ describe('Store Module Acceptance Tests', () => {
         store = new Vuex.Store(module);
     });
 
+    test('The store has the expected state', () => {
+        expect(store.state).toEqual({
+            id: null,
+            age: 27,
+            name: null,
+            user: {
+                title: 'Mrs'
+            }
+        })
+    })
 });
