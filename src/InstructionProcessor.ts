@@ -1,6 +1,6 @@
-import * as D from "./declarations";
 import Getter from "~/Getter";
 import Mutation from "~/Mutation";
+import * as D from "./declarations";
 import { toCamelCase, toSnakeCase } from "~/helpers";
 
 class InstructionProcessor {

@@ -1,3 +1,7 @@
+export interface Object {
+    [x: string]: any
+}
+
 /* Types */
 export type Types = 'string' | 'number' | 'boolean' | 'array' | 'object' | 'any';
 
@@ -9,12 +13,12 @@ export type Type<T> =
                     T extends 'object' ? object : any;
 
 /* Getters */
-export type StringGetter = (state: {[x: string]: any}, getters?: object) => string;
-export type NumberGetter = (state: {[x: string]: any}, getters?: object) => number|null;
-export type BooleanGetter = (state: {[x: string]: any}, getters?: object) => boolean;
-export type ArrayGetter = (state: {[x: string]: any}, getters?: object) => any[];
-export type ObjectGetter = (state: {[x: string]: any}, getters?: object) => object|null;
-export type AnyGetter = (state: {[x: string]: any}, getters?: object) => any;
+export type StringGetter = (state: Object, getters?: Object) => string;
+export type NumberGetter = (state: Object, getters?: Object) => number|null;
+export type BooleanGetter = (state: Object, getters?: Object) => boolean;
+export type ArrayGetter = (state: Object, getters?: Object) => any[];
+export type ObjectGetter = (state: Object, getters?: Object) => object|null;
+export type AnyGetter = (state: Object, getters?: Object) => any;
 
 export type Getter<T> =
     T extends 'string' ? StringGetter :
@@ -29,12 +33,12 @@ export interface Getters {
 
 
 /* Mutations */
-export type StringMutation = (state: {[x: string]: any}, value?: string ) => void;
-export type NumberMutation = (state: {[x: string]: any}, value?: number ) => void;
-export type BooleanMutation = (state: {[x: string]: any}, value?: boolean ) => void;
-export type ArrayMutation = (state: {[x: string]: any}, value?: any[] ) => void;
-export type ObjectMutation = (state: {[x: string]: any}, value?: object ) => void;
-export type AnyMutation = (state: {[x: string]: any}, value?: any ) => void;
+export type StringMutation = (state: Object, value?: string ) => void;
+export type NumberMutation = (state: Object, value?: number ) => void;
+export type BooleanMutation = (state: Object, value?: boolean ) => void;
+export type ArrayMutation = (state: Object, value?: any[] ) => void;
+export type ObjectMutation = (state: Object, value?: object ) => void;
+export type AnyMutation = (state: Object, value?: any ) => void;
 
 export type Mutation<T> =
     T extends 'string' ? StringMutation :
@@ -50,7 +54,7 @@ export interface Mutations {
 
 /* Instructions */
 export interface Instruction<T extends Types> {
-    type: Type<T>,
+    type: T,
     // State options
     set_state?: boolean,
     state_name?: string,
@@ -71,7 +75,7 @@ export interface Instructions {
 }
 
 export interface FormattedInstruction<T extends Types> {
-    type: Type<T>,
+    type: T,
     // State options
     set_state: boolean,
     state_name: string,
@@ -89,15 +93,11 @@ export interface FormattedInstruction<T extends Types> {
 export type FormattedInstructions = FormattedInstruction<Types>[];
 
 /* Modules */
-export interface Object {
-    [x: string]: any
-}
-
 export interface Module {
     namespaced: boolean,
     state: Object,
     getters: Getters,
-    mutations: Object,
+    mutations: Mutations,
     actions: Object,
     modules: Object,
 }
@@ -106,13 +106,13 @@ export interface ExportModule {
     namespaced: boolean,
     state(): Object,
     getters: Getters,
-    mutations: Object,
+    mutations: Mutations,
     actions: Object,
     modules: Object,
 }
 
 export interface RawModule {
-    instruction?: Instructions,
+    instructions?: Instructions,
     state?: Object,
     getters?: Object,
     mutations?: Object,

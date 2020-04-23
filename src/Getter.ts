@@ -33,7 +33,7 @@ class Getter {
         }
     }
 
-    format  <T extends D.Types> (type: D.Type<T>): D.Getter<T>
+    format  <T extends D.Types> (type: T): D.Getter<T>
     {
         this.setDefaultValue(type);
 

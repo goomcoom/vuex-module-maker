@@ -1,12 +1,21 @@
 import ModuleUtilities from "~/ModuleUtilities";
+import * as D from "~/declarations";
 
 describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
     let utilities: ModuleUtilities;
     const test_filled_module = {
         namespaced: false,
         state() {return { key: 'value' }},
-        getters: { key: 'value' },
-        mutations: { key: 'value' },
+        getters: {
+            key: (state: D.Object): any => {
+                return state.name
+            }
+        } as D.Getters,
+        mutations: {
+            key: (state: D.Object, value: string): void => {
+                state.name = value
+            }
+        } as D.Mutations,
         actions: { key: 'value' },
         modules: { key: 'value' }
     };
@@ -25,12 +34,6 @@ describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
 
     test('The utilities has a namespaced property of type boolean', () => {
         expect(typeof utilities.namespaced).toEqual('boolean');
-    });
-
-    test('The namespaced property is set to true by default but can be set to false on instantiation', () => {
-        expect(utilities.namespaced).toBe(true);
-        const test_utilities = new ModuleUtilities(false);
-        expect(test_utilities.namespaced).toBe(false);
     });
 
     test('The utilities has a state property that returns an object.', () => {

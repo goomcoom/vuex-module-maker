@@ -10,8 +10,8 @@ class ModuleGenerator extends ModuleUtilities {
 
     generate(raw_module: D.RawModule): D.ExportModule
     {
-        if (raw_module.instruction) {
-            this.executeInstructions(raw_module.instruction);
+        if (raw_module.instructions) {
+            this.executeInstructions(raw_module.instructions);
         }
         return this.module;
     }

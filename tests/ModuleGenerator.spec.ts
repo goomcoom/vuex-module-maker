@@ -1,6 +1,15 @@
+import * as D from '~/declarations';
 import ModuleGenerator from "~/ModuleGenerator";
 
 describe('src/ModuleGenerator.ts', () => {
+
+    test('The namespaced property can be controlled', () => {
+        let generator = new ModuleGenerator;
+        expect(generator.namespaced).toBe(true);
+
+        generator = new ModuleGenerator(false);
+        expect(generator.namespaced).toBe(false);
+    });
 
     test('Passing an empty raw module returns an empty module', () => {
         const generator = new ModuleGenerator;
@@ -9,12 +18,21 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the state if set_state != false', () => {
-        const test = {
-            instruction: {
-                id: {type: 'number'},
-                name: {type: 'string', set_state: true},
-                comments: {type: 'array', set_state: false}
-            }
+        const test: D.RawModule = {
+            instructions: {
+                id: {
+                    type: 'number'
+                } as D.Instruction<'number'>,
+                name: {
+                    type: 'string',
+                    set_state: true,
+                    initial_value: '6543'
+                } as D.Instruction<'string'>,
+                comments: {
+                    type: 'array',
+                    set_state: false
+                } as D.Instruction<'array'>
+            } as D.Instructions
         };
 
         const generator = new ModuleGenerator;
@@ -26,12 +44,12 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the getters if set_getter != false', () => {
-        const test = {
-            instruction: {
-                id: {type: 'number'},
-                name: {type: 'string', set_getter: true},
-                comments: {type: 'array', set_getter: false}
-            }
+        const test: D.RawModule = {
+            instructions: {
+                id: { type: 'number' } as D.Instruction<'number'>,
+                name: { type: 'string', set_getter: true, initial_value: '3456' } as D.Instruction<'string'>,
+                comments: { type: 'array', set_getter: false } as D.Instruction<'array'>
+            } as D.Instructions
         };
 
         const generator = new ModuleGenerator;
@@ -43,12 +61,12 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the mutations if set_mutation != false', () => {
-        const test = {
-            instruction: {
-                id: {type: 'number'},
-                name: {type: 'string', set_mutation: true},
-                comments: {type: 'array', set_mutation: false}
-            }
+        const test: D.RawModule = {
+            instructions: {
+                id: {type: 'number'} as D.Instruction<'number'>,
+                name: {type: 'string', set_mutation: true} as D.Instruction<'string'>,
+                comments: {type: 'array', set_mutation: false} as D.Instruction<'array'>
+            } as D.Instructions
         };
 
         const generator = new ModuleGenerator;
