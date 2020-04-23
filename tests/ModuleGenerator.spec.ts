@@ -18,7 +18,7 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the state if set_state != false', () => {
-        const test: D.RawModule = {
+        const template: D.Template = {
             instructions: {
                 id: {
                     type: 'number'
@@ -36,7 +36,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleGenerator;
-        const state = generator.generate(test).state();
+        const state = generator.generate(template).state();
 
         expect(state.hasOwnProperty('id')).toBe(true);
         expect(state.hasOwnProperty('name')).toBe(true);
@@ -44,7 +44,7 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the getters if set_getter != false', () => {
-        const test: D.RawModule = {
+        const template: D.Template = {
             instructions: {
                 id: { type: 'number' } as D.Instruction<'number'>,
                 name: { type: 'string', set_getter: true, initial_value: '3456' } as D.Instruction<'string'>,
@@ -53,7 +53,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleGenerator;
-        const getters = generator.generate(test).getters;
+        const getters = generator.generate(template).getters;
 
         expect(getters.hasOwnProperty('getId')).toBe(true);
         expect(getters.hasOwnProperty('getName')).toBe(true);
@@ -61,7 +61,7 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the mutations if set_mutation != false', () => {
-        const test: D.RawModule = {
+        const template: D.Template = {
             instructions: {
                 id: {type: 'number'} as D.Instruction<'number'>,
                 name: {type: 'string', set_mutation: true} as D.Instruction<'string'>,
@@ -70,7 +70,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleGenerator;
-        const mutations = generator.generate(test).mutations;
+        const mutations = generator.generate(template).mutations;
 
         expect(mutations.hasOwnProperty('setId')).toBe(true);
         expect(mutations.hasOwnProperty('setName')).toBe(true);

@@ -8,10 +8,10 @@ class ModuleGenerator extends ModuleUtilities {
         super(namespaced);
     }
 
-    generate(raw_module: D.RawModule): D.ExportModule
+    generate(template: D.Template): D.ExportModule
     {
-        if (raw_module.instructions) {
-            this.executeInstructions(raw_module.instructions);
+        if (template.instructions) {
+            this.executeInstructions(template.instructions);
         }
         return this.module;
     }

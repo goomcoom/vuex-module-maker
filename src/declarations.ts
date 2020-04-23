@@ -111,7 +111,7 @@ export interface ExportModule {
     modules: Object,
 }
 
-export interface RawModule {
+export interface Template {
     instructions?: Instructions,
     state?: Object,
     getters?: Object,
