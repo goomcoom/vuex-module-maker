@@ -119,4 +119,29 @@ describe('src/ModuleGenerator.ts', () => {
             expect(state.getExecuted).toEqual(template.getters.getExecuted);
         }
     });
+
+    test('template mutations are added to the module and take precedence', () => {
+        const template: D.Template = {
+            instructions: {
+                executed: {
+                    type: 'boolean',
+                }
+            },
+            mutations: {
+                setExample: (state: D.Object, value: any): void => {
+                    state.example = value
+                },
+                setExecuted: (state: D.Object): void => {
+                    state.executed = !state.executed
+                }
+            }
+        };
+
+        const generator = new ModuleGenerator();
+        const state = generator.generate(template).mutations;
+        if (template.mutations) {
+            expect(state.setExample).toEqual(template.mutations.setExample);
+            expect(state.setExecuted).toEqual(template.mutations.setExecuted);
+        }
+    });
 });

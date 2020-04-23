@@ -13,6 +13,7 @@ class ModuleGenerator extends ModuleUtilities {
         if (template.instructions) this.executeInstructions(template.instructions);
         if (template.state) this.addStateProperties(template.state);
         if (template.getters) this.addGetters(template.getters);
+        if (template.mutations) this.addMutations(template.mutations);
 
         return this.module;
     }
@@ -40,6 +41,13 @@ class ModuleGenerator extends ModuleUtilities {
     {
         for (const [key, value] of Object.entries(getters)) {
             this.addGetter(key, value);
+        }
+    }
+
+    private addMutations(mutations: D.Mutations): void
+    {
+        for (const [key, value] of Object.entries(mutations)) {
+            this.addMutation(key, value);
         }
     }
 }
