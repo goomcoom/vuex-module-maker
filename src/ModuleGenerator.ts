@@ -12,6 +12,7 @@ class ModuleGenerator extends ModuleUtilities {
     {
         if (template.instructions) this.executeInstructions(template.instructions);
         if (template.state) this.addStateProperties(template.state);
+        if (template.getters) this.addGetters(template.getters);
 
         return this.module;
     }
@@ -28,10 +29,17 @@ class ModuleGenerator extends ModuleUtilities {
         });
     }
 
-    private addStateProperties(properties: Object): void
+    private addStateProperties(properties: D.Object): void
     {
         for (const [key, value] of Object.entries(properties)) {
             this.addState(key, value)
+        }
+    }
+
+    private addGetters(getters: D.Getters): void
+    {
+        for (const [key, value] of Object.entries(getters)) {
+            this.addGetter(key, value);
         }
     }
 }

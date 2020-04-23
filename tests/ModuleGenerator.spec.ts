@@ -98,4 +98,25 @@ describe('src/ModuleGenerator.ts', () => {
             expect(state.executed).toEqual(template.state.executed);
         }
     });
+
+    test('template getters are added to the module and take precedence', () => {
+        const template: D.Template = {
+            instructions: {
+                executed: {
+                    type: 'boolean',
+                }
+            },
+            getters: {
+                getExample: (state: D.Object): any => state.example,
+                getExecuted: (state: D.Object): boolean => state.executed
+            }
+        };
+
+        const generator = new ModuleGenerator();
+        const state = generator.generate(template).getters;
+        if (template.getters) {
+            expect(state.getExample).toEqual(template.getters.getExample);
+            expect(state.getExecuted).toEqual(template.getters.getExecuted);
+        }
+    });
 });
