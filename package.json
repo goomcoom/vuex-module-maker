@@ -4,6 +4,8 @@
   "author": "Simon Msara",
   "license": "MIT",
   "description": "This package will help with removing the overhead involved in creating vuex modules.",
+  "main": "./dist/index.js",
+  "types": "./types/index.d.ts",
   "keywords": [
     "vue",
     "vuex",
@@ -14,6 +16,7 @@
   ],
   "private": true,
   "scripts": {
+    "prod": "npx webpack --config webpack.config.js --mode production",
     "dev": "npx webpack --config webpack.config.js --mode development",
     "test": "jest",
     "coverage": "jest --coverage=true"
