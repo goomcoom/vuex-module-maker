@@ -1,8 +1,7 @@
 import ModuleUtilities from "~/ModuleUtilities.ts";
 import InstructionProcessor from "~/InstructionProcessor.ts";
-import { Template } from "~/ModuleGenerator.d.ts"
-import { Instructions } from "~/InstructionProcessor.d.ts"
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
+import {Instructions, Template} from "~/index";
 
 class ModuleGenerator<S, R> extends ModuleUtilities<S, R> {
 

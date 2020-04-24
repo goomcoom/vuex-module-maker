@@ -1,21 +1,16 @@
-import {Types} from "~/Types.d.ts";
-import * as D from "~/Getter.d.ts";
-import {Getter as VGetter} from "vuex";
+import * as D from "./index";
+import { Getter as VGetter } from "vuex";
 
 class Getter<S, R> {
     readonly state_name: string;
     private default_value: any;
-    readonly default_getter: VGetter<S, R> = <S>(state: S): any => {
-        // @ts-ignore
-        return state[this.state_name] == null ? this.default_value : state[this.state_name];
-    };
 
     constructor (state_name: string, default_value: any = undefined) {
         this.state_name = state_name;
         this.default_value = default_value;
     }
 
-    setDefaultValue(type: Types): void {
+    setDefaultValue(type: D.Types): void {
         if (this.default_value === undefined ) {
             switch (type) {
                 case 'string':
@@ -39,7 +34,7 @@ class Getter<S, R> {
         }
     }
 
-    format  <T extends Types> (type: T): VGetter<S, R>
+    format  <T extends D.Types> (type: T): VGetter<S, R>
     {
         this.setDefaultValue(type);
 
@@ -62,33 +57,33 @@ class Getter<S, R> {
     }
 
     // @ts-ignore
-    stringGetter = <S>(state: S, getters: any = {}, rootState: R = {}, rootGetters: any =  {}): string => {
+    stringGetter = <S>(state: S): string => {
         // @ts-ignore
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
 
     // @ts-ignore
-    numberGetter: D.NumberGetter = (state, getters: any = {}, rootState: R = {}, rootGetters: any =  {}): number|null => {
+    numberGetter: D.NumberGetter = (state): number|null => {
         // @ts-ignore
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
     // @ts-ignore
-    booleanGetter: D.BooleanGetter = (state, getters: any = {}, rootState: R = {}, rootGetters: any =  {}): boolean => {
+    booleanGetter: D.BooleanGetter = (state): boolean => {
         // @ts-ignore
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
     // @ts-ignore
-    arrayGetter: D.ArrayGetter = (state, getters: any = {}, rootState: R = {}, rootGetters: any =  {}): any[] => {
+    arrayGetter: D.ArrayGetter = (state): any[] => {
         // @ts-ignore
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
     // @ts-ignore
-    objectGetter: D.ObjectGetter = (state, getters: any = {}, rootState: R = {}, rootGetters: any =  {}): object|null => {
+    objectGetter: D.ObjectGetter = (state): object|null => {
         // @ts-ignore
         return state[this.state_name] == null ? this.default_value : state[this.state_name];
     };
     // @ts-ignore
-    anyGetter: D.AnyGetter = (state, getters: any = {}, rootState: R = {}, rootGetters: any =  {}): any => {
+    anyGetter: D.AnyGetter = (state): any => {
         // @ts-ignore
         return state[this.state_name] == null ? this.default_value : state[this.state_name]
     }

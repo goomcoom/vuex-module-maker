@@ -1,7 +1,5 @@
-
 import ModuleGenerator from "~/ModuleGenerator";
-import {Template} from "~/ModuleGenerator.d.ts"
-import {Instruction, Instructions} from "~/InstructionProcessor.d.ts";
+import {Instruction, Instructions, Template} from "~/index";
 
 interface S {
     example: any;

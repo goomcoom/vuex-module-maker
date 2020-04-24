@@ -1,4 +1,4 @@
-import { RawModule } from "~/ModuleGenerator.d.ts";
+import { RawModule } from "~/index";
 import { Getter, Mutation, Action, Module} from "vuex";
 
 class ModuleUtilities<S, R> {

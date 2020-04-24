@@ -1,8 +1,7 @@
+import Vue from "vue";
+import { Instructions, Template } from "~/index";
 import ModuleGenerator from "~/ModuleGenerator";
 import Vuex, {ActionTree, GetterTree, MutationTree, Store} from "vuex";
-import Vue from "vue";
-import { Instructions } from "~/InstructionProcessor.d.ts"
-import { Template } from "~/ModuleGenerator.d.ts"
 
 Vue.use(Vuex);
 interface S { [x: string]: any }

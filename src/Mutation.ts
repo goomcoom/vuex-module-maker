@@ -1,5 +1,4 @@
-import { Types } from '~/Types'
-import * as D from "./Mutation.d";
+import * as D from "~/index";
 
 class Mutation {
     readonly state_name: string;
@@ -8,7 +7,7 @@ class Mutation {
         this.state_name = state_name
     }
 
-    format <T extends Types>(type: T): D.Mutation<T>
+    format <T extends D.Types>(type: T): D.Mutation<T>
     {
         switch (type) {
             case 'string':
