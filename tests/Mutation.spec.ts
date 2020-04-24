@@ -1,6 +1,24 @@
 import Mutation from "~/Mutation";
+import InstructionProcessor from "~/InstructionProcessor";
 
 describe('store/ModuleGenerator/Mutation.ts', () => {
+    test('The set_mutation property can be controlled', () => {
+        // Default
+        let processor = new InstructionProcessor({comments:{type: 'array'}});
+        expect(processor.process()[0].set_mutation).toEqual(true);
+        // True
+        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: true}});
+        expect(processor.process()[0].set_mutation).toEqual(true);
+        // False
+        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: false}});
+        expect(processor.process()[0].set_mutation).toEqual(false)
+    });
+
+    test('The mutation_name can be controlled', () => {
+        const processor = new InstructionProcessor({id:{type: 'number', mutation_name: 'setUserId'}});
+        expect(processor.process()[0].mutation_name).toEqual('setUserId')
+    });
+
     test.each([['string'],['number'],['boolean'],['object'],['array'],['any']])
     (`Setting the type as %s returns the correct mutation`, (type) => {
         // @ts-ignore

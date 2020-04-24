@@ -1,43 +1,50 @@
-import * as D from '~/declarations'
+import { RawModule } from "~/ModuleGenerator.d.ts";
+import { Getter, Mutation, Action, Module} from "vuex";
 
-class ModuleUtilities {
-    protected _module: D.Module = {
-        namespaced: true, state: {}, getters: {}, mutations: {}, actions: {}, modules: {}
+class ModuleUtilities<S, R> {
+    protected _module: RawModule = {
+        namespaced: true,
+        state: {},
+        getters: {},
+        mutations: {},
+        actions: {},
+        modules: {}
     };
 
     constructor(namespaced: boolean = true) {
         this.namespaced = namespaced
     }
 
-    get module(): D.ExportModule {
+    get module() {
         return {
             namespaced: this._module.namespaced,
-            state: () => this._module.state,
+            state: () => this._module.state as S,
             getters: this._module.getters,
             mutations: this._module.mutations,
             actions: this._module.actions,
             modules: this._module.modules
         }
     }
-    set module(value) { this._module = value }
+    set module(value) {this._module = value}
 
-    get namespaced(): boolean { return this._module.namespaced}
+    get namespaced(): boolean { return this._module.namespaced }
     set namespaced(value: boolean) { this._module.namespaced = value }
 
-    get state() :D.Object { return this.module.state() }
-    set state(value: D.Object) { this._module.state = value }
+    get state() { return this._module.state }
+    set state(value ) { this._module.state = value }
 
-    get getters() :D.Object { return this.module.getters }
-    get mutations() :D.Object { return this.module.mutations }
-    get actions() :D.Object { return this.module.actions }
-    get modules() :D.Object { return this.module.modules }
+    get getters() { return this._module.getters }
+    get mutations() { return this._module.mutations }
+    get actions() { return this._module.actions }
+    get modules() { return this._module.modules }
+    set modules(value) {this._module.modules = value}
 
     reset(): void {
         this._module = {
-            namespaced: this.namespaced, state: {}, getters: {}, mutations: {}, actions: {}, modules: {}
+            namespaced: this.namespaced, state: {} as S, getters: {}, mutations: {}, actions: {}, modules: {}
         }
     }
-    resetState(): void { this._module.state = {} }
+    resetState(): void { this._module.state = {} as S }
     resetGetters(): void { this._module.getters = {} }
     resetMutations(): void { this._module.mutations = {} }
     resetActions(): void { this._module.actions = {} }
@@ -46,16 +53,16 @@ class ModuleUtilities {
     addState(key: string, value: any): void {
         this.state[key] = value
     }
-    addGetter(key: string, value: D.Getter<D.Types>): void {
+    addGetter(key: string, value: Getter<S, R>): void {
         this.getters[key] = value
     }
-    addMutation(key: string, value: D.Mutation<D.Types>): void {
+    addMutation(key: string, value: Mutation<S>): void {
         this.mutations[key] = value
     }
-    addAction(key: string, value: D.Action): void {
+    addAction(key: string, value: Action<S, R>): void {
         this.actions[key] = value
     }
-    addModule(key: string, value: D.SubModule): void {
+    addModule(key: string, value: Module<any, R>): void {
         this.modules[key] = value
     }
 

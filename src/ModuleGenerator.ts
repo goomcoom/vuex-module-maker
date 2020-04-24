@@ -1,14 +1,16 @@
-import * as D from '~/declarations';
-import ModuleUtilities from "~/ModuleUtilities";
-import InstructionProcessor from "~/InstructionProcessor";
+import ModuleUtilities from "~/ModuleUtilities.ts";
+import InstructionProcessor from "~/InstructionProcessor.ts";
+import { Template } from "~/ModuleGenerator.d.ts"
+import { Instructions } from "~/InstructionProcessor.d.ts"
+import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 
-class ModuleGenerator extends ModuleUtilities {
+class ModuleGenerator<S, R> extends ModuleUtilities<S, R> {
 
     constructor(namespaced: boolean = true) {
         super(namespaced);
     }
 
-    generate(template: D.Template): D.ExportModule
+    generate(template: Template<S, R>): Module<S, R>
     {
         if (template.instructions) this.executeInstructions(template.instructions);
         if (template.state) this.addStateProperties(template.state);
@@ -20,7 +22,7 @@ class ModuleGenerator extends ModuleUtilities {
         return this.module;
     }
 
-    private executeInstructions(raw: D.Instructions): void
+    private executeInstructions(raw: Instructions<S, R>): void
     {
         const processor = new InstructionProcessor(raw);
         const instructions = processor.process();
@@ -32,35 +34,35 @@ class ModuleGenerator extends ModuleUtilities {
         });
     }
 
-    private addStateProperties(properties: D.Object): void
+    private addStateProperties(properties: Object): void
     {
         for (const [key, value] of Object.entries(properties)) {
             this.addState(key, value)
         }
     }
 
-    private addGetters(getters: D.Getters): void
+    private addGetters(getters: GetterTree<S, R>): void
     {
         for (const [key, value] of Object.entries(getters)) {
             this.addGetter(key, value);
         }
     }
 
-    private addMutations(mutations: D.Mutations): void
+    private addMutations(mutations: MutationTree<S>): void
     {
         for (const [key, value] of Object.entries(mutations)) {
             this.addMutation(key, value);
         }
     }
 
-    private addActions(actions: D.Actions): void
+    private addActions(actions: ActionTree<S, R>): void
     {
         for (const [key, value] of Object.entries(actions)) {
             this.addAction(key, value);
         }
     }
 
-    private addModules(modules: D.Submodules): void
+    private addModules(modules: Module<S, R>): void
     {
         for (const [key, value] of Object.entries(modules)) {
             this.addModule(key, value);

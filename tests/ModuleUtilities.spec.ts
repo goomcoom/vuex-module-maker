@@ -1,21 +1,24 @@
 import ModuleUtilities from "~/ModuleUtilities";
-import * as D from "~/declarations";
+import {Module, GetterTree, MutationTree} from "vuex";
+
+interface S { [x: string]: any }
+interface R { [x: string]: any }
 
 describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
-    let utilities: ModuleUtilities;
+    let utilities: ModuleUtilities<S, R>;
     const test_filled_module = {
         namespaced: false,
         state() {return { key: 'value' }},
         getters: {
-            key: (state: D.Object): any => {
+            key: (state: S): any => {
                 return state.name
             }
-        } as D.Getters,
+        } as GetterTree<S, R>,
         mutations: {
-            key: (state: D.Object, value: string): void => {
+            key: (state: S, value: string): void => {
                 state.name = value
             }
-        } as D.Mutations,
+        } as MutationTree<S>,
         actions: { key: 'value' },
         modules: { key: 'value' }
     };
@@ -175,15 +178,14 @@ describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
     });
 
     test('Modules can be added and removed', () => {
-        const test_object = {
-            key: 'setLastName',
-            value: test_filled_module
+        const test_object: Module<S, R> = {
+            namespaced: true
         };
         // Add
-        utilities.addModule(test_object.key, test_object.value);
-        expect(utilities.modules[test_object.key]).toEqual(test_object.value);
+        utilities.addModule('test_object', test_object);
+        expect(utilities.modules['test_object']).toEqual(test_object);
         // Remove
-        utilities.removeModule(test_object.key);
-        expect(utilities.modules[test_object.key]).toBeUndefined();
+        utilities.removeModule('test_object');
+        expect(utilities.modules['test_object']).toBeUndefined();
     });
 });

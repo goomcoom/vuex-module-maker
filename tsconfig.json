@@ -9,7 +9,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "vuex": ["node_modules/vuex/types/index.d.ts"],
+      "vue": ["node_modules/vue/types/index.d.ts"]
     },
     "allowSyntheticDefaultImports": true,
     "lib": [

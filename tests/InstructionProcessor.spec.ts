@@ -1,6 +1,9 @@
 import InstructionProcessor from "~/InstructionProcessor";
 import Getter from "~/Getter";
 
+interface S { [x: string]: any }
+interface R { [x: string]: any }
+
 describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
 
     test('The formatter has a required instruction property', () => {
@@ -78,7 +81,7 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         let raw = new Getter('id');
         const getter = raw.format('number').toString();
 
-        let processor = new InstructionProcessor({id: {type: 'number'}});
+        let processor = new InstructionProcessor<S, R>({id: {type: 'number'}});
         expect(processor.process()[0].getter.toString()).toEqual(getter);
 
         const test_func = (state: {[x: string]: any}) => state.id * 100;
@@ -88,26 +91,12 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
 
     test('The default value can be controlled', () => {
         let processor = new InstructionProcessor({name: {type: 'string'}});
-        expect(processor.process()[0].getter({name: null})).toEqual('');
+        const state = {
+            name: null
+        };
+        expect(processor.process()[0].getter(state, {}, {}, {})).toEqual('');
 
         processor = new InstructionProcessor({name: {type: 'string', default_value: 'default text'}});
-        expect(processor.process()[0].getter({name: null})).toEqual('default text')
-    });
-
-    test('The set_mutation property can be controlled', () => {
-        // Default
-        let processor = new InstructionProcessor({comments:{type: 'array'}});
-        expect(processor.process()[0].set_mutation).toEqual(true);
-        // True
-        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: true}});
-        expect(processor.process()[0].set_mutation).toEqual(true);
-        // False
-        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: false}});
-        expect(processor.process()[0].set_mutation).toEqual(false)
-    });
-
-    test('The mutation_name can be controlled', () => {
-        const processor = new InstructionProcessor({id:{type: 'number', mutation_name: 'setUserId'}});
-        expect(processor.process()[0].mutation_name).toEqual('setUserId')
+        expect(processor.process()[0].getter(state, {}, {}, {})).toEqual('default text')
     });
 });

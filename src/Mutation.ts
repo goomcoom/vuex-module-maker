@@ -1,4 +1,5 @@
-import * as D from "./declarations";
+import { Types } from '~/Types'
+import * as D from "./Mutation.d";
 
 class Mutation {
     readonly state_name: string;
@@ -7,7 +8,7 @@ class Mutation {
         this.state_name = state_name
     }
 
-    format <T extends D.Types>(type: T): D.Mutation<T>
+    format <T extends Types>(type: T): D.Mutation<T>
     {
         switch (type) {
             case 'string':
@@ -25,35 +26,43 @@ class Mutation {
         }
     }
 
-    stringMutation: D.Mutation<'string'> = (state: D.Object, value?: string): void => {
+    stringMutation: D.StringMutation = <S>(state: S, value?: string): void => {
+        // @ts-ignore
         state[this.state_name] = value ? value : null
     };
 
-    numberMutation: D.Mutation<'number'> = (state: D.Object, value?: number): void => {
+    numberMutation: D.NumberMutation = <S>(state: S, value?: number): void => {
+        // @ts-ignore
         state[this.state_name] = value == null ? null : value
     };
 
-    booleanMutation: D.Mutation<'boolean'> = (state: D.Object, value?: any): void => {
+    booleanMutation: D.BooleanMutation = <S>(state: S, value?: any): void => {
+        // @ts-ignore
         state[this.state_name] = value == null ? null : !!value
     };
 
-    objectMutation: D.Mutation<'object'> = (state: D.Object, value?: object): void => {
+    objectMutation: D.ObjectMutation = <S>(state: S, value?: object): void => {
         if (value == null || Object.keys(value).length === 0) {
+            // @ts-ignore
             state[this.state_name] = null
         } else {
+            // @ts-ignore
             state[this.state_name] = value
         }
     };
 
-    arrayMutation: D.Mutation<'array'> = (state: D.Object, value?: any[]): void => {
+    arrayMutation: D.ArrayMutation = <S>(state: S, value?: any[]): void => {
         if (value == null || value.length === 0) {
+            // @ts-ignore
             state[this.state_name] = null
         } else {
+            // @ts-ignore
             state[this.state_name] = value
         }
     };
 
-    anyMutation: D.Mutation<any> = (state: D.Object, value?: any): void => {
+    anyMutation: D.AnyMutation = <S>(state: S, value?: any): void => {
+        // @ts-ignore
         state[this.state_name] = value === undefined ? null : value
     }
 }

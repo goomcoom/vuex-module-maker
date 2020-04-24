@@ -1,17 +1,18 @@
 import ModuleGenerator from "~/ModuleGenerator";
-import * as D from "~/declarations";
-// @ts-ignore
-import Vuex, {Store} from 'vuex';
-// @ts-ignore
-import Vue from 'vue';
+import Vuex, {ActionTree, GetterTree, MutationTree, Store} from "vuex";
+import Vue from "vue";
+import { Instructions } from "~/InstructionProcessor.d.ts"
+import { Template } from "~/ModuleGenerator.d.ts"
 
 Vue.use(Vuex);
+interface S { [x: string]: any }
+interface R { [x: string]: any }
 
 describe('Store Module Acceptance Tests', () => {
     let generator;
     let module;
-    let store: Store<unknown>;
-    const instructions: D.Instructions = {
+    let store: Store<S>;
+    const instructions: Instructions<S, R> = {
         id: {
             type: 'number'
         },
@@ -24,24 +25,24 @@ describe('Store Module Acceptance Tests', () => {
         }
     };
 
-    const template: D.Template = {
+    const template: Template<S, R> = {
         instructions,
         state: {
             name: null
         },
         getters: {
-            getName: state => state.name
-        } as D.Getters,
+            getName: (state: S) => state.name
+        } as GetterTree<S, R>,
         mutations: {
-            setName: (state: D.Object, value: string|null = null): void => {
+            setName: (state: S, value: string|null = null): void => {
                 state.name = value
             }
-        } as D.Mutations,
+        } as MutationTree<S>,
         actions: {
             updateUser: (context) => {
                 context.commit('setName', 'Example Name');
             }
-        } as D.Actions,
+        } as ActionTree<S, R>,
         modules: {
             user: {
                 namespaced: true,
@@ -55,7 +56,7 @@ describe('Store Module Acceptance Tests', () => {
     };
 
     beforeEach(() => {
-        generator = new ModuleGenerator();
+        generator = new ModuleGenerator<S, R>();
         module = generator.generate(template);
         store = new Vuex.Store(module);
     });
@@ -78,7 +79,7 @@ describe('Store Module Acceptance Tests', () => {
     });
 
     test('Mutations set the correct values', () => {
-        const state = store.state as D.Object;
+        const state = store.state as S;
 
         expect(state.id).toEqual(null);
         store.commit('setId', 43);
@@ -90,7 +91,7 @@ describe('Store Module Acceptance Tests', () => {
     });
 
     test('Actions perform as expected', () => {
-        const state = store.state as D.Object;
+        const state = store.state as S;
 
         expect(state.name).toEqual(null);
         store.dispatch('updateUser');
