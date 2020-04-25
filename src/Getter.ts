@@ -1,3 +1,5 @@
+// @ts-ignore
+import Form from "vform";
 import * as D from "../types/index";
 import { Getter as VGetter } from "vuex";
 
@@ -27,6 +29,9 @@ class Getter<S, R> {
                     break;
                 case 'array':
                     this.default_value =  [];
+                    break;
+                case 'form':
+                    this.default_value =  new Form;
                     break;
                 default:
                     this.default_value =  null
