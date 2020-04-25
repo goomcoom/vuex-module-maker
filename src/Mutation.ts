@@ -1,3 +1,5 @@
+// @ts-ignore
+import Form from 'vform'
 import * as D from "../types/index";
 import { Mutation as VMutation } from "vuex";
 
@@ -21,6 +23,8 @@ class Mutation<S> {
                 return this.objectMutation as VMutation<S>;
             case 'array':
                 return this.arrayMutation as VMutation<S>;
+            case 'form':
+                return this.formMutation as VMutation<S>;
             default:
                 return this.anyMutation as VMutation<S>;
         }
@@ -58,6 +62,16 @@ class Mutation<S> {
         } else {
             // @ts-ignore
             state[this.state_name] = value
+        }
+    };
+
+    formMutation: D.FormMutation = <S>(state: S, value?: D.Object): void => {
+        if (value == null || Object.keys(value).length === 0) {
+            // @ts-ignore
+            state[this.state_name] = null
+        } else {
+            // @ts-ignore
+            state[this.state_name] = new Form(value)
         }
     };
 
