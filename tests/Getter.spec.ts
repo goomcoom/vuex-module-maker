@@ -1,15 +1,18 @@
+// @ts-ignore
+import Form from "vform";
 import Getter from "~/Getter";
 
 describe('store/ModuleGenerator/Getter.ts', () => {
 
     test.each`
-        type         | default_value  | manual                          | example
-        ${'string'}  | ${''}          | ${'default text'}               | ${'sample'}
-        ${'number'}  | ${0}        | ${6543}                         | ${76543}
-        ${'boolean'} | ${false}       | ${true}                         | ${false}
-        ${'object'}  | ${{}}        | ${{name: 'example name'}}       | ${{age: 2345}}
-        ${'array'}   | ${[]}          | ${['an', 'example', 'array']}   | ${[23, 'test', false]}
-        ${'any'}     | ${null}        | ${true}                         | ${false}
+        type         | default_value  | manual                              | example
+        ${'string'}  | ${''}          | ${'default text'}                   | ${'sample'}
+        ${'number'}  | ${0}           | ${6543}                             | ${76543}
+        ${'boolean'} | ${false}       | ${true}                             | ${false}
+        ${'object'}  | ${{}}          | ${{name: 'example name'}}           | ${{age: 2345}}
+        ${'array'}   | ${[]}          | ${['an', 'example', 'array']}       | ${[23, 'test', false]}
+        ${'form'}   | ${new Form}     | ${new Form({name: 'test'})}    | ${new Form({id: 22})}
+        ${'any'}     | ${null}        | ${true}                             | ${false}
     `(`The $type getter returns the correct value`, ({type, default_value, manual, example}) => {
         let raw = new Getter('name');
         let getter = raw.format(type);
