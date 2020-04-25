@@ -17,13 +17,13 @@ class Getter<S, R> {
                     this.default_value = '';
                     break;
                 case 'number':
-                    this.default_value =  null;
+                    this.default_value =  0;
                     break;
                 case 'boolean':
                     this.default_value =  false;
                     break;
                 case 'object':
-                    this.default_value =  null;
+                    this.default_value =  {};
                     break;
                 case 'array':
                     this.default_value =  [];
@@ -38,54 +38,10 @@ class Getter<S, R> {
     {
         this.setDefaultValue(type);
 
-        // return this.default_getter as VGetter<S, R>;
-
-        switch (type) {
-            case 'string':
-                return this.stringGetter as VGetter<S, R>;
-            case 'number':
-                return this.numberGetter as VGetter<S, R>;
-            case 'boolean':
-                return this.booleanGetter as VGetter<S, R>;
-            case 'array':
-                return this.arrayGetter as VGetter<S, R>;
-            case 'object':
-                return this.objectGetter as VGetter<S, R>;
-            default:
-                return this.anyGetter as VGetter<S, R>;
-        }
-    }
-
-    // @ts-ignore
-    stringGetter = <S>(state: S): string => {
-        // @ts-ignore
-        return state[this.state_name] == null ? this.default_value : state[this.state_name];
-    };
-
-    // @ts-ignore
-    numberGetter: D.NumberGetter = (state): number|null => {
-        // @ts-ignore
-        return state[this.state_name] == null ? this.default_value : state[this.state_name];
-    };
-    // @ts-ignore
-    booleanGetter: D.BooleanGetter = (state): boolean => {
-        // @ts-ignore
-        return state[this.state_name] == null ? this.default_value : state[this.state_name];
-    };
-    // @ts-ignore
-    arrayGetter: D.ArrayGetter = (state): any[] => {
-        // @ts-ignore
-        return state[this.state_name] == null ? this.default_value : state[this.state_name];
-    };
-    // @ts-ignore
-    objectGetter: D.ObjectGetter = (state): object|null => {
-        // @ts-ignore
-        return state[this.state_name] == null ? this.default_value : state[this.state_name];
-    };
-    // @ts-ignore
-    anyGetter: D.AnyGetter = (state): any => {
-        // @ts-ignore
-        return state[this.state_name] == null ? this.default_value : state[this.state_name]
+        return <T, S>(state: S): D.Type<T> => {
+            // @ts-ignore
+            return state[this.state_name] == null ? this.default_value : state[this.state_name];
+        };
     }
 }
 

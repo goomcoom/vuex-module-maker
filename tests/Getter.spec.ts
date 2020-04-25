@@ -5,9 +5,9 @@ describe('store/ModuleGenerator/Getter.ts', () => {
     test.each`
         type         | default_value  | manual                          | example
         ${'string'}  | ${''}          | ${'default text'}               | ${'sample'}
-        ${'number'}  | ${null}        | ${6543}                         | ${76543}
+        ${'number'}  | ${0}        | ${6543}                         | ${76543}
         ${'boolean'} | ${false}       | ${true}                         | ${false}
-        ${'object'}  | ${null}        | ${{name: 'example name'}}       | ${{age: 2345}}
+        ${'object'}  | ${{}}        | ${{name: 'example name'}}       | ${{age: 2345}}
         ${'array'}   | ${[]}          | ${['an', 'example', 'array']}   | ${[23, 'test', false]}
         ${'any'}     | ${null}        | ${true}                         | ${false}
     `(`The $type getter returns the correct value`, ({type, default_value, manual, example}) => {
