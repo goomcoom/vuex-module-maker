@@ -1,3 +1,5 @@
+// @ts-ignore
+import Form from "vform";
 import Mutation from "~/Mutation";
 import InstructionProcessor from "~/InstructionProcessor";
 
@@ -19,7 +21,7 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
         expect(processor.process()[0].mutation_name).toEqual('setUserId')
     });
 
-    test.each([['string'],['number'],['boolean'],['object'],['array'],['any']])
+    test.each([['string'],['number'],['boolean'],['object'],['array'],['form'],['any']])
     (`Setting the type as %s returns the correct mutation`, (type) => {
         // @ts-ignore
         const raw = new Mutation('name');
@@ -27,7 +29,7 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
         expect(raw.format(type)).toEqual(raw[`${type}Mutation`])
     });
 
-    test.each([['string'],['number'],['boolean'],['object'],['array'],['any']])
+    test.each([['string'],['number'],['boolean'],['object'],['array'],['form'],['any']])
     (`The %s raw set undefined and null values as null`, (type) => {
         let state = {name: null};
         // @ts-ignore
@@ -103,5 +105,18 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
         const test_words = ['some', 'test', 'words'];
         mutation(state, test_words);
         expect(state.words).toEqual(test_words);
+    });
+
+    test('The form mutation sets the correct value', () => {
+        let state = {words: null};
+        const raw = new Mutation('words');
+        const mutation = raw.format('form');
+
+        mutation(state, {});
+        expect(state.words).toEqual(null);
+
+        const test_words = {old: ['some', 'words']};
+        mutation(state, test_words);
+        expect(state.words).toEqual(new Form(test_words));
     });
 });
