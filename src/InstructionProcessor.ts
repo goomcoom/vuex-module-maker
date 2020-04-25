@@ -46,8 +46,8 @@ class InstructionProcessor<S, R> {
     }
 
     formatStateName <T extends D.Types> (name: string, options: D.Instruction<T, S, R>): string {
-        if (options.state_name) return options.state_name;
-        return this.state_name = toSnakeCase(name)
+        name = options.state_name ? options.state_name : toSnakeCase(name);
+        return this.state_name = name;
     }
 
     formatStateValue <T extends D.Types> (options: D.Instruction<T, S, R>): D.Type<T>|null {
