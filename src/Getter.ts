@@ -1,4 +1,4 @@
-import * as D from "./index";
+import * as D from "../types/index";
 import { Getter as VGetter } from "vuex";
 
 class Getter<S, R> {

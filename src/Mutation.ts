@@ -1,4 +1,4 @@
-import * as D from "~/index";
+import * as D from "../types/index";
 
 class Mutation {
     readonly state_name: string;

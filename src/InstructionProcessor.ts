@@ -2,7 +2,7 @@ import Getter from "~/Getter";
 import Mutation from "~/Mutation";
 import { toCamelCase, toSnakeCase } from "~/helpers";
 import {Getter as VGetter} from "vuex";
-import * as D from "./index";
+import * as D from "../types/index";
 
 class InstructionProcessor<S, R> {
     private _instructions: D.FormattedInstructions<S, R> = [];

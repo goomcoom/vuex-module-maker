@@ -1,5 +1,5 @@
 import ModuleGenerator from "~/ModuleGenerator";
-import {Instruction, Instructions, Template} from "~/index";
+import {Instruction, Instructions, Template} from "../types/index";
 
 interface S {
     example: any;

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { Instructions, Template } from "~/index";
+import { Instructions, Template } from "../types/index";
 import ModuleGenerator from "~/ModuleGenerator";
 import Vuex, {ActionTree, GetterTree, MutationTree, Store} from "vuex";
 
