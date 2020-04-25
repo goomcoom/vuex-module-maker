@@ -37,7 +37,6 @@ class ModuleUtilities<S, R> {
     get mutations() { return this._module.mutations }
     get actions() { return this._module.actions }
     get modules() { return this._module.modules }
-    set modules(value) {this._module.modules = value}
 
     reset(): void {
         this._module = {
