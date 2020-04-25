@@ -1,6 +1,6 @@
 {
   "name": "module-generator",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "author": "Simon Msara",
   "license": "MIT",
   "description": "This package will help with removing the overhead involved in creating vuex modules.",
