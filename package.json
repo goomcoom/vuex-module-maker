@@ -21,7 +21,7 @@
   "private": true,
   "scripts": {
     "prod": "tsc && npx webpack --config webpack.config.js --mode production",
-    "dev": "npx webpack --config webpack.config.js --mode development",
+    "dev": "tsc && npx webpack --config webpack.config.js --mode development",
     "test": "jest",
     "coverage": "jest --coverage=true"
   },
