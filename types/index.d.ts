@@ -1,4 +1,7 @@
-import { ActionTree, GetterTree, ModuleTree, MutationTree, Getter as VGetter } from "vuex";
+import {
+    ActionTree, GetterTree, ModuleTree, MutationTree,
+    Getter as VGetter, Mutation as VMutation
+} from "vuex";
 
 /* Types */
 export type Types = 'string' | 'number' | 'boolean' | 'array' | 'object' | 'any';
@@ -87,7 +90,7 @@ export interface FormattedInstruction<T extends Types, S, R> {
     //Mutation options
     set_mutation: boolean,
     mutation_name: string,
-    mutation: Mutation<T>
+    mutation: VMutation<S>
 }
 
 export type FormattedInstructions<S, R> = FormattedInstruction<Types, S, R>[];

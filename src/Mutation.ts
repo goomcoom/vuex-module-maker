@@ -1,27 +1,28 @@
 import * as D from "../types/index";
+import { Mutation as VMutation } from "vuex";
 
-class Mutation {
+class Mutation<S> {
     readonly state_name: string;
 
     constructor(state_name: string) {
         this.state_name = state_name
     }
 
-    format <T extends D.Types>(type: T): D.Mutation<T>
+    format <T extends D.Types>(type: T): VMutation<S>
     {
         switch (type) {
             case 'string':
-                return this.stringMutation as D.Mutation<T>;
+                return this.stringMutation as VMutation<S>;
             case 'number':
-                return this.numberMutation as D.Mutation<T>;
+                return this.numberMutation as VMutation<S>;
             case 'boolean':
-                return this.booleanMutation as D.Mutation<T>;
+                return this.booleanMutation as VMutation<S>;
             case 'object':
-                return this.objectMutation as D.Mutation<T>;
+                return this.objectMutation as VMutation<S>;
             case 'array':
-                return this.arrayMutation as D.Mutation<T>;
+                return this.arrayMutation as VMutation<S>;
             default:
-                return this.anyMutation as D.Mutation<T>;
+                return this.anyMutation as VMutation<S>;
         }
     }
 

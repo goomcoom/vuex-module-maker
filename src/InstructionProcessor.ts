@@ -1,7 +1,7 @@
 import Getter from "~/Getter";
 import Mutation from "~/Mutation";
 import { toCamelCase, toSnakeCase } from "~/helpers";
-import {Getter as VGetter} from "vuex";
+import {Getter as VGetter, Mutation as VMutation} from "vuex";
 import * as D from "../types/index";
 
 class InstructionProcessor<S, R> {
@@ -72,9 +72,9 @@ class InstructionProcessor<S, R> {
         return toCamelCase(`set_${this.state_name}`)
     }
 
-    formatMutation <T extends D.Types> (type: T): D.Mutation<T>
+    formatMutation <T extends D.Types> (type: T): VMutation<S>
     {
-        const raw = new Mutation(this.state_name);
+        const raw = new Mutation<S>(this.state_name);
         return raw.format(type)
     }
 }
