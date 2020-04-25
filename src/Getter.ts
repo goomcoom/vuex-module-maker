@@ -1,6 +1,6 @@
 // @ts-ignore
 import Form from "vform";
-import * as D from "../types/index";
+import * as D from "../types";
 import { Getter as VGetter } from "vuex";
 
 class Getter<S, R> {
@@ -45,7 +45,11 @@ class Getter<S, R> {
 
         return <T, S>(state: S): D.Type<T> => {
             // @ts-ignore
-            return state[this.state_name] == null ? this.default_value : state[this.state_name];
+            if (state[this.state_name] === null) {
+                return this.default_value;
+            }
+            // @ts-ignore
+            return state[this.state_name];
         };
     }
 }

@@ -1,11 +1,9 @@
 {
-  "name": "module-generator",
+  "name": "vuex-module-generator",
   "version": "0.1.0",
   "author": "Simon Msara",
   "license": "MIT",
-  "description": "This package will help with removing the overhead involved in creating vuex modules.",
-  "main": "./dist/index.js",
-  "types": "./src/index.d.ts",
+  "description": "Automating the module creation process.",
   "keywords": [
     "vue",
     "vuex",
@@ -14,12 +12,23 @@
     "generator",
     "module-generator"
   ],
+  "main": "dist/ModuleGenerator.js",
+  "typings": "types/index.d.ts",
+  "files": [
+    "dist",
+    "tests"
+  ],
   "private": true,
   "scripts": {
-    "prod": "npx webpack --config webpack.config.js --mode production",
+    "prod": "tsc && npx webpack --config webpack.config.js --mode production",
     "dev": "npx webpack --config webpack.config.js --mode development",
     "test": "jest",
     "coverage": "jest --coverage=true"
+  },
+  "peerDependencies": {
+    "axios": "^0.19.2",
+    "vform": "^1.0.1",
+    "vuex": "^3.2.0"
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
@@ -31,10 +40,5 @@
     "vue": "^2.6.11",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"
-  },
-  "dependencies": {
-    "axios": "^0.19.2",
-    "vform": "^1.0.1",
-    "vuex": "^3.2.0"
   }
 }

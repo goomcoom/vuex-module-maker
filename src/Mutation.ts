@@ -1,6 +1,6 @@
 // @ts-ignore
 import Form from 'vform'
-import * as D from "../types/index";
+import * as D from "../types";
 import { Mutation as VMutation } from "vuex";
 
 class Mutation<S> {

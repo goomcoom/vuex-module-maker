@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/ModuleGenerator.ts',
+    entry: './dist/ModuleGenerator.js',
     output: {
-        filename: 'index.js',
+        filename: 'ModuleGenerator.min.js',
         path: path.resolve(__dirname, 'dist'),
     },
     module: {
@@ -13,8 +13,7 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
-        ],
-
+        ]
     },
     resolve: {
         extensions: [ '.ts', '.js' ],

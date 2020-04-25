@@ -1,8 +1,8 @@
-import Getter from "~/Getter";
-import Mutation from "~/Mutation";
-import { toCamelCase, toSnakeCase } from "~/helpers";
+import Getter from "./Getter";
+import Mutation from "./Mutation";
+import { toCamelCase, toSnakeCase } from "./helpers";
 import {Getter as VGetter, Mutation as VMutation} from "vuex";
-import * as D from "../types/index";
+import * as D from "../types";
 
 class InstructionProcessor<S, R> {
     private _instructions: D.FormattedInstructions<S, R> = [];

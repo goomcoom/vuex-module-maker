@@ -1,4 +1,4 @@
-import { RawModule } from "../types/index";
+import { RawModule } from "../types";
 import { Getter, Mutation, Action, Module} from "vuex";
 
 class ModuleUtilities<S, R> {
