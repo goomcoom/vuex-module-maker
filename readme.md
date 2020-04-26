@@ -197,6 +197,13 @@ const generated_module = {
 };
 ```
 
+The mutation function is assigned based on the given type. The mutations rely on the correct value type being passed,
+no type checks are done within the mutations as this package was designed to work best with
+[typescript](https://www.typescriptlang.org/docs/home.html). Using typescript allows us to have complete control over
+the value types are passed. See the typescript section [below](#typescript) for usage with typescript.
+
+The generated mutations set the state value equal to the passed value and `null` if no value has been passed.
+
 ### Actions & Modules
 
 ### Precedence & Gotchas
