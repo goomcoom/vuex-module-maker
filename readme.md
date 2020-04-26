@@ -146,6 +146,59 @@ Any getters passed through the template's getters object are added as is, no alt
 
 ### Mutations
 
+The names assigned to generated mutations follow a similar pattern to the [getters](#getters), with the only difference
+being we prefix the mutations with 'set' instead of 'get' and we use the `mutation_name` instead of the `getter_name`.
+
+```javascript
+const instructions = {
+    id: 'number',
+    name: {
+        type: 'string',
+        state_name: 'user_name'
+    },
+    comments: {
+        type: 'array',
+        state_name: 'user_comments',
+        mutation_name: 'comments'
+    }
+};
+
+const generated_module = {
+    //...
+    mutations: {
+        // instruction key used
+        // id prefixed with 'set' and converted to camel case
+        setId(state, value = undefined) {
+            state.id = value == null ? null : value;
+        },
+        
+        // instruction key ignored
+        // the provided state_name used to generate the mutation name
+        // state_name prefixed with set and converted to camel case
+        setUserName(state, value = undefined) {
+            if (value == null || value.length === 0) {
+                state.user_name = null
+            } else {
+                state.user_name = value
+            }
+        },
+
+        // instruction key and state_name ignored
+        // provided mutation_name option used as is
+        comments(state) {
+            if (value == null || value.length === 0) {
+                state.user_comments = null
+            } else {
+                state.user_comments = value
+            }
+        }
+    },
+    //...
+};
+```
+
+### Actions & Modules
+
 ### Precedence & Gotchas
 
 - State properties are assigned in order of assignment in the instructions object, if two
@@ -157,8 +210,6 @@ instructions.
 Note that this does not extend to other parts of the module – if a state property is overwritten
 the getter/mutation will remain as is unless they are overwritten by a later instruction with
 the same getter/mutation name.
-
-### Actions & Modules
 
 ### Types
 
