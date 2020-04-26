@@ -19,22 +19,22 @@ class Getter<S, R> {
                     this.default_value = '';
                     break;
                 case 'number':
-                    this.default_value =  0;
+                    this.default_value = null;
                     break;
                 case 'boolean':
-                    this.default_value =  false;
+                    this.default_value = false;
                     break;
                 case 'object':
-                    this.default_value =  {};
+                    this.default_value = null;
                     break;
                 case 'array':
-                    this.default_value =  [];
+                    this.default_value = [];
                     break;
                 case 'form':
-                    this.default_value =  new Form;
+                    this.default_value = new Form;
                     break;
                 default:
-                    this.default_value =  null
+                    this.default_value = null
             }
         }
     }
