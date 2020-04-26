@@ -134,6 +134,26 @@ const generated_module = {
 }
 ```
 
+The generated getters follow the same pattern – if the state property is equal to null return the default value
+otherwise return the state property. No other checks are done because the we assume that all state manipulations are
+done through their respective mutations – the value is either valid or null.
+
+The default value that is returned is dependent on the type set in the instruction, and can also be manually set using
+ the `default_value` option where that value will be returned without any alterations.
+ 
+ The object below shows the types and their corresponding default values.
+ ```javascript
+const default_value_map = {
+    string: '',
+    number: null,
+    boolean: false,
+    array: [],
+    object: null,
+    form: new Form,
+    any: null
+};
+```
+
 ### Mutations
 
 ###### Name
