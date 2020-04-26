@@ -1,5 +1,5 @@
 {
-  "name": "vuex-module-generator",
+  "name": "vuex-module-maker",
   "version": "0.1.0",
   "author": "Simon Msara",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "generator",
     "module-generator"
   ],
-  "main": "dist/ModuleGenerator.js",
+  "main": "dist/ModuleMaker.js",
   "typings": "types/index.d.ts",
   "files": [
     "dist",
@@ -25,7 +25,7 @@
     "test": "jest",
     "coverage": "jest --coverage=true"
   },
-  "peerDependencies": {
+  "dependencies": {
     "axios": "^0.19.2",
     "vform": "^1.0.1",
     "vuex": "^3.2.0"
