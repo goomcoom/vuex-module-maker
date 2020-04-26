@@ -2,14 +2,12 @@
 
 The introduction goes here.
 
-## Resulting Module
-
-Re-usable module.
+## Usage
 
 ### Namespaced
 
-### State
 
+### State
 Inline with the vuex instructions on creating reusable modules, the state is a callback that
 returns the module's state object, similar to how we define the state in the vue components.
 You can read more about it in the
@@ -36,7 +34,7 @@ const resulting_module = {
         return {
             id: null, // No adjustments to the name
             user_active: null, // Converted to snake case
-            userName: null // User specified name
+            userName: null // Specified state name
         }
     }
     // ...
@@ -100,8 +98,6 @@ the same getter/mutation name.
 ### Actions & Modules
 
 ## Available Types
-
-## Usage
 
 ### Namespaced
 
