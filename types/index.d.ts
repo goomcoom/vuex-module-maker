@@ -81,7 +81,7 @@ export interface Instruction<T extends Types, S, R> {
 }
 
 export interface Instructions<S, R> {
-    [x: string]: Instruction<Types, S, R>
+    [x: string]: Types | Instruction<Types, S, R>
 }
 
 export interface FormattedInstruction<T extends Types, S, R> {

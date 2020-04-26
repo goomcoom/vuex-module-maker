@@ -19,7 +19,8 @@ class InstructionProcessor<S, R> {
     }
 
     process(): D.FormattedInstructions<S, R> {
-        for (const [name, options] of Object.entries(this.raw)) {
+        for (let [name, options] of Object.entries(this.raw)) {
+            if (typeof options === 'string') options = {type: options};
             this.instructions.push(this.processInstruction(name, options));
             delete this.state_name
         }
