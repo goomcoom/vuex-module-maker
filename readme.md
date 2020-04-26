@@ -5,15 +5,38 @@ The introduction goes here.
 # Usage
 
 ### Namespaced
+Because the generated module is designed to be a reusable one the namespace is set to `true` by
+default. If you would like to set the namespaced property to `false` *(not recommended)* you may
+do so during the creation of the ModuleMaker instance. You can learn more about namespaced modules
+from the [vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing).
+```javascript
+import ModuleMaker from 'vuex-module-maker';
 
+const maker = ModuleMaker(false);
+const module = maker.make({})
+/**
+    module === {
+        namespace: false,
+        state() {
+            return {}
+        },
+        getters: {},
+        mutations: {},
+        actions: {},
+        modules: {}
+    }
+*/
+```
 
 ### State
+
 Inline with the vuex instructions on creating reusable modules, the state is a callback that
 returns the module's state object, similar to how we define the state in the vue components.
 You can read more about it in the
 [vuex guide](https://vuex.vuejs.org/guide/modules.html#module-reuse).
 
 ###### Name
+
 When the state property is created from an [instruction](#instructions), the name is extracted
 from the instruction's key and converted to snake case. The name can be controlled by passing a
 `state_name` option with the desired name, the passed value is not altered in any way.
@@ -43,6 +66,7 @@ If the state property is created from the template's state property, the name wi
 the key of the defined property.
 
 ###### Initial Value
+
 The initial value is set to `null` by default but it can also be controlled by passing an
 `initial_value` option whose value will be used as the initial value.
 ```javascript
@@ -69,6 +93,7 @@ If the state property is created from the template's state property, the propert
 set as the initial value.
 
 ###### State Precedence & Gotchas
+
 - State properties are assigned in order of assignment in the instructions object, if two
 instructions have the same state name the last called instruction will be assigned to the module
 state.
