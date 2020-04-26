@@ -3,7 +3,7 @@ import InstructionProcessor from "./InstructionProcessor";
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
 import {Instructions, Template} from "../types";
 
-class ModuleGenerator<S, R> extends ModuleUtilities<S, R> {
+class ModuleMaker<S, R> extends ModuleUtilities<S, R> {
 
     constructor(namespaced: boolean = true) {
         super(namespaced);
@@ -69,4 +69,4 @@ class ModuleGenerator<S, R> extends ModuleUtilities<S, R> {
     }
 }
 
-export default ModuleGenerator
+export default ModuleMaker

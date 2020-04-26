@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { Instructions, Template } from "../types/index";
-import ModuleGenerator from "~/ModuleGenerator";
+import ModuleMaker from "../src/ModuleMaker";
 import Vuex, {ActionTree, GetterTree, MutationTree, Store} from "vuex";
 
 Vue.use(Vuex);
@@ -55,7 +55,7 @@ describe('Store Module Acceptance Tests', () => {
     };
 
     beforeEach(() => {
-        generator = new ModuleGenerator<S, R>();
+        generator = new ModuleMaker<S, R>();
         module = generator.generate(template);
         store = new Vuex.Store(module);
     });

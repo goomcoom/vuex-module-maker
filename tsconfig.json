@@ -22,6 +22,6 @@
     ]
   },
   "files": [
-    "src/ModuleGenerator.ts"
+    "src/ModuleMaker.ts"
   ]
 }
