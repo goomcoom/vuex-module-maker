@@ -9,7 +9,7 @@ class ModuleMaker<S, R> extends ModuleUtilities<S, R> {
         super(namespaced);
     }
 
-    generate(template: Template<S, R>): Module<S, R>
+    make(template: Template<S, R>): Module<S, R>
     {
         if (template.instructions) this.executeInstructions(template.instructions);
         if (template.state) this.addStateProperties(template.state);

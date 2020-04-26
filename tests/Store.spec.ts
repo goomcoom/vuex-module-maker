@@ -8,7 +8,7 @@ interface S { [x: string]: any }
 interface R { [x: string]: any }
 
 describe('Store Module Acceptance Tests', () => {
-    let generator;
+    let maker;
     let module;
     let store: Store<S>;
     const instructions: Instructions<S, R> = {
@@ -55,8 +55,8 @@ describe('Store Module Acceptance Tests', () => {
     };
 
     beforeEach(() => {
-        generator = new ModuleMaker<S, R>();
-        module = generator.generate(template);
+        maker = new ModuleMaker<S, R>();
+        module = maker.make(template);
         store = new Vuex.Store(module);
     });
 

@@ -22,7 +22,7 @@ describe('src/ModuleGenerator.ts', () => {
     test('Passing an empty raw module returns an empty module', () => {
         const generator = new ModuleMaker<S, R>();
         const module  = JSON.stringify(generator.module);
-        expect(JSON.stringify(generator.generate({}))).toEqual(module);
+        expect(JSON.stringify(generator.make({}))).toEqual(module);
     });
 
     test('Passing instructions sets the state if set_state != false', () => {
@@ -45,7 +45,7 @@ describe('src/ModuleGenerator.ts', () => {
 
         const generator = new ModuleMaker<S, R>();
         // @ts-ignore
-        const state = generator.generate(template).state();
+        const state = generator.make(template).state();
 
         expect(state.hasOwnProperty('id')).toBe(true);
         expect(state.hasOwnProperty('name')).toBe(true);
@@ -62,7 +62,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleMaker<S, R>();
-        const getters = generator.generate(template).getters;
+        const getters = generator.make(template).getters;
 
         if (getters) { // Interface dictates that getters may be undefined
             expect(getters.hasOwnProperty('getId')).toBe(true);
@@ -81,7 +81,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleMaker<S, R>();
-        const mutations = generator.generate(template).mutations;
+        const mutations = generator.make(template).mutations;
 
         if (mutations) { // Interface dictates that mutations may be undefined
             expect(mutations.hasOwnProperty('setId')).toBe(true);
@@ -106,7 +106,7 @@ describe('src/ModuleGenerator.ts', () => {
 
         const generator = new ModuleMaker<S, R>();
         // @ts-ignore
-        const state = generator.generate(template).state();
+        const state = generator.make(template).state();
         if (template.state) {
             expect(state.example).toEqual(template.state.example);
             expect(state.executed).toEqual(template.state.executed);
@@ -127,7 +127,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleMaker<S, R>();
-        const getters = generator.generate(template).getters;
+        const getters = generator.make(template).getters;
 
         // @ts-ignore
         expect(getters.getExample).toEqual(template.getters.getExample);
@@ -153,7 +153,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleMaker<S, R>();
-        const mutations = generator.generate(template).mutations;
+        const mutations = generator.make(template).mutations;
         // @ts-ignore
         expect(mutations.setExample).toEqual(template.mutations.setExample);
         // @ts-ignore
@@ -171,7 +171,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleMaker<S, R>();
-        const actions = generator.generate(template).actions;
+        const actions = generator.make(template).actions;
         // @ts-ignore
         expect(actions.grow).toEqual(template.actions.grow);
     });
@@ -187,7 +187,7 @@ describe('src/ModuleGenerator.ts', () => {
         };
 
         const generator = new ModuleMaker<S, R>();
-        const modules = generator.generate(template).modules;
+        const modules = generator.make(template).modules;
         // @ts-ignore
         expect(modules.user).toEqual(template.modules.user);
     });
