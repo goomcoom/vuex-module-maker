@@ -13,19 +13,7 @@ from the [vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing).
 import ModuleMaker from 'vuex-module-maker';
 
 const maker = ModuleMaker(false);
-const module = maker.make({})
-/**
-    module === {
-        namespace: false,
-        state() {
-            return {}
-        },
-        getters: {},
-        mutations: {},
-        actions: {},
-        modules: {}
-    }
-*/
+const module = maker.make({}); // module.namespaced === false
 ```
 
 ### State
