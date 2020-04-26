@@ -8,14 +8,14 @@ Re-usable module.
 
 ### Namespaced
 
-###State
+### State
 
 Inline with the vuex instructions on creating reusable modules, the state is a callback that
 returns the module's state object, similar to how we define the state in the vue components.
 You can read more about it in the
 [vuex guide](https://vuex.vuejs.org/guide/modules.html#module-reuse).
 
-####Name
+#### Name
 
 When the state property is created from an [instruction](#Instructions), the name is extracted
 from the instruction's key and converted to snake case. The name can be controlled by passing a
@@ -45,7 +45,7 @@ const resulting_module = {
 If the state property is created from the template's state property, the name will be identical to
 the key of the defined property.
 
-####Initial Value
+#### Initial Value
 
 The initial value is set to `null` by default but it can also be controlled by passing an
 `initial_value` option whose value will be used as the initial value.
@@ -85,40 +85,40 @@ the getter/mutation will remain as is unless they are overwritten by a later ins
 the same getter/mutation name.
 
 
-###Getters
+### Getters
 
-####Name
+#### Name
 
-####Default Value
+#### Default Value
+
+### Mutations
+
+#### Name
+
+#### Accepted Values
+
+### Actions & Modules
+
+## Available Types
+
+## Usage
+
+### Namespaced
+
+### Template
+
+### Instructions
+
+### State
+
+### Getters
 
 ###Mutations
 
-####Name
+### Actions
 
-####Accepted Values
+### Modules
 
-###Actions & Modules
+## Typescript
 
-##Available Types
-
-##Usage
-
-###Namespaced
-
-###Template
-
-###Instructions
-
-###State
-
-###Getters
-
-###Mutations
-
-###Actions
-
-###Modules
-
-##Typescript
-
-###Useful Type Declarations
+### Useful Type Declarations
