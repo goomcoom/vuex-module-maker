@@ -1,5 +1,6 @@
 import InstructionProcessor from "~/InstructionProcessor";
 import Getter from "~/Getter";
+import * as D from "../types";
 
 interface S { [x: string]: any }
 interface R { [x: string]: any }
@@ -11,9 +12,27 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(Array.isArray(formatter.instructions)).toBe(true)
     });
 
+    test('The instructions can be just the type string', () => {
+        const raw_instructions: D.Instructions<S, R> = {
+            comments: 'array'
+        };
+
+        const formatter = new InstructionProcessor<S, R>(raw_instructions);
+        const instruction = formatter.process()[0];
+
+        expect(instruction.state_name).toEqual('comments');
+        expect(instruction.getter_name).toEqual('getComments');
+        expect(instruction.mutation_name).toEqual('setComments');
+    });
+
     test('The formatter sets the raw instruction on instantiation', () => {
-        const formatter = new InstructionProcessor({name: {type: 'string'}});
-        expect(formatter.raw.name.type).toEqual('string')
+        const raw_instruction: D.Instructions<S, R> = {
+            name: {
+                type: 'string'
+            }
+        };
+        const formatter = new InstructionProcessor<S, R>(raw_instruction);
+        expect(formatter.raw).toEqual(raw_instruction)
     });
 
     test('The process method returns an array of processed instructions', () => {
