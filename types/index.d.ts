@@ -119,3 +119,27 @@ export interface RawModule {
     actions: Object,
     modules: Object
 }
+
+export interface Config<S> {
+    namespaced?: boolean,
+    getters?: {
+        default?: (state: S) => any,
+        string?: (state: S) => any,
+        number?: (state: S) => any,
+        boolean?: (state: S) => any,
+        array?: (state: S) => any,
+        object?: (state: S) => any,
+        form?: (state: S) => any,
+        any?: (state: S) => any
+    },
+    mutations?: {
+        default?: (state: S, value?: any) => void,
+        string?: (state: S, value?: string) => void,
+        number?: (state: S, value?: number) => void,
+        boolean?: (state: S, value?: boolean) => void,
+        array?: (state: S, value?: any[]) => void,
+        object?: (state: S, value?: object) => void,
+        form?: (state: S, value?: Form) => void,
+        any?: (state: S, value?: any) => void
+    }
+}
