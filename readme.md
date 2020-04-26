@@ -53,6 +53,10 @@ the key of the defined property.
 
 The initial value is set to `null` by default but it can also be controlled by passing an
 `initial_value` option whose value will be used as the initial value.
+
+If the state property is created from the template's state property, the property's value will be
+set as the initial value.
+
 ```javascript
 const instructions = {
     id: 'number',
@@ -73,8 +77,6 @@ const resulting_module = {
     // ...
 }
 ```
-If the state property is created from the template's state property, the property's value will be
-set as the initial value.
 
 ###### State Precedence & Gotchas
 
