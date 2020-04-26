@@ -15,7 +15,7 @@ returns the module's state object, similar to how we define the state in the vue
 You can read more about it in the
 [vuex guide](https://vuex.vuejs.org/guide/modules.html#module-reuse).
 
-#### Name
+###### Name
 
 When the state property is created from an [instruction](#Instructions), the name is extracted
 from the instruction's key and converted to snake case. The name can be controlled by passing a
@@ -45,7 +45,7 @@ const resulting_module = {
 If the state property is created from the template's state property, the name will be identical to
 the key of the defined property.
 
-#### Initial Value
+###### Initial Value
 
 The initial value is set to `null` by default but it can also be controlled by passing an
 `initial_value` option whose value will be used as the initial value.
@@ -72,7 +72,7 @@ const resulting_module = {
 If the state property is created from the template's state property, the property's value will be
 set as the initial value.
 
-#### State Precedence & Gotchas
+###### State Precedence & Gotchas
 
 - State properties are assigned in order of assignment in the instructions object, if two
 instructions have the same state name the last called instruction will be assigned to the module
@@ -87,15 +87,15 @@ the same getter/mutation name.
 
 ### Getters
 
-#### Name
+###### Name
 
-#### Default Value
+###### Default Value
 
 ### Mutations
 
-#### Name
+###### Name
 
-#### Accepted Values
+###### Accepted Values
 
 ### Actions & Modules
 
