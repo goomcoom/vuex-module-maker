@@ -23,8 +23,6 @@ returns the module's state object, similar to how we define the state in the vue
 You can read more about it in the
 [vuex guide](https://vuex.vuejs.org/guide/modules.html#module-reuse).
 
-###### Name
-
 When the state property is created from an [instruction](#instructions), the name is extracted
 from the instruction's key and converted to snake case. The name can be controlled by passing a
 `state_name` option with the desired name, the passed value is not altered in any way.
@@ -52,8 +50,6 @@ const resulting_module = {
 ```
 If the state property is created from the template's state property, the name will be identical to
 the key of the defined property.
-
-###### Initial Value
 
 The initial value is set to `null` by default but it can also be controlled by passing an
 `initial_value` option whose value will be used as the initial value.
