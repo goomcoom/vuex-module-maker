@@ -93,9 +93,46 @@ the same getter/mutation name.
 
 ### Getters
 
-###### Name
+The getter names are created from the instructions's key or the `state name` option if supplied.
+The names are converted to camel case and prefixed with 'get'. The getter name can be overwritten
+by passing a `getter_name` option, the passed option is not manipulated at all.
+```javascript
+const instructions = {
+    id: 'number',
+    name: {
+        type: 'string',
+        state_name: 'user_name'
+    },
+    comments: {
+        type: 'array',
+        state_name: 'user_comments',
+        getter_name: 'comments'
+    }
+};
 
-###### Default Value
+const generated_module = {
+    //...
+    getters: {
+        // instruction key used
+        // id prefixed with 'get' and converted to camel case
+        getId: state => state.id,
+        
+        // instruction key ignored
+        // the provided state_name used to generate the getter name
+        // state_name prefixed with get and converted to camel case
+        getUserName: (state) => {
+            return state.user_name === null ? '' : state.user_name;
+        },
+
+        // instruction key and state_name ignored
+        // provided getter_name option used as is
+        comments: (state) => {
+            return state.user_comments === null ? [] : state.user_comments;
+        }
+    },
+    //...
+}
+```
 
 ### Mutations
 
