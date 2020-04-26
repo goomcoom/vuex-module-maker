@@ -34,7 +34,7 @@ const instructions = {
         type: 'string',
         state_name: 'userName'
     }
-}
+};
 
 const resulting_module = {
     // ...
@@ -46,7 +46,7 @@ const resulting_module = {
         }
     }
     // ...
-}
+};
 ```
 If the state property is created from the template's state property, the name will be identical to
 the key of the defined property.
@@ -64,7 +64,7 @@ const instructions = {
         type: 'string',
         initial_value: 'John Doe'
     }
-}
+};
 
 const resulting_module = {
     // ...
@@ -75,7 +75,7 @@ const resulting_module = {
         }
     }
     // ...
-}
+};
 ```
 
 ###### State Precedence & Gotchas
@@ -131,7 +131,7 @@ const generated_module = {
         }
     },
     //...
-}
+};
 ```
 
 The generated getters follow the same pattern – if the state property is equal to null return the default value
@@ -139,7 +139,7 @@ otherwise return the state property. No other checks are done because the we ass
 done through their respective mutations – the value is either valid or null.
 
 The default value that is returned is dependent on the type set in the instruction, and can also be manually set using
- the `default_value` option where that value will be returned without any alterations.
+ the `default_value` option where that value will be returned without any alterations if the state value is `null`.
  
  The object below shows the types and their corresponding default values.
  ```javascript
