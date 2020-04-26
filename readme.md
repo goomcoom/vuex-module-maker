@@ -1,4 +1,5 @@
-#Vuex Module Maker
+# Vuex Module Maker
+
 The introduction goes here.
 ##Resulting Module
 Re-usable module.
