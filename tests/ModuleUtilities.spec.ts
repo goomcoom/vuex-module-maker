@@ -61,7 +61,7 @@ describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
 
     test('Resetting the utilities keeps the value of namespaced property', () => {
         const test_obj = {name: 'First Name'};
-        const test_utilities = new ModuleUtilities(false);
+        const test_utilities = new ModuleUtilities({namespaced: false});
 
         test_utilities.state = test_obj;
         expect(test_utilities.module.namespaced).toEqual(false);

@@ -1,12 +1,12 @@
 import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
-import {Instructions, Template} from "../types";
+import {Instructions, Template, Config} from "../types";
 
 class ModuleMaker<S, R> extends ModuleUtilities<S, R> {
 
-    constructor(namespaced: boolean = true) {
-        super(namespaced);
+    constructor(config: Config<S> = {}) {
+        super(config);
     }
 
     make(template: Template<S, R>): Module<S, R>

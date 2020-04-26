@@ -1,7 +1,9 @@
-import { RawModule } from "../types";
+import { RawModule, Config } from "../types";
 import { Getter, Mutation, Action, Module} from "vuex";
 
 class ModuleUtilities<S, R> {
+    protected _config: Config<S>;
+
     protected _module: RawModule = {
         namespaced: true,
         state: {},
@@ -11,8 +13,9 @@ class ModuleUtilities<S, R> {
         modules: {}
     };
 
-    constructor(namespaced: boolean = true) {
-        this.namespaced = namespaced
+    constructor(config: Config<S> = {}) {
+        this.namespaced = config.namespaced === undefined ? true : config.namespaced;
+        this._config = config;
     }
 
     get module() {
@@ -29,6 +32,8 @@ class ModuleUtilities<S, R> {
 
     get namespaced(): boolean { return this._module.namespaced }
     set namespaced(value: boolean) { this._module.namespaced = value }
+
+    get config(): Config<S> { return this._config}
 
     get state() { return this._module.state }
     set state(value ) { this._module.state = value }

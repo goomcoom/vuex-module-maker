@@ -15,7 +15,10 @@ describe('src/ModuleGenerator.ts', () => {
         let generator = new ModuleMaker<S, R>();
         expect(generator.namespaced).toBe(true);
 
-        generator = new ModuleMaker(false);
+        const config = {
+            namespaced: false
+        };
+        generator = new ModuleMaker(config);
         expect(generator.namespaced).toBe(false);
     });
 
