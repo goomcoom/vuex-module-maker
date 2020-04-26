@@ -1,6 +1,6 @@
 # Vuex Module Maker
 
-The introduction goes here.
+# Installation
 
 # Usage
 
@@ -78,24 +78,12 @@ const resulting_module = {
 };
 ```
 
-###### State Precedence & Gotchas
-
-- State properties are assigned in order of assignment in the instructions object, if two
-instructions have the same state name the last called instruction will be assigned to the module
-state.
-- The state properties defined in the template's state property take precedence over
-instructions.
-
-Note that this does not extend to other parts of the module – if a state property is overwritten
-the getter/mutation will remain as is unless they are overwritten by a later instruction with
-the same getter/mutation name.
-
-
 ### Getters
 
-The getter names are created from the instructions's key or the `state name` option if supplied.
-The names are converted to camel case and prefixed with 'get'. The getter name can be overwritten
-by passing a `getter_name` option, the passed option is not manipulated at all.
+The getter names are created from the instructions's key or the `state name` option if supplied. The names are
+converted to camel case and prefixed with 'get'. The getter name can be overwritten by passing a `getter_name` option,
+the passed option is not manipulated at all.
+
 ```javascript
 const instructions = {
     id: 'number',
@@ -139,7 +127,7 @@ otherwise return the state property. No other checks are done because the we ass
 done through their respective mutations – the value is either valid or null.
 
 The default value that is returned is dependent on the type set in the instruction, and can also be manually set using
- the `default_value` option where that value will be returned without any alterations if the state value is `null`.
+the `default_value` option where that value will be returned without any alterations if the state value is `null`.
  
  The object below shows the types and their corresponding default values.
  ```javascript
@@ -154,31 +142,25 @@ const default_value_map = {
 };
 ```
 
+Any getters passed through the template's getters object are added as is, no alterations are made.
+
 ### Mutations
 
-###### Name
+### Precedence & Gotchas
 
-###### Accepted Values
+- State properties are assigned in order of assignment in the instructions object, if two
+instructions have the same state name the last called instruction will be assigned to the module
+state.
+- The state properties defined in the template's state property take precedence over
+instructions.
+
+Note that this does not extend to other parts of the module – if a state property is overwritten
+the getter/mutation will remain as is unless they are overwritten by a later instruction with
+the same getter/mutation name.
 
 ### Actions & Modules
 
-## Available Types
-
-### Namespaced
-
-### Template
-
-### Instructions
-
-### State
-
-### Getters
-
-###Mutations
-
-### Actions
-
-### Modules
+### Types
 
 ## Typescript
 
