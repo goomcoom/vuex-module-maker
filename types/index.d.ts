@@ -121,18 +121,14 @@ export interface RawModule {
 }
 
 export interface Config<S, R> {
-    namespaced?: boolean,
+    namespaced: boolean,
     types: {
         default: {
             default_value: null,
             getter: ConfigGetter<S, R>,
-            mutation: ConfigMutation<S, R>
+            mutation: ConfigMutation<S>
         },
-        [x: string]: {
-            default_value: any,
-            getter?: ConfigGetter<S, R>,
-            mutation?: ConfigMutation<S, R>
-        }
+        [x: string]: ConfigTypeOptions<S, R>
     }
 }
 

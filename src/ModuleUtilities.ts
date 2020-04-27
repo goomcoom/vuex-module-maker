@@ -1,10 +1,11 @@
-import { RawModule, Config } from "../types";
+import Config from "~/Config";
+import * as D from "../types";
 import { Getter, Mutation, Action, Module} from "vuex";
 
 class ModuleUtilities<S, R> {
-    protected _config: Config<S>;
+    readonly _config: D.Config<S, R>;
 
-    protected _module: RawModule = {
+    protected _module: D.RawModule = {
         namespaced: true,
         state: {},
         getters: {},
@@ -13,9 +14,10 @@ class ModuleUtilities<S, R> {
         modules: {}
     };
 
-    constructor(config: Config<S> = {}) {
-        this.namespaced = config.namespaced === undefined ? true : config.namespaced;
-        this._config = config;
+    constructor(custom_config: D.CustomConfig<S, R> = {}) {
+        const config = new Config(custom_config);
+        this._config = config.configure();
+        this.namespaced = this.config.namespaced;
     }
 
     get module() {
@@ -33,7 +35,7 @@ class ModuleUtilities<S, R> {
     get namespaced(): boolean { return this._module.namespaced }
     set namespaced(value: boolean) { this._module.namespaced = value }
 
-    get config(): Config<S> { return this._config}
+    get config(): D.Config<S, R> { return this._config}
 
     get state() { return this._module.state }
     set state(value ) { this._module.state = value }
