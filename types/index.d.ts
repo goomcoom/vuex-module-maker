@@ -27,18 +27,6 @@ export type ArrayGetter = <S>(state: S) => any[];
 export type ObjectGetter = <S>(state: S) => object|null;
 export type AnyGetter = <S>(state: S) => any;
 
-// export type Getter<T> =
-//     T extends 'string' ? StringGetter :
-//         T extends 'number' ? NumberGetter :
-//             T extends 'boolean' ? BooleanGetter :
-//                 T extends 'array' ? ArrayGetter :
-//                     T extends 'form' ? FormGetter :
-//                         T extends 'object' ? ObjectGetter : AnyGetter;
-//
-// export interface Getters {
-//     [x: string]: Getter<Types>
-// }
-
 /* Mutations */
 export type StringMutation = <S>(state: S, value?: string ) => void;
 export type NumberMutation = <S>(state: S, value?: number ) => void;
@@ -46,18 +34,6 @@ export type BooleanMutation = <S>(state: S, value?: boolean ) => void;
 export type ArrayMutation = <S>(state: S, value?: any[] ) => void;
 export type ObjectMutation = <S>(state: S, value?: object ) => void;
 export type AnyMutation = <S>(state: S, value?: any ) => void;
-
-// export type Mutation<T> =
-//     T extends 'string' ? StringMutation :
-//         T extends 'number' ? NumberMutation :
-//             T extends 'boolean' ? BooleanMutation :
-//                 T extends 'array' ? ArrayMutation :
-//                     T extends 'form' ? FormMutation :
-//                         T extends 'object' ? ObjectMutation : AnyMutation;
-//
-// export interface Mutations {
-//     [x: string]: Mutation<Types>
-// }
 
 /* Instructions */
 export interface Instruction<T extends Types<Ts>, S, R, Ts> {
@@ -86,7 +62,7 @@ export interface FormattedInstruction<T extends Types<Ts>, S, R, Ts> {
     // State options
     set_state: boolean,
     state_name: string,
-    state_value: Type<T>|null,
+    state_value: any,
     // Getter options
     set_getter: boolean,
     getter_name: string,
