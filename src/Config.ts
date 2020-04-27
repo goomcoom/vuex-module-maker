@@ -9,7 +9,7 @@ class Config<S, R> {
     };
     get default_getter() { return this._default_getter; };
 
-    readonly _default_mutation: D.ConfigMutation<S, R> = (state_name) => {
+    readonly _default_mutation: D.ConfigMutation<S> = (state_name) => {
         return (state: S, value?: any) => {
             // @ts-ignore
             state[state_name] = (value == null) ? null : value;
@@ -43,12 +43,35 @@ class Config<S, R> {
 
     public configure():D.Config<S, R> {
         this.configureNamespaced();
+        this.configureTypes();
         return this.config;
     }
 
     private configureNamespaced(): void {
         if (this.custom_config.namespaced !== undefined) {
             this.config.namespaced = this.custom_config.namespaced
+        }
+    }
+
+    private configureTypes(): void {
+        if (this.custom_config.types) {
+            let type: string;
+            let options: D.ConfigTypeOptions<S, R>;
+            for ([type, options] of Object.entries(this.custom_config.types)) {
+                this.addType(type);
+
+                if (options.default_value !== undefined) this.config.types[type].default_value = options.default_value;
+                if (options.getter !== undefined) this.config.types[type].getter = options.getter;
+                if (options.mutation !== undefined) this.config.types[type].mutation = options.mutation;
+            }
+        }
+    }
+
+    private addType(type: string): void {
+        if (this.config.types[type] === undefined) {
+            this.config.types[type] = {
+                default_value: null
+            };
         }
     }
 }

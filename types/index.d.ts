@@ -122,7 +122,7 @@ export interface RawModule {
 
 export interface Config<S, R> {
     namespaced?: boolean,
-    types?: {
+    types: {
         default: {
             default_value: null,
             getter: ConfigGetter<S, R>,
@@ -139,13 +139,15 @@ export interface Config<S, R> {
 export interface CustomConfig<S, R> {
     namespaced?: boolean,
     types?: {
-        [x: string]: {
-            default_value?: any,
-            getter?: VGetter<S, R>,
-            mutation?: VMutation<S>
-        }
+        [x: string]: ConfigTypeOptions<S, R>
     }
 }
 
+export interface ConfigTypeOptions<S, R> {
+    default_value?: any,
+    getter?: ConfigGetter<S, R>,
+    mutation?: ConfigMutation<S>
+}
+
 type ConfigGetter<S, R> = (state_name: string, default_value: any) => VGetter<S, R>
-type ConfigMutation<S, R> = (state_name: string) => VMutation<S>
+type ConfigMutation<S> = (state_name: string) => VMutation<S>
