@@ -19,12 +19,17 @@ describe('Config.ts', () => {
     });
 
     test('The Config class has a config property', () => {
-        const config = new Config<any, any>();
+        const config = new Config();
         expect(typeof config.config).toEqual('object')
     });
 
     test('If no custom config is passed the config is equal to the default', () => {
-        const config = new Config<any, any>();
+        const config = new Config();
         expect(config.config).toEqual(config.default)
+    });
+
+    test('The config class has a configure method that returns the config', () => {
+        const config = new Config();
+        expect(config.configure()).toEqual(config.config)
     });
 });

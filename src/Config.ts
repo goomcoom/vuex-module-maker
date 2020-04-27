@@ -45,6 +45,9 @@ class Config<S, R> {
         this._custom_config = custom;
     }
 
+    public configure():D.Config<S, R> {
+        return this.config;
+    }
 }
 
 export default Config
