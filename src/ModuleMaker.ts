@@ -23,7 +23,7 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
 
     private executeInstructions(raw: D.Instructions<S, R, Ts>): void
     {
-        const processor = new InstructionProcessor(raw, this.config);
+        const processor = new InstructionProcessor<S, R, Ts>(raw, this.config);
         const instructions = processor.process();
 
         instructions.forEach((i: D.FormattedInstruction<D.Types<Ts>, S, R, Ts>) => {
