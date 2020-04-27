@@ -5,17 +5,22 @@ import {Getter as VGetter, Mutation as VMutation} from "vuex";
 import * as D from "../types";
 
 class InstructionProcessor<S, R> {
-    private _instructions: D.FormattedInstructions<S, R> = [];
     readonly _raw: D.Instructions<S, R>;
-    private _state_name: string = '';
-
-    get instructions() { return this._instructions }
     get raw() { return this._raw }
+
+    readonly _config: D.Config<S, R>;
+    get config() { return this._config }
+
+    private _instructions: D.FormattedInstructions<S, R> = [];
+    get instructions() { return this._instructions }
+
+    private _state_name: string = '';
     get state_name() { return this._state_name }
     set state_name(value) { this._state_name = value }
 
-    constructor (instructions: D.Instructions<S, R>) {
+    constructor (instructions: D.Instructions<S, R>, config: D.Config<S, R>) {
         this._raw = instructions;
+        this._config = config;
     }
 
     process(): D.FormattedInstructions<S, R> {
