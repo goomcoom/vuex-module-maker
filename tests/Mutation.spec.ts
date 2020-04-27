@@ -1,8 +1,5 @@
-// @ts-ignore
-import Form from "vform";
 import Mutation from "~/Mutation";
-import InstructionProcessor from "~/InstructionProcessor";
-import Config from "../src/Config";
+import Config from "~/Config";
 
 describe('store/ModuleGenerator/Mutation.ts', () => {
     const config_class = new Config();
@@ -10,12 +7,11 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
     test('If no value is passed the state property is set as null', () => {
         let state = {name: null};
-        // @ts-ignore
         const raw = new Mutation(config);
-        // @ts-ignore
+
         raw.format('string', 'name')(state);
         expect(state.name).toEqual(null);
-        // @ts-ignore
+
         raw.format('string', 'name')(state, null);
         expect(state.name).toEqual(null)
     });
@@ -32,5 +28,23 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
     test('The mutation class sets the config property on instantiation', () => {
         const mutation = new Mutation(config);
         expect(JSON.stringify(mutation.config)).toEqual(JSON.stringify(config));
+    });
+
+    test('The mutation class returns the correct config mutation', () => {
+        config.types.array.mutation = (state_name) => {
+            return (state: any, value?: string[]): void => {
+                state[state_name] = (value == null) ? ['I', 'like', 'this'] : value;
+            };
+        };
+
+        const state = {thoughts: null};
+        const formatter = new Mutation(config);
+        const mutation = formatter.format('array', 'thoughts');
+
+        mutation(state);
+        expect(state.thoughts).toEqual(['I', 'like', 'this']);
+
+        mutation(state, ['I', 'hate', 'this']);
+        expect(state.thoughts).toEqual(['I', 'hate', 'this']);
     });
 });
