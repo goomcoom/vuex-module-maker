@@ -69,9 +69,7 @@ class Config<S, R> {
 
     private addType(type: string): void {
         if (this.config.types[type] === undefined) {
-            this.config.types[type] = {
-                default_value: null
-            };
+            this.config.types[type] = {};
         }
     }
 }

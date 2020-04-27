@@ -90,4 +90,18 @@ describe('Config.ts', () => {
         // @ts-ignore
         expect(config.configure().types.example.mutation).toEqual(custom.types.example.mutation);
     });
+
+    test('Types with no options are left empty.', () => {
+        const custom: D.CustomConfig<any, any> = {
+            types: {
+                example: {}
+            }
+        };
+
+        let config = new Config();
+        expect(config.configure().types.example).toBeUndefined();
+
+        config = new Config(custom);
+        expect(config.configure().types.example).toEqual({});
+    });
 });
