@@ -35,16 +35,17 @@ describe('store/ModuleGenerator/Getter.ts', () => {
     });
 
     test('The specified config type getter is returned if defined', () => {
-        config.types.string.getter = (state_name) => {
+        delete config.types.string.default_value;
+        config.types.string.getter = (state_name, default_value) => {
             return (state: any): string => {
-                return state[state_name] == null ? 'Still hungry!' : 'No longer hungry';
+                return state[state_name] == null ? default_value : 'No longer hungry';
             }
         };
 
         const getter = new Getter(config);
         const formatted = getter.format('string', 'banana');
 
-        expect(formatted({banana: null}, {}, {}, {})).toEqual('Still hungry!');
+        expect(formatted({banana: null}, {}, {}, {})).toEqual(null);
         expect(formatted({banana: 'fed'}, {}, {}, {})).toEqual('No longer hungry');
     });
 });
