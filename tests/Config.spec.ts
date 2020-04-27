@@ -7,11 +7,6 @@ describe('Config.ts', () => {
         expect(() => new Config()).not.toThrow();
     });
 
-    test('The config class has a default property', () => {
-        const config = new Config();
-        expect(typeof config.default).toEqual('object');
-    });
-
     test('The custom config can be accessed after instantiation', () => {
         const custom: D.CustomConfig<any, any> = { namespaced: true };
         const config = new Config(custom);
@@ -23,13 +18,17 @@ describe('Config.ts', () => {
         expect(typeof config.config).toEqual('object')
     });
 
-    test('If no custom config is passed the config is equal to the default', () => {
-        const config = new Config();
-        expect(config.config).toEqual(config.default)
-    });
-
     test('The config class has a configure method that returns the config', () => {
         const config = new Config();
         expect(config.configure()).toEqual(config.config)
+    });
+
+    test('The custom config overrides the namespaced value', () => {
+        let config = new Config();
+        expect(config.configure().namespaced).toEqual(true);
+
+        const custom: D.CustomConfig<any, any> = { namespaced: false };
+        config = new Config(custom);
+        expect(config.configure().namespaced).toEqual(false);
     });
 });

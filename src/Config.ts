@@ -17,7 +17,10 @@ class Config<S, R> {
     };
     get default_mutation() { return this._default_mutation; };
 
-    readonly _default: D.DefaultConfig<S, R> = {
+    readonly _custom_config: D.CustomConfig<S, R>;
+    get custom_config() { return this._custom_config; };
+
+    private _config: D.Config<S, R> = {
         namespaced: true,
         types: {
             default: {
@@ -32,21 +35,21 @@ class Config<S, R> {
             object: { default_value: null },
         }
     };
-    get default() { return this._default };
-
-    readonly _custom_config: D.CustomConfig<S, R>;
-    get custom_config() { return this._custom_config; };
-
-    private _config: D.Config<S, R> = this._default as any as D.Config<S, R>;
     get config() { return this._config; };
-    set config(value) { this._config = value; };
 
     constructor(custom: D.CustomConfig<S, R> = {}) {
         this._custom_config = custom;
     }
 
     public configure():D.Config<S, R> {
+        this.configureNamespaced();
         return this.config;
+    }
+
+    private configureNamespaced(): void {
+        if (this.custom_config.namespaced !== undefined) {
+            this.config.namespaced = this.custom_config.namespaced
+        }
     }
 }
 
