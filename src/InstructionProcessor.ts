@@ -80,8 +80,8 @@ class InstructionProcessor<S, R> {
 
     formatMutation <T extends D.Types> (type: T): VMutation<S>
     {
-        const raw = new Mutation<S>(this.state_name);
-        return raw.format(type)
+        const raw = new Mutation<S, R>(this.config);
+        return raw.format(type, this.state_name)
     }
 }
 

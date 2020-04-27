@@ -1,21 +1,21 @@
-// @ts-ignore
-import Form from 'vform'
 import * as D from "../types";
 import { Mutation as VMutation } from "vuex";
 
-class Mutation<S> {
-    readonly state_name: string;
+class Mutation<S, R> {
+    readonly _config: D.Config<S, R>;
+    get config() { return this._config; };
 
-    constructor(state_name: string) {
-        this.state_name = state_name
+    constructor(config: D.Config<S, R>) {
+        this._config = config
     }
 
-    format <T extends D.Types>(type: T): VMutation<S>
+    format <T extends D.Types>(type: T, state_name: string): VMutation<S>
     {
-        return <S>(state: S, value?: D.Type<T>): void => {
-            // @ts-ignore
-            state[this.state_name] = (value == null) ? null : value;
-        };
+        if (this.config.types[type] === undefined || this.config.types[type].mutation === undefined) {
+            return this.config.types.default.mutation(state_name);
+        }
+        // @ts-ignore
+        return this.config.types[type].mutation(state_name);
     }
 }
 

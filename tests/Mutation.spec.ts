@@ -8,41 +8,29 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
     const config_class = new Config();
     const config = config_class.configure();
 
-    test('The set_mutation property can be controlled', () => {
-        // Default
-        let processor = new InstructionProcessor({comments:{type: 'array'}}, config);
-        expect(processor.process()[0].set_mutation).toEqual(true);
-        // True
-        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: true}}, config);
-        expect(processor.process()[0].set_mutation).toEqual(true);
-        // False
-        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: false}}, config);
-        expect(processor.process()[0].set_mutation).toEqual(false)
-    });
-
-    test('The mutation_name can be controlled', () => {
-        const processor = new InstructionProcessor({id:{type: 'number', mutation_name: 'setUserId'}}, config);
-        expect(processor.process()[0].mutation_name).toEqual('setUserId')
-    });
-
     test('If no value is passed the state property is set as null', () => {
         let state = {name: null};
         // @ts-ignore
-        const raw = new Mutation('name');
+        const raw = new Mutation(config);
         // @ts-ignore
-        raw.format('string')(state);
+        raw.format('string', 'name')(state);
         expect(state.name).toEqual(null);
         // @ts-ignore
-        raw.format('string')(state, null);
+        raw.format('string', 'name')(state, null);
         expect(state.name).toEqual(null)
     });
 
     test('The mutation sets the state prop equal to the value if passed', () => {
         let state = {name: null};
-        const raw = new Mutation('name');
-        const mutation = raw.format('string');
+        const raw = new Mutation(config);
+        const mutation = raw.format('string', 'name');
 
         mutation(state, 'example');
         expect(state.name).toEqual('example')
+    });
+
+    test('The mutation class sets the config property on instantiation', () => {
+        const mutation = new Mutation(config);
+        expect(JSON.stringify(mutation.config)).toEqual(JSON.stringify(config));
     });
 });

@@ -1,5 +1,3 @@
-// @ts-ignore
-import Form from "vform";
 import Getter from "~/Getter";
 import Config from "~/Config";
 

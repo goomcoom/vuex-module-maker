@@ -131,4 +131,21 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         processor = new InstructionProcessor({name: {type: 'string', default_value: 'default text'}}, config);
         expect(processor.process()[0].getter(state, {}, {}, {})).toEqual('default text')
     });
+
+    test('The set_mutation property can be controlled', () => {
+        // Default
+        let processor = new InstructionProcessor({comments:{type: 'array'}}, config);
+        expect(processor.process()[0].set_mutation).toEqual(true);
+        // True
+        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: true}}, config);
+        expect(processor.process()[0].set_mutation).toEqual(true);
+        // False
+        processor = new InstructionProcessor({comments:{type: 'array', set_mutation: false}}, config);
+        expect(processor.process()[0].set_mutation).toEqual(false)
+    });
+
+    test('The mutation_name can be controlled', () => {
+        const processor = new InstructionProcessor({id:{type: 'number', mutation_name: 'setUserId'}}, config);
+        expect(processor.process()[0].mutation_name).toEqual('setUserId')
+    });
 });
