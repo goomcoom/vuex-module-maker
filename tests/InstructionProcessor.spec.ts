@@ -110,8 +110,8 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     });
 
     test('The getter can be controlled', () => {
-        let raw = new Getter('id');
-        const getter = raw.format('number').toString();
+        let raw = new Getter(config);
+        const getter = raw.format('number', 'id').toString();
 
         let processor = new InstructionProcessor<S, R>({id: {type: 'number'}}, config);
         expect(processor.process()[0].getter.toString()).toEqual(getter);
