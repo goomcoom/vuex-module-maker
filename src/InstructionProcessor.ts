@@ -68,8 +68,8 @@ class InstructionProcessor<S, R> {
     formatGetter <T extends D.Types> (options: D.Instruction<T, S, R>): VGetter<S, R>
     {
         if (options.getter) return options.getter;
-        const getters = new Getter(this.state_name, options.default_value);
-        return getters.format(options.type)
+        const getters = new Getter(this.config);
+        return getters.format(options.type, this.state_name, options.default_value)
     }
 
     formatMutationName <T extends D.Types> (options: D.Instruction<T, S, R>): string

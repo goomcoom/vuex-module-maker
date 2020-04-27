@@ -1,8 +1,11 @@
 // @ts-ignore
 import Form from "vform";
 import Getter from "~/Getter";
+import Config from "~/Config";
 
 describe('store/ModuleGenerator/Getter.ts', () => {
+    const config_class = new Config();
+    const config = config_class.configure();
 
     test.each`
         type         | default_value  | manual                              | example
@@ -11,19 +14,23 @@ describe('store/ModuleGenerator/Getter.ts', () => {
         ${'boolean'} | ${false}       | ${true}                             | ${false}
         ${'object'}  | ${null}        | ${{name: 'example name'}}           | ${{age: 2345}}
         ${'array'}   | ${[]}          | ${['an', 'example', 'array']}       | ${[23, 'test', false]}
-        ${'form'}   | ${new Form}     | ${new Form({name: 'test'})}    | ${new Form({id: 22})}
         ${'any'}     | ${null}        | ${true}                             | ${false}
     `(`The $type getter returns the correct value`, ({type, default_value, manual, example}) => {
-        let raw = new Getter('name');
-        let getter = raw.format(type);
+        let raw = new Getter(config);
+        let getter = raw.format(type, 'name');
         expect(getter({name: null}, {}, {}, {})).toEqual(default_value);
 
-        raw = new Getter('name');
-        getter = raw.format(type);
+        raw = new Getter(config);
+        getter = raw.format(type, 'name');
         expect(getter({name: example}, {}, {}, {})).toEqual(example);
 
-        raw = new Getter('name', manual);
-        getter = raw.format(type);
+        raw = new Getter(config);
+        getter = raw.format(type, 'name', manual);
         expect(getter({name: null}, {}, {}, {})).toEqual(manual);
+    });
+
+    test('The getter class sets the config property on instantiation', () => {
+        const getter = new Getter(config);
+        expect(JSON.stringify(getter.config)).toEqual(JSON.stringify(config));
     });
 });
