@@ -72,6 +72,8 @@ class InstructionProcessor<S, R, Ts> {
     {
         if (options.getter) return options.getter;
         const getters = new Getter(this.config);
+
+        // @ts-ignore
         return getters.format(options.type, this.state_name, options.default_value)
     }
 
@@ -83,7 +85,7 @@ class InstructionProcessor<S, R, Ts> {
 
     formatMutation <T extends D.Types<Ts>> (type: T): VMutation<S>
     {
-        const raw = new Mutation<S, R>(this.config);
+        const raw = new Mutation<S, R, Ts>(this.config);
         return raw.format(type, this.state_name)
     }
 }
