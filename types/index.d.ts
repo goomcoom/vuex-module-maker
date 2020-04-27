@@ -120,26 +120,42 @@ export interface RawModule {
     modules: Object
 }
 
-export interface Config<S> {
+export interface Config<S, R> {
     namespaced?: boolean,
-    getters?: {
-        default?: (state: S) => any,
-        string?: (state: S) => any,
-        number?: (state: S) => any,
-        boolean?: (state: S) => any,
-        array?: (state: S) => any,
-        object?: (state: S) => any,
-        form?: (state: S) => any,
-        any?: (state: S) => any
-    },
-    mutations?: {
-        default?: (state: S, value?: any) => void,
-        string?: (state: S, value?: string) => void,
-        number?: (state: S, value?: number) => void,
-        boolean?: (state: S, value?: boolean) => void,
-        array?: (state: S, value?: any[]) => void,
-        object?: (state: S, value?: object) => void,
-        form?: (state: S, value?: Form) => void,
-        any?: (state: S, value?: any) => void
+    types?: {
+        [x: string]: {
+            default_value?: any,
+            getter?: VGetter<S, R>,
+            mutation?: VMutation<S>
+        }
     }
 }
+
+export interface DefaultConfig<S, R> {
+    namespaced: true,
+    types: {
+        default: {
+            default_value: null,
+            getter: ConfigGetter<S, R>,
+            mutation: ConfigMutation<S, R>
+        },
+        string: {
+            default_value: ''
+        },
+        number: {
+            default_value: null
+        },
+        boolean: {
+            default_value: false
+        },
+        array: {
+            default_value: []
+        },
+        object: {
+            default_value: null
+        },
+    }
+}
+
+type ConfigGetter<S, R> = (state_name: string, default_value: any) => VGetter<S, R>
+type ConfigMutation<S, R> = (state_name: string) => VMutation<S>
