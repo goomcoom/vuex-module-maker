@@ -1,15 +1,15 @@
 import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
-import {Instructions, Template, CustomConfig} from "../types";
+import * as D from "../types";
 
-class ModuleMaker<S, R> extends ModuleUtilities<S, R> {
+class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
 
-    constructor(config: CustomConfig<S, R> = {}) {
+    constructor(config: D.CustomConfig<S, R> = {}) {
         super(config);
     }
 
-    make(template: Template<S, R>): Module<S, R>
+    make(template: D.Template<S, R, Ts>): Module<S, R>
     {
         if (template.instructions) this.executeInstructions(template.instructions);
         if (template.state) this.addStateProperties(template.state);
@@ -21,12 +21,12 @@ class ModuleMaker<S, R> extends ModuleUtilities<S, R> {
         return this.module;
     }
 
-    private executeInstructions(raw: Instructions<S, R>): void
+    private executeInstructions(raw: D.Instructions<S, R, Ts>): void
     {
         const processor = new InstructionProcessor(raw, this.config);
         const instructions = processor.process();
 
-        instructions.forEach(i => {
+        instructions.forEach((i: D.FormattedInstruction<D.Types<Ts>, S, R, Ts>) => {
             if (i.set_state) this.addState(i.state_name, i.state_value);
             if (i.set_getter) this.addGetter(i.getter_name, i.getter);
             if (i.set_mutation) this.addMutation(i.mutation_name, i.mutation);
