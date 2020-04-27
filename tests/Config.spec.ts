@@ -2,6 +2,24 @@ import Config from "~/Config";
 import * as D from "../types";
 
 describe('Config.ts', () => {
+    const example_custom_config: D.CustomConfig<any, any> = {
+        types: {
+            default: {
+                default_value: 'default value',
+                getter: (state_name, default_value) => {
+                    return (state: any): any => {
+                        default_value = state[state_name] == null ? 'is null' : 'not null';
+                        return default_value;
+                    }
+                },
+                mutation: (state_name) => {
+                    return (state: any, value: string): void => {
+                        state[state_name] = value ? 'is NULL' : 'is not NULL';
+                    }
+                }
+            }
+        }
+    };
 
     test('The config class can be instantiated', () => {
         expect(() => new Config()).not.toThrow();
@@ -33,24 +51,7 @@ describe('Config.ts', () => {
     });
 
     test('Existing types can be overwritten', () => {
-        const custom: D.CustomConfig<any, any> = {
-            types: {
-                default: {
-                    default_value: 'default value',
-                    getter: (state_name, default_value) => {
-                        return (state: any): any => {
-                            default_value = state[state_name] == null ? 'is null' : 'not null';
-                            return default_value;
-                        }
-                    },
-                    mutation: (state_name) => {
-                        return (state: any, value: string): void => {
-                            state[state_name] = value ? 'is NULL' : 'is not NULL';
-                        }
-                    }
-                }
-            }
-        };
+        const custom = example_custom_config;
 
         let config = new Config();
         // @ts-ignore
@@ -70,22 +71,11 @@ describe('Config.ts', () => {
     });
 
     test('New types can added', () => {
+        // Rename the example type from default to example
         const custom: D.CustomConfig<any, any> = {
             types: {
-                example: {
-                    default_value: 'default value',
-                    getter: (state_name, default_value) => {
-                        return (state: any): any => {
-                            default_value = state[state_name] == null ? 'is null' : 'not null';
-                            return default_value;
-                        }
-                    },
-                    mutation: (state_name) => {
-                        return (state: any, value: string): void => {
-                            state[state_name] = value ? 'is NULL' : 'is not NULL';
-                        }
-                    }
-                }
+                // @ts-ignore
+                example: example_custom_config.types.default
             }
         };
 
