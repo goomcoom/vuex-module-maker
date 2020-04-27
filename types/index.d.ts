@@ -120,6 +120,17 @@ export interface RawModule {
     modules: Object
 }
 
+export interface Config<S, R> {
+    namespaced?: boolean,
+    types?: {
+        [x: string]: {
+            default_value: any,
+            getter?: VGetter<S, R>,
+            mutation?: VMutation<S>
+        }
+    }
+}
+
 export interface CustomConfig<S, R> {
     namespaced?: boolean,
     types?: {

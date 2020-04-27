@@ -37,6 +37,10 @@ class Config<S, R> {
     readonly _custom_config: D.CustomConfig<S, R>;
     get custom_config() { return this._custom_config; };
 
+    private _config: D.Config<S, R> = this._default as any as D.Config<S, R>;
+    get config() { return this._config; };
+    set config(value) { this._config = value; };
+
     constructor(custom: D.CustomConfig<S, R> = {}) {
         this._custom_config = custom;
     }
