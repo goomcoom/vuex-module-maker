@@ -120,7 +120,7 @@ export interface RawModule {
     modules: Object
 }
 
-export interface Config<S, R> {
+export interface CustomConfig<S, R> {
     namespaced?: boolean,
     types?: {
         [x: string]: {
@@ -139,21 +139,11 @@ export interface DefaultConfig<S, R> {
             getter: ConfigGetter<S, R>,
             mutation: ConfigMutation<S, R>
         },
-        string: {
-            default_value: ''
-        },
-        number: {
-            default_value: null
-        },
-        boolean: {
-            default_value: false
-        },
-        array: {
-            default_value: []
-        },
-        object: {
-            default_value: null
-        },
+        string: { default_value: '' },
+        number: { default_value: null },
+        boolean: { default_value: false },
+        array: { default_value: [] },
+        object: { default_value: null },
     }
 }
 
