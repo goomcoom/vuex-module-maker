@@ -3,6 +3,7 @@
  * String Helpers
  * –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  */
+import retryTimes = jest.retryTimes;
 
 export function lastChar(str: string, num = 1): string
 {
@@ -84,10 +85,11 @@ export function toSnakeCase(string: string, ...separators: string[]): string
     separators.forEach(separator => {
         if (separator === '\\') separator = '\\\\';
         const regEx = new RegExp(separator, 'g');
-        string = string.replace(regEx, '_')
+        string = string.replace(regEx, '_');
     });
 
-    return string.toLowerCase()
+    string = string.replace(/\.?([A-Z])/g, (x,y) => `_${y.toLowerCase()}`);
+    return string.replace(/^_/, "").replace(/(_)+/g, '_');
 }
 
 /**
@@ -103,8 +105,9 @@ export function toKebabCase(string: string, ...separators: string[]): string
     separators.forEach(separator => {
         if (separator === '\\') separator = '\\\\';
         const regEx = new RegExp(separator, 'g');
-        string = string.replace(regEx, '-')
+        string = string.replace(regEx, '-');
     });
 
-    return string.toLowerCase()
+    string = string.replace(/\.?([A-Z])/g, (x,y) => `-${y.toLowerCase()}`);
+    return string.replace(/^-/, "").replace(/(-)+/g, '-');
 }

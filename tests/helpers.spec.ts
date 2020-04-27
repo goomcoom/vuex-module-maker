@@ -171,7 +171,11 @@ describe('helpers@toSnakeCase', () => {
     test('it only uses the specified separators if any are provided', () => {
         expect(toSnakeCase('another test-string', ' ')).toEqual('another_test-string');
         expect(toSnakeCase('and another/test-string', '-', '/')).toEqual('and another_test_string')
-    })
+    });
+
+    test('Converts pascal case to snake case', () => {
+        expect(toSnakeCase('SnakeCase')).toEqual('snake_case');
+    });
 });
 
 describe('helpers@toKebabCase', () => {
@@ -194,5 +198,9 @@ describe('helpers@toKebabCase', () => {
     test('it only uses the specified separators if any are provided', () => {
         expect(toKebabCase('another test_string', ' ')).toEqual('another-test_string');
         expect(toKebabCase('and another/test_string', '_', '/')).toEqual('and another-test-string')
-    })
+    });
+
+    test('Converts pascal case to kebab case', () => {
+        expect(toKebabCase('KebabCase')).toEqual('kebab-case');
+    });
 });
