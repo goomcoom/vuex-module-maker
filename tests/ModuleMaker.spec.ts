@@ -8,11 +8,12 @@ interface S {
     name: string | null
 }
 interface R { [x: string]: any }
+type Ts = unknown;
 
 describe('src/ModuleGenerator.ts', () => {
 
     test('The namespaced property can be controlled', () => {
-        let generator = new ModuleMaker<S, R>();
+        let generator = new ModuleMaker<S, R, Ts>();
         expect(generator.namespaced).toBe(true);
 
         const config = {
@@ -23,30 +24,30 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing an empty raw module returns an empty module', () => {
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         const module  = JSON.stringify(generator.module);
         expect(JSON.stringify(generator.make({}))).toEqual(module);
     });
 
     test('Passing instructions sets the state if set_state != false', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             instructions: {
                 id: {
                     type: 'number'
-                } as Instruction<'number', S, R>,
+                } as Instruction<'number', S, R, Ts>,
                 name: {
                     type: 'string',
                     set_state: true,
                     initial_value: '6543'
-                } as Instruction<'string', S, R>,
+                } as Instruction<'string', S, R, Ts>,
                 comments: {
                     type: 'array',
                     set_state: false
-                } as Instruction<'array', S, R>
-            } as Instructions<S, R>
+                } as Instruction<'array', S, R, Ts>
+            } as Instructions<S, R, Ts>
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         // @ts-ignore
         const state = generator.make(template).state();
 
@@ -56,15 +57,15 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the getters if set_getter != false', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             instructions: {
-                id: { type: 'number' } as Instruction<'number', S, R>,
-                name: { type: 'string', set_getter: true, initial_value: '3456' } as Instruction<'string', S, R>,
-                comments: { type: 'array', set_getter: false } as Instruction<'array', S, R>
-            } as Instructions<S, R>
+                id: { type: 'number' } as Instruction<'number', S, R, Ts>,
+                name: { type: 'string', set_getter: true, initial_value: '3456' } as Instruction<'string', S, R, Ts>,
+                comments: { type: 'array', set_getter: false } as Instruction<'array', S, R, Ts>
+            } as Instructions<S, R, Ts>
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         const getters = generator.make(template).getters;
 
         if (getters) { // Interface dictates that getters may be undefined
@@ -75,15 +76,15 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Passing instructions sets the mutations if set_mutation != false', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             instructions: {
-                id: {type: 'number'} as Instruction<'number', S, R>,
-                name: {type: 'string', set_mutation: true} as Instruction<'string', S, R>,
-                comments: {type: 'array', set_mutation: false} as Instruction<'array', S, R>
-            } as Instructions<S, R>
+                id: {type: 'number'} as Instruction<'number', S, R, Ts>,
+                name: {type: 'string', set_mutation: true} as Instruction<'string', S, R, Ts>,
+                comments: {type: 'array', set_mutation: false} as Instruction<'array', S, R, Ts>
+            } as Instructions<S, R, Ts>
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         const mutations = generator.make(template).mutations;
 
         if (mutations) { // Interface dictates that mutations may be undefined
@@ -94,7 +95,7 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Template state properties are added to the module and take precedence', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             instructions: {
                 executed: {
                     type: 'boolean',
@@ -107,7 +108,7 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         // @ts-ignore
         const state = generator.make(template).state();
         if (template.state) {
@@ -117,7 +118,7 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Template getters are added to the module and take precedence', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             instructions: {
                 executed: {
                     type: 'boolean',
@@ -129,7 +130,7 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         const getters = generator.make(template).getters;
 
         // @ts-ignore
@@ -139,7 +140,7 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Template mutations are added to the module and take precedence', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             instructions: {
                 executed: {
                     type: 'boolean',
@@ -155,7 +156,7 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         const mutations = generator.make(template).mutations;
         // @ts-ignore
         expect(mutations.setExample).toEqual(template.mutations.setExample);
@@ -164,7 +165,7 @@ describe('src/ModuleGenerator.ts', () => {
     });
 
     test('Actions are added to the module', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             actions: {
                 grow: (context): void => {
                     context.commit('setAge', 23);
@@ -173,14 +174,14 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         const actions = generator.make(template).actions;
         // @ts-ignore
         expect(actions.grow).toEqual(template.actions.grow);
     });
 
     test('Sub modules are added to the module', () => {
-        const template: Template<S, R> = {
+        const template: Template<S, R, Ts> = {
             modules: {
                 user: {
                     namespaced: true,
@@ -189,7 +190,7 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<S, R>();
+        const generator = new ModuleMaker<S, R, Ts>();
         const modules = generator.make(template).modules;
         // @ts-ignore
         expect(modules.user).toEqual(template.modules.user);

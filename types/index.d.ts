@@ -65,12 +65,12 @@ export interface Instruction<T extends Types<Ts>, S, R, Ts> {
     // State options
     set_state?: boolean,
     state_name?: string,
-    initial_value?: Type<T>,
+    initial_value?: any,
     // Getter options
     set_getter?: boolean,
     getter_name?: string,
     getter?: VGetter<S, R>,
-    default_value?: Type<T>,
+    default_value?: any,
     // Mutation options
     set_mutation?: boolean,
     mutation_name?: string,

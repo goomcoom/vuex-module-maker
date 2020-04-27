@@ -6,12 +6,13 @@ import Vuex, {ActionTree, GetterTree, MutationTree, Store} from "vuex";
 Vue.use(Vuex);
 interface S { [x: string]: any }
 interface R { [x: string]: any }
+type Ts = unknown;
 
 describe('Store Module Acceptance Tests', () => {
     let maker;
     let module;
     let store: Store<S>;
-    const instructions: Instructions<S, R> = {
+    const instructions: Instructions<S, R, Ts> = {
         id: {
             type: 'number'
         },
@@ -24,7 +25,7 @@ describe('Store Module Acceptance Tests', () => {
         }
     };
 
-    const template: Template<S, R> = {
+    const template: Template<S, R, Ts> = {
         instructions,
         state: {
             name: null
@@ -55,7 +56,7 @@ describe('Store Module Acceptance Tests', () => {
     };
 
     beforeEach(() => {
-        maker = new ModuleMaker<S, R>();
+        maker = new ModuleMaker<S, R, Ts>();
         module = maker.make(template);
         store = new Vuex.Store(module);
     });
@@ -63,6 +64,7 @@ describe('Store Module Acceptance Tests', () => {
     test('The store has the expected state', () => {
         expect(store.state).toEqual({
             id: null,
+            // @ts-ignore
             example: instructions.example.initial_value,
             name: null,
             comments: null,
