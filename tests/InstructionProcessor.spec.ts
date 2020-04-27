@@ -5,6 +5,7 @@ import Config from "../src/Config";
 
 interface S { [x: string]: any }
 interface R { [x: string]: any }
+type Ts = unknown;
 
 describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     const config_class = new Config();
@@ -16,11 +17,11 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     });
 
     test('The instructions can be just the type string', () => {
-        const raw_instructions: D.Instructions<S, R> = {
+        const raw_instructions: D.Instructions<S, R, Ts> = {
             comments: 'array'
         };
 
-        const formatter = new InstructionProcessor<S, R>(raw_instructions, config);
+        const formatter = new InstructionProcessor<S, R, Ts>(raw_instructions, config);
         const instruction = formatter.process()[0];
 
         expect(instruction.state_name).toEqual('comments');
@@ -29,22 +30,22 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     });
 
     test('The formatter sets the raw instruction on instantiation', () => {
-        const raw_instruction: D.Instructions<S, R> = {
+        const raw_instruction: D.Instructions<S, R, Ts> = {
             name: {
                 type: 'string'
             }
         };
-        const formatter = new InstructionProcessor<S, R>(raw_instruction, config);
+        const formatter = new InstructionProcessor<S, R, Ts>(raw_instruction, config);
         expect(formatter.raw).toEqual(raw_instruction)
     });
 
     test('The formatter sets the config on instantiation', () => {
-        const raw_instruction: D.Instructions<S, R> = {
+        const raw_instruction: D.Instructions<S, R, Ts> = {
             name: {
                 type: 'string'
             }
         };
-        const formatter = new InstructionProcessor<S, R>(raw_instruction, config);
+        const formatter = new InstructionProcessor<S, R, Ts>(raw_instruction, config);
         expect(formatter.config).toEqual(config)
     });
 
@@ -113,7 +114,7 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         let raw = new Getter(config);
         const getter = raw.format('number', 'id').toString();
 
-        let processor = new InstructionProcessor<S, R>({id: {type: 'number'}}, config);
+        let processor = new InstructionProcessor<S, R, Ts>({id: {type: 'number'}}, config);
         expect(processor.process()[0].getter.toString()).toEqual(getter);
 
         const test_func = (state: {[x: string]: any}) => state.id * 100;

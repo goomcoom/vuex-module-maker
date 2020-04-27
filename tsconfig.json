@@ -12,8 +12,7 @@
     "paths": {
       "~/*": ["src/*"],
       "vuex": ["node_modules/vuex/types/index.d.ts"],
-      "vue": ["node_modules/vue/types/index.d.ts"],
-      "vform": ["node_modules/vform/src/index.js"]
+      "vue": ["node_modules/vue/types/index.d.ts"]
     },
     "allowSyntheticDefaultImports": true,
     "lib": [

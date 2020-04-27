@@ -26,8 +26,6 @@
     "coverage": "jest --coverage=true"
   },
   "dependencies": {
-    "axios": "^0.19.2",
-    "vform": "^1.0.1",
     "vuex": "^3.2.0"
   },
   "devDependencies": {
