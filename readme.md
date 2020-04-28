@@ -18,24 +18,24 @@ defaults.
 
 Instructions are backbone of this package, each instruction is processed to generate a state property, getter and
 mutation. Each instruction is expected to have at least a `type` option, this type is important for returning the
-correct format when using the getter generated getter. The instruction can be in the form of a `key`:`value` pair where
+correct format when using the generated getter. The instruction can be in the form of a `key`:`value` pair where
 the key is the raw name of state property and the value is either a string equal to the type or an object with
 instruction options.
 
 ```javascript
 const instructions = {
-    id: 'number',
+    id: 'number', // Instruction with just the type declared
     name: {
         type: 'string',
 
         // State options
         set_state: true,
-        state_name: '',
+        state_name: 'name', 
         initial_value: null,
 
         // Getter options
         set_getter: true,
-        getter_name: '',
+        getter_name: 'getName',
         getter: state => {
             return (state[state_name] == null) ? default_value : state[state_name];
         },
@@ -43,7 +43,7 @@ const instructions = {
         
         // Mutation options
         set_mutation: true,
-        mutation_name: '',
+        mutation_name: 'setName',
         mutation: (state, value = undefined) => {
             state[state_name] = (value == null) ? null : value;
         },
@@ -51,10 +51,11 @@ const instructions = {
 }
 ```
 
-###### Instruction Key
+###### `key`
 
 The instruction key is used to generate the names of the state property, getter and mutation. If you want to control any
-of the name you can do so using the `state_name`, `getter_name` & `mutation_name` options.
+of the names you can do so using the [`state_name`, `getter_name` & `mutation_name`](#state_name-getter_name--mutation_name)
+options.
 - state – the key is converted to snake case
 - getter – the key is prefixed with 'get' and converted to camel case
 - mutation – the key is prefixed with 'set' and converted to camel case
@@ -71,7 +72,7 @@ If you want either the state property, getter or mutation to not be set, simply 
 
 ###### `state_name`, `getter_name` & `mutation_name`
 
-If you would like to manually set the state, getter or mutation name set the relevant option. If you set the
+If you would like to manually set the state, getter or mutation name set the respective option. If you set the
 `state_name` option, the getter and mutation names will be generated from that specified name, however, setting the
 getter or mutation name does not affect any other name.
 
