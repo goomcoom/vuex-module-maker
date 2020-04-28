@@ -262,8 +262,6 @@ it's impossible to know what actions and modules will be used in a module, this 
 actions and modules that have been defined in the actions and modules template properties respectively.
 
 ```javascript
-import project from '~/modules/project'
-
 const template = {
     //...
     actions: {
@@ -273,8 +271,25 @@ const template = {
         },
     },
     modules: {
-        project
-    }
+        project: {
+             namespaced: true,
+             state() {
+                 return {
+                     name: null,
+                 };
+             },
+             getters: {
+                 getProjectName: (state) => {
+                     return state.name == null ? '' : state.name;
+                 },
+             },
+             mutations: {
+                 setProjectName: (state, value = undefined) => {
+                     state.name = value == null ? null : value;
+                 },
+             },
+         },
+    },
 }
 
 const generated_module = {
@@ -286,8 +301,25 @@ const generated_module = {
         },
     },
     modules: {
-        project
-    }
+        project: {
+            namespaced: true,
+            state() {
+                return {
+                    name: null,
+                };
+            },
+            getters: {
+                getProjectName: (state) => {
+                    return state.name == null ? '' : state.name;
+                },
+            },
+            mutations: {
+                setProjectName: (state, value = undefined) => {
+                    state.name = value == null ? null : value;
+                },
+            },
+        },
+    },
 }
 ```
 
