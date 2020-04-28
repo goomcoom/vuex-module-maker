@@ -257,6 +257,40 @@ const generated_module = {
 
 ### Actions & Modules
 
+Actions and modules are not directly related to the [state](#state), [getters](#getters) and [mutations](#mutations) so
+it's impossible to know what actions and modules will be used in a module, this means that the module maker only adds
+actions and modules that have been defined in the actions and modules template properties respectively.
+
+```javascript
+import project from '~/modules/project'
+
+const template = {
+    //...
+    actions: {
+        resetUser: (context) => {
+            context.commit('setUserName');
+            context.commit('setDateOfBirth');
+        },
+    },
+    modules: {
+        project
+    }
+}
+
+const generated_module = {
+    //...
+    actions: {
+        resetUser: (context) => {
+            context.commit('setUserName')
+            context.commit('setDateOfBirth')
+        },
+    },
+    modules: {
+        project
+    }
+}
+```
+
 ### Available types
 
 ### Precedence & Gotchas
