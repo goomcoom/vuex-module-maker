@@ -495,7 +495,7 @@ add a getter config for our `form` type – If a type does not have a specified 
 However, an example has been provided to show the wrapping function. Every config getter should be returned by a
 function that accepts the `state_name` and `default_value`. The getter will be re-used so we need a way of passing the
 variables to the getter.
-3. For the mutation we want to accept both the `Form` class of an `object` that we can use in the construction of the
+3. For the mutation we want to accept both the `Form` class and an `object` that we can use in the construction of the
 form but if the value is `null` or `undefined` we would like to set the state prop to `null`. The default mutation does
 not provide this kind of functionality so we need to define a custom mutation. Similar to the getter, we need to wrap
 the mutation in a function that will make state_names available to the mutation.
