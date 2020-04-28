@@ -9,7 +9,7 @@ class Mutation<S, R, Ts> {
         this._config = config
     }
 
-    format <T extends D.Types<Ts>>(type: T, state_name: string): VMutation<S>
+    format <T extends Ts>(type: T, state_name: string): VMutation<S>
     {
         // @ts-ignore
         if (this.config.types[type] === undefined || this.config.types[type].mutation === undefined) {

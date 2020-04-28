@@ -3,7 +3,6 @@
  * String Helpers
  * –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  */
-import retryTimes = jest.retryTimes;
 
 export function lastChar(str: string, num = 1): string
 {

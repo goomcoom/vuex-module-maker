@@ -1,8 +1,8 @@
+import * as D from "../types";
 import Getter from "./Getter";
 import Mutation from "./Mutation";
 import { toCamelCase, toSnakeCase } from "./helpers";
 import {Getter as VGetter, Mutation as VMutation} from "vuex";
-import * as D from "../types";
 
 class InstructionProcessor<S, R, Ts> {
     readonly _raw: D.Instructions<S, R, Ts>;
@@ -25,7 +25,7 @@ class InstructionProcessor<S, R, Ts> {
 
     process(): D.FormattedInstructions<S, R, Ts> {
         let name: string;
-        let options: D.Types<Ts> | D.Instruction<D.Types<Ts>, S, R, Ts>;
+        let options: Ts | D.Instruction<Ts, S, R, Ts>;
         for ([name, options] of Object.entries(this.raw)) {
             if (typeof options === 'string') options = {type: options};
             // @ts-ignore
@@ -35,7 +35,7 @@ class InstructionProcessor<S, R, Ts> {
         return this.instructions
     }
 
-    processInstruction <T extends D.Types<Ts>> (name: string, options: D.Instruction<T, S, R, Ts>): D.FormattedInstruction<T, S, R, Ts>
+    processInstruction <T extends Ts> (name: string, options: D.Instruction<T, S, R, Ts>): D.FormattedInstruction<T, S, R, Ts>
     {
         return {
             type: options.type,
@@ -54,21 +54,21 @@ class InstructionProcessor<S, R, Ts> {
         }
     }
 
-    formatStateName <T extends D.Types<Ts>> (name: string, options: D.Instruction<T, S, R, Ts>): string {
+    formatStateName <T extends Ts> (name: string, options: D.Instruction<T, S, R, Ts>): string {
         name = options.state_name ? options.state_name : toSnakeCase(name);
         return this.state_name = name;
     }
 
-    formatStateValue <T extends D.Types<Ts>> (options: D.Instruction<T, S, R, Ts>): D.Type<T>|null {
+    formatStateValue <T extends Ts> (options: D.Instruction<T, S, R, Ts>): D.Type<T>|null {
         return options.initial_value == null ? null : options.initial_value
     }
 
-    formatGetterName <T extends D.Types<Ts>> (options: D.Instruction<T, S, R, Ts>): string {
+    formatGetterName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string {
         if (options.getter_name) return options.getter_name;
         return toCamelCase(`get_${this.state_name}`)
     }
 
-    formatGetter <T extends D.Types<Ts>> (options: D.Instruction<T, S, R, Ts>): VGetter<S, R>
+    formatGetter <T extends Ts> (options: D.Instruction<T, S, R, Ts>): VGetter<S, R>
     {
         if (options.getter) return options.getter;
         const getters = new Getter(this.config);
@@ -77,13 +77,13 @@ class InstructionProcessor<S, R, Ts> {
         return getters.format(options.type, this.state_name, options.default_value)
     }
 
-    formatMutationName <T extends D.Types<Ts>> (options: D.Instruction<T, S, R, Ts>): string
+    formatMutationName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string
     {
         if (options.mutation_name) return options.mutation_name;
         return toCamelCase(`set_${this.state_name}`)
     }
 
-    formatMutation <T extends D.Types<Ts>> (type: T): VMutation<S>
+    formatMutation <T extends Ts> (type: T): VMutation<S>
     {
         const raw = new Mutation<S, R, Ts>(this.config);
         return raw.format(type, this.state_name)

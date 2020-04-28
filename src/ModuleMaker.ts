@@ -1,7 +1,7 @@
+import * as D from "../types";
 import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
-import {ActionTree, GetterTree, Module, MutationTree} from "vuex"
-import * as D from "../types";
+import {ActionTree, GetterTree, Module, MutationTree} from "vuex";
 
 class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
 
@@ -26,7 +26,7 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
         const processor = new InstructionProcessor<S, R, Ts>(raw, this.config);
         const instructions = processor.process();
 
-        instructions.forEach((i: D.FormattedInstruction<D.Types<Ts>, S, R, Ts>) => {
+        instructions.forEach((i: D.FormattedInstruction<Ts, S, R, Ts>) => {
             if (i.set_state) this.addState(i.state_name, i.state_value);
             if (i.set_getter) this.addGetter(i.getter_name, i.getter);
             if (i.set_mutation) this.addMutation(i.mutation_name, i.mutation);

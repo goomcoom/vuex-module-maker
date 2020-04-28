@@ -3,10 +3,7 @@ import {
     Getter as VGetter, Mutation as VMutation
 } from "vuex";
 
-/* Types */
 export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'object' | 'any';
-
-export type Types<Ts> = Ts extends unknown ? DefaultTypes : Ts;
 
 export type Type<T> =
     T extends 'string' ? string :
@@ -36,7 +33,7 @@ export type ObjectMutation = <S>(state: S, value?: object ) => void;
 export type AnyMutation = <S>(state: S, value?: any ) => void;
 
 /* Instructions */
-export interface Instruction<T extends Types<Ts>, S, R, Ts> {
+export interface Instruction<T extends Ts, S, R, Ts> {
     type: T,
     // State options
     set_state?: boolean,
@@ -54,10 +51,10 @@ export interface Instruction<T extends Types<Ts>, S, R, Ts> {
 }
 
 export interface Instructions<S, R, Ts> {
-    [x: string]: Types<Ts> | Instruction<Types<Ts>, S, R, Ts>
+    [x: string]: Ts | Instruction<Ts, S, R, Ts>
 }
 
-export interface FormattedInstruction<T extends Types<Ts>, S, R, Ts> {
+export interface FormattedInstruction<T extends Ts, S, R, Ts> {
     type: T,
     // State options
     set_state: boolean,
@@ -73,7 +70,7 @@ export interface FormattedInstruction<T extends Types<Ts>, S, R, Ts> {
     mutation: VMutation<S>
 }
 
-export type FormattedInstructions<S, R, Ts> = FormattedInstruction<Types<Ts>, S, R, Ts>[];
+export type FormattedInstructions<S, R, Ts> = FormattedInstruction<Ts, S, R, Ts>[];
 
 export interface Template<S, R, Ts> {
     instructions?: Instructions<S, R, Ts>,

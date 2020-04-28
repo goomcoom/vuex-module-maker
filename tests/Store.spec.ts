@@ -1,28 +1,30 @@
 import Vue from "vue";
-import { Instructions, Template } from "../types";
+import {CustomConfig, DefaultTypes, Instructions, Template} from "../types";
 import ModuleMaker from "~/ModuleMaker";
-import Vuex, {ActionTree, GetterTree, MutationTree, Store} from "vuex";
+import Vuex, {Module, Mutation, Store} from "vuex";
+// @ts-ignore
+import Form from 'vform';
 
 Vue.use(Vuex);
+
 interface S { [x: string]: any }
 interface R { [x: string]: any }
-type Ts = unknown;
+type Ts = DefaultTypes | 'form';
+interface FormStore {
+    login_form: Form|null
+}
 
 describe('Store Module Acceptance Tests', () => {
     let maker;
     let module;
     let store: Store<S>;
     const instructions: Instructions<S, R, Ts> = {
-        id: {
-            type: 'number'
-        },
+        id: 'number',
         example: {
             type: 'string',
             initial_value: 'Example text'
         },
-        comments: {
-            type: 'array'
-        }
+        comments: 'array'
     };
 
     const template: Template<S, R, Ts> = {
@@ -32,17 +34,17 @@ describe('Store Module Acceptance Tests', () => {
         },
         getters: {
             getName: (state: S) => state.name
-        } as GetterTree<S, R>,
+        },
         mutations: {
             setName: (state: S, value: string|null = null): void => {
                 state.name = value
             }
-        } as MutationTree<S>,
+        },
         actions: {
             updateUser: (context) => {
                 context.commit('setName', 'Example Name');
             }
-        } as ActionTree<S, R>,
+        },
         modules: {
             user: {
                 namespaced: true,
@@ -97,5 +99,56 @@ describe('Store Module Acceptance Tests', () => {
         expect(state.name).toEqual(null);
         store.dispatch('updateUser');
         expect(state.name).toEqual('Example Name');
+    });
+});
+
+describe('Custom VForm type', () => {
+    let store: Store<FormStore>;
+    let module: Module<FormStore, R>;
+    const config: CustomConfig<FormStore, R> = {
+        types: {
+            form: {
+                default_value: new Form,
+                mutation: (state_name: string): Mutation<S> => {
+                    return (state: S, value?: object|Form): void => {
+                        if (value == null) {
+                            state[state_name] = null;
+                        } else if (typeof value === 'object') {
+                            state[state_name] = new Form(value);
+                        } else {
+                            state[state_name] = value;
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    beforeEach(() => {
+        let maker = new ModuleMaker<FormStore, R, Ts>(config);
+        module = maker.make({
+            instructions: {
+                login_form: 'form'
+            }
+        });
+        store = new Vuex.Store<FormStore>(module);
+    });
+
+    test('The getter returns the correct value', () => {
+        expect(store.getters.getLoginForm).toEqual(new Form);
+
+        store.state.login_form = new Form({email: 'example@email.com'});
+        expect(store.getters.getLoginForm).toEqual(new Form({email: 'example@email.com'}));
+    });
+
+    test('The mutation sets the correct value', () => {
+        store.commit('setLoginForm', {email: 'example@email.com'});
+        expect(store.state.login_form).toEqual(new Form({email: 'example@email.com'}));
+
+        store.commit('setLoginForm', new Form({email: 'test@email.com'}));
+        expect(store.state.login_form).toEqual(new Form({email: 'test@email.com'}));
+
+        store.commit('setLoginForm');
+        expect(store.state.login_form).toEqual(null);
     });
 });
