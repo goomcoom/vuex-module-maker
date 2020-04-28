@@ -4,18 +4,18 @@
 - [Usage](#usage)
     - [Template](#template)
         - [`key`](#key)
-        - [`set_state`, `set_getter` & `set_mutation`](#set_state-set_getter--set_mutation)
-        - [`state_name`, `getter_name` & `mutation_name`](#state_name-getter_name--mutation_name)
+        - [`set_state`, `set_getter` and `set_mutation`](#set_state-set_getter-and-set_mutation)
+        - [`state_name`, `getter_name` and `mutation_name`](#state_name-getter_name-and-mutation_name)
         - [`initial_value`](#initial_value)
         - [`default_value`](#default_value)
-        - [`getter` & `mutation`](#getter--mutation)
+        - [`getter` and `mutation`](#getter-and-mutation)
     - [Available Types](#available-types)
     - [Namespaced](#namespaced)
     - [State](#state)
     - [Getters](#getters)
     - [Mutations](#mutations)
-    - [Actions & Modules](#actions--modules)
-    - [Precedence & Gotchas](#precedence--gotchas)
+    - [Actions and Modules](#actions-and-modules)
+    - [Precedence and Gotchas](#precedence-and-gotchas)
     - [Config](#config)
     - [Typescript](#typescript)
     - [Useful Type Declarations](#useful-type-declarations)
@@ -26,7 +26,7 @@
 
 ### Template
 
-A module is created from a **template** object with instructions, state, getters, mutations, actions & modules. All the
+A module is created from a **template** object with instructions, state, getters, mutations, actions and modules. All the
 properties of the template except for the instructions are added to the module as is – passing a already generated
 module into the module maker should return an exact replica. The module properties that are added from the template's
 state, getters, mutations, modules properties take precedence over any of the properties generated from instructions,
@@ -74,7 +74,7 @@ const instructions = {
 ###### `key`
 
 The instruction key is used to generate the names of the state property, getter and mutation. If you want to control any
-of the names you can do so using the [`state_name`, `getter_name` & `mutation_name`](#state_name-getter_name--mutation_name)
+of the names you can do so using the [`state_name`, `getter_name` and `mutation_name`](#state_name-getter_name-and-mutation_name)
 options.
 - state – the key is converted to snake case
 - getter – the key is prefixed with 'get' and converted to camel case
@@ -86,11 +86,11 @@ options.
     }
 ```
 
-###### `set_state`, `set_getter` & `set_mutation`
+###### `set_state`, `set_getter` and `set_mutation`
 
 If you want either the state property, getter or mutation to not be set, simply set the relevant option to `false`.
 
-###### `state_name`, `getter_name` & `mutation_name`
+###### `state_name`, `getter_name` and `mutation_name`
 
 If you would like to manually set the state, getter or mutation name set the respective option. If you set the
 `state_name` option, the getter and mutation names will be generated from that specified name, however, setting the
@@ -110,11 +110,11 @@ specific value if the state value is `null` you can pass the value using the `de
 the default value to be applied to all getters or getters of a specific type you can change the [config](#config)
 settings.
 
-###### `getter` & `mutation`
+###### `getter` and `mutation`
 
 If you would like to customize the getter or mutation that is used to you can pass in the functions using the relevant
-options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guide/getters.html) & 
-[mutations](https://vuex.vuejs.org/guide/mutations.html)). If you would like to change the default getters & mutations
+options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guide/getters.html) and 
+[mutations](https://vuex.vuejs.org/guide/mutations.html)). If you would like to change the default getters and mutations
 for all types or specific types you can change the [config](#config) settings.
 
 ### Available types
@@ -386,7 +386,7 @@ const generated_module = {
 };
 ```
 
-### Actions & Modules
+### Actions and Modules
 
 Actions and modules are not directly related to the [state](#state), [getters](#getters) and [mutations](#mutations) so
 it's impossible to know what actions and modules will be used in a module, this means that the module maker only adds
@@ -454,7 +454,7 @@ const generated_module = {
 }
 ```
 
-### Precedence & Gotchas
+### Precedence and Gotchas
 
 - State properties are assigned in order of assignment in the instructions object, if two
 instructions have the same state name the last called instruction will be assigned to the module
