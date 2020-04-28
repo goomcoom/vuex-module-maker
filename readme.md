@@ -602,7 +602,7 @@ If you would like type hinting you may import the following types:
 | Instructions     | `Instructions<State, RootState, Types>`        |
 | Instruction      | `Instructions<Type, State, RootState, Types>`  |
 
-### Useful Type Declarations
+###### Useful Type Declarations
 
 ```typescript
 /* Getters */
