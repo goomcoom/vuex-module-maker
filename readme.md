@@ -99,6 +99,15 @@ for all types or specific types you can change the [config](#config) settings.
 
 ### Available types
 
+The major benefit of the types feature is to ensure that the returned values are of an expected type. The default types
+stated below are what is returned when the state value is `null`.
+
+If you would like a specific getter to have a different default value you can pass in the value through the
+instruction's [`default_value`](#default_value) property.
+
+If you would like to change the default that is returned for a specific type (including the default) or to create
+a new type you can follow the instructions stated in the [config](#config) section.
+
 | Type     | Default Value |
 | -------- | ------------- |
 | string   | `''`          |
