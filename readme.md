@@ -42,6 +42,9 @@ The initial value is set to `null` by default but it can also be controlled by p
 If the state property is created from the template's state property, the property's value will be
 set as the initial value.
 
+If you would like to prevent the state property from being created, you can include the `set_state` options with a
+false value.
+
 ```javascript
 const template = {
     instructions: {
@@ -54,6 +57,10 @@ const template = {
         age: {
             type: 'number',
             default_value: 18
+        },
+        expired: {
+            type: 'function',
+            set_state: false // The state property will not be created
         }
     },
     state: {
@@ -76,32 +83,26 @@ const resulting_module = {
 };
 ```
 
-```javascript
-const instructions = {
-    id: 'number',
-    name: {
-        type: 'string',
-        initial_value: 'John Doe'
-    }
-};
-
-const resulting_module = {
-    // ...
-    state() {
-        return {
-            id: null, // Default null value used
-            name: 'John Doe' // Set initial value to specified value
-        }
-    }
-    // ...
-};
-```
-
 ### Getters
 
-The getter names are created from the instructions's key or the `state name` option if supplied. The names are
+The getter names are created from the instructions's key or the `state_name` option if supplied. The names are
 converted to camel case and prefixed with 'get'. The getter name can be overwritten by passing a `getter_name` option,
 the passed option is not manipulated at all.
+
+If you don't want the getter to be created from the instruction you can pass a `set_getter` option as a false, this
+does not affect the creation of the state or mutation.
+
+The generated getters follow the same pattern – if the state property is `null` return the default value
+otherwise return the state property. No other checks are done because the we assume that all state manipulations are
+done through their respective mutations – the value is either valid or `null`.
+
+The default value that is returned is dependent on the type set in the instruction, see the
+[available types](#available-types) sections. The default value can also be manually set using the `default_value`
+option where that value will be returned without any alterations when the state value is `null`.
+
+If you would like to specify the getter that should be use you can provide the getter function as the `getter` option.
+
+Any getters passed through the template's getters object are added as is, no alterations are made.
 
 ```javascript
 const instructions = {
@@ -114,6 +115,23 @@ const instructions = {
         type: 'array',
         state_name: 'user_comments',
         getter_name: 'comments'
+    },
+    friends: {
+        type: 'array',
+        set_getter: false // The getter will not be created
+    },
+    date_of_birth: {
+        type: 'date',
+        default_value: new Date('2000-01-01')
+    },
+    full_name: {
+        type: 'function',
+        getter: state => {
+            if (state.full_name == null) {
+                return `${state.first_name} ${state.last_name}`;
+            }
+            return state.full_name;
+        }
     }
 };
 
@@ -127,41 +145,32 @@ const generated_module = {
         // instruction key ignored
         // the provided state_name used to generate the getter name
         // state_name prefixed with get and converted to camel case
-        getUserName: (state) => {
+        getUserName: state => {
             return state.user_name === null ? '' : state.user_name;
         },
 
         // instruction key and state_name ignored
         // provided getter_name option used as is
-        comments: (state) => {
+        comments: state => {
             return state.user_comments === null ? [] : state.user_comments;
+        },
+        
+        // The defined default value is returned 
+        getDateOfBirth: state => {
+            return state.date_of_birth === null ? new Date('2000-01-01') : state.date_of_birth
         }
+
+        // Using the getter defined in the options
+        getFullName: state => {
+             if (state.full_name == null) {
+                 return `${state.first_name} ${state.last_name}`;
+             }
+             return state.full_name;
+         }
     },
     //...
 };
 ```
-
-The generated getters follow the same pattern – if the state property is equal to null return the default value
-otherwise return the state property. No other checks are done because the we assume that all state manipulations are
-done through their respective mutations – the value is either valid or null.
-
-The default value that is returned is dependent on the type set in the instruction, and can also be manually set using
-the `default_value` option where that value will be returned without any alterations if the state value is `null`.
- 
- The object below shows the types and their corresponding default values.
- ```javascript
-const default_value_map = {
-    string: '',
-    number: null,
-    boolean: false,
-    array: [],
-    object: null,
-    form: new Form,
-    any: null
-};
-```
-
-Any getters passed through the template's getters object are added as is, no alterations are made.
 
 ### Mutations
 
