@@ -25,8 +25,8 @@
 
 ### Template
 
-A module is created from a **template** object with instructions, state, getters, mutations, actions and modules. All the
-properties of the template except for the instructions are added to the module as is – passing a already generated
+A module is created from a **template** object with instructions, state, getters, mutations, actions and modules. All
+the properties of the template except for the instructions are added to the module as is – passing a already generated
 module into the module maker should return an exact replica. The module properties that are added from the template's
 state, getters, mutations, modules properties take precedence over any of the properties generated from instructions,
 for example if a getter is created from an instruction and another getter is defined in the template's getters objects
@@ -72,8 +72,9 @@ const instructions = {
 
 ###### `key`
 
-The instruction key is used to generate the names of the state property, getter and mutation. If you want to control any
-of the names you can do so using the [`state_name`, `getter_name` and `mutation_name`](#state_name-getter_name-and-mutation_name)
+The instruction key is used to generate the names of the state property, getter and mutation. If you want to control
+any of the names you can do so using the
+[`state_name`, `getter_name` and `mutation_name`](#state_name-getter_name-and-mutation_name)
 options.
 - state – the key is converted to snake case
 - getter – the key is prefixed with 'get' and converted to camel case
@@ -113,8 +114,8 @@ settings.
 
 If you would like to customize the getter or mutation that is used to you can pass in the functions using the relevant
 options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guide/getters.html) and 
-[mutations](https://vuex.vuejs.org/guide/mutations.html)). If you would like to change the default getters and mutations
-for all types or specific types you can change the [config](#config) settings.
+[mutations](https://vuex.vuejs.org/guide/mutations.html)). If you would like to change the default getters and
+mutations for all types or specific types you can change the [config](#config) settings.
 
 ### Available types
 
@@ -454,6 +455,97 @@ const generated_module = {
 ```
 
 ### Config
+
+The config object is made up of two sections – the namespaced property and types. The namespaced config option is
+discussed [above](#namespaced).
+
+The types config is broken down into 3 parts – `default_value`, `getter` and `mutation`. When an instruction is
+being processed each of the parts are processed individually; if the given type does not exist the default is used, if
+the type exists but does not have the that specific part defined, the de fault is used.
+
+All pre-configured [types](#available-types) use the default getters and mutations.
+
+```javascript
+const default_getter = (state) => {
+   return (state[state_name] == null) ? default_value : state[state_name];
+}
+
+const default_mutation = (state, value = undefined) => {
+     state[state_name] = (value == null) ? null : value;
+}
+```
+
+If you would like to change/create a type you can pass a type-config into the types config object, if you would like to
+change the default you can pass the type-config under the type name `default`.
+
+The example below shows how to create a new type, the same process can be used to edit any of the existing types or
+default. Defining config types does not replace the current types, it updates the affected types and adds the new types
+for example supplying a config object with just the `string` type will not remove all the other types so they do not
+need to be re-defined.
+
+####### Example – Creating a `form` Type
+
+We will be using the [vform](https://github.com/cretueusebiu/vform) package as an example, the package provides us with
+a form object that is extremely helpful with handling [laravel](https://laravel.com/docs/7.x) form errors.
+
+1. We would like the type to be assignable to state properties and we want a new form to be returned if the state
+property is `null` – `config.types.form.default_value = new Form`.
+2. The current default function already returns the default value if the `state_property === null` so we do not need to
+add a getter config for our `form` type – If a type does not have a specified getter, the default getter is used.
+However, an example has been provided to show the wrapping function. Every config getter should be returned by a
+function that accepts the `state_name` and `default_value`. The getter will be re-used so we need a way of passing the
+variables to the getter.
+3. For the mutation we want to accept both the `Form` class of an `object` that we can use in the construction of the
+form but if the value is `null` or `undefined` we would like to set the state prop to `null`. The default mutation does
+not provide this kind of functionality so we need to define a custom mutation. Similar to the getter, we need to wrap
+the mutation in a function that will make state_names available to the mutation.
+
+```javascript
+import Form from "vform";
+import Maker from "vuex-module-maker";
+
+const config = {
+    types: {
+        form: {
+            default_value: new Form(),
+
+            // Because the getter will be used over many instances
+            // The function should accept the state_name and default_value
+            // This wrapping function is not needed when defining getters in instructions
+            getter: (state_name, default_value) => {
+                // If a type does not have a specific getter function the default is used
+                // This getter is identical to the default getter so its definition is redundant
+                return state => (state[state_name] == null) ? default_value : state[state_name];
+            },
+
+            // The default_value is never used so we do not need to pass it
+            mutation: (state_name) => {
+                return (state, value = undefined) => {
+                    if (value == null) {
+                        state[state_name] = null;
+                    } else if (value instanceof Form) { // Objects are technically functions
+                        state[state_name] = value;
+                    } else {
+                        state[state_name] = new Form(value);
+                    }
+                };
+            },
+        },
+    },
+};
+
+const maker = new Maker(config);
+
+const module = maker.make({
+    instruction: {
+        login_Form: 'form',
+    },
+});
+
+// After registering the module
+store.getters.getLoginForm === new Form(); // true
+```
+
 
 ### Typescript
 
