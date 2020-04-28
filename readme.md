@@ -97,6 +97,17 @@ options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guid
 [mutations](https://vuex.vuejs.org/guide/mutations.html)). If you would like to change the default getters & mutations
 for all types or specific types you can change the [config](#config) settings.
 
+### Available types
+
+| Type       | Default Value    |
+| ---------- | ---------------- |
+| `string`   | `''`             |
+| `number`   | `null`           |
+| `boolean`  | `false`          |
+| `array`    | `[]`             |
+| `object`   | `null`           |
+| `default`   | `null`          |
+
 ### Namespaced
 Because the generated module is designed to be reusable, the namespace is set to `true` by default
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing)). If you would like to set it to `false` you may
@@ -413,8 +424,6 @@ const generated_module = {
     },
 }
 ```
-
-### Available types
 
 ### Precedence & Gotchas
 
