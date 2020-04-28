@@ -1,7 +1,7 @@
 import InstructionProcessor from "~/InstructionProcessor";
 import Getter from "~/Getter";
 import * as D from "../types";
-import Config from "../src/Config";
+import Config from "~/Config";
 
 interface S { [x: string]: any }
 interface R { [x: string]: any }

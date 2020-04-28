@@ -1,6 +1,6 @@
 import Vue from "vue";
 import { Instructions, Template } from "../types";
-import ModuleMaker from "../src/ModuleMaker";
+import ModuleMaker from "~/ModuleMaker";
 import Vuex, {ActionTree, GetterTree, MutationTree, Store} from "vuex";
 
 Vue.use(Vuex);

@@ -1,4 +1,4 @@
-import ModuleMaker from "../src/ModuleMaker";
+import ModuleMaker from "~/ModuleMaker";
 import {Instruction, Instructions, Template} from "../types";
 
 interface S {
