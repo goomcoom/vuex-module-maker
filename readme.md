@@ -15,7 +15,7 @@ do so by passing a namespaced property in the config object during instantiation
 import ModuleMaker from 'vuex-module-maker';
 
 const config = {
-    namespaced: false
+    namespaced: false,
     //...
 };
 
@@ -52,20 +52,20 @@ const template = {
         userActive: 'boolean', 
         name: {
             type: 'string',
-            state_name: 'userName'
-        }
+            state_name: 'userName',
+        },
         age: {
             type: 'number',
-            default_value: 18
+            default_value: 18,
         },
         expired: {
             type: 'function',
-            set_state: false // The state property will not be created
-        }
+            set_state: false, // The state property will not be created
+        },
     },
     state: {
-        RoLe: 'admin'
-    }
+        RoLe: 'admin',
+    },
 };
 
 const resulting_module = {
@@ -76,9 +76,9 @@ const resulting_module = {
             user_active: null, // Converted to snake case
             userName: null, // Specified state name
             age: 18, // initial value defined using the initial_value option
-            RoLe: 'admin' // No alterations to the name or value
+            RoLe: 'admin', // No alterations to the name or value
         }
-    }
+    },
     // ...
 };
 ```
@@ -109,30 +109,30 @@ const instructions = {
     id: 'number',
     name: {
         type: 'string',
-        state_name: 'user_name'
+        state_name: 'user_name',
     },
     comments: {
         type: 'array',
         state_name: 'user_comments',
-        getter_name: 'comments'
+        getter_name: 'comments',
     },
     friends: {
         type: 'array',
-        set_getter: false // The getter will not be created
+        set_getter: false, // The getter will not be created
     },
     date_of_birth: {
         type: 'date',
-        default_value: new Date('2000-01-01')
+        default_value: new Date('2000-01-01'),
     },
     full_name: {
-        type: 'function',
+        type: 'string',
         getter: state => {
             if (state.full_name == null) {
                 return `${state.first_name} ${state.last_name}`;
             }
             return state.full_name;
-        }
-    }
+        },
+    },
 };
 
 const generated_module = {
@@ -157,8 +157,8 @@ const generated_module = {
         
         // The defined default value is returned 
         getDateOfBirth: state => {
-            return state.date_of_birth === null ? new Date('2000-01-01') : state.date_of_birth
-        }
+            return state.date_of_birth === null ? new Date('2000-01-01') : state.date_of_birth;
+        },
 
         // Using the getter defined in the options
         getFullName: state => {
@@ -166,7 +166,7 @@ const generated_module = {
                  return `${state.first_name} ${state.last_name}`;
              }
              return state.full_name;
-         }
+         },
     },
     //...
 };
@@ -182,13 +182,13 @@ const instructions = {
     id: 'number',
     name: {
         type: 'string',
-        state_name: 'user_name'
+        state_name: 'user_name',
     },
     comments: {
         type: 'array',
         state_name: 'user_comments',
-        mutation_name: 'comments'
-    }
+        mutation_name: 'comments',
+    },
 };
 
 const generated_module = {
@@ -205,9 +205,9 @@ const generated_module = {
         // state_name prefixed with set and converted to camel case
         setUserName(state, value = undefined) {
             if (value == null || value.length === 0) {
-                state.user_name = null
+                state.user_name = null;
             } else {
-                state.user_name = value
+                state.user_name = value;
             }
         },
 
@@ -215,11 +215,11 @@ const generated_module = {
         // provided mutation_name option used as is
         comments(state) {
             if (value == null || value.length === 0) {
-                state.user_comments = null
+                state.user_comments = null;
             } else {
-                state.user_comments = value
+                state.user_comments = value;
             }
-        }
+        },
     },
     //...
 };
