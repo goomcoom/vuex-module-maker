@@ -483,7 +483,7 @@ default. Defining config types does not replace the current types, it updates th
 for example supplying a config object with just the `string` type will not remove all the other types so they do not
 need to be re-defined.
 
-####### Example – Creating a `form` Type
+###### Example – Creating a `form` Type
 
 We will be using the [vform](https://github.com/cretueusebiu/vform) package as an example, the package provides us with
 a form object that is extremely helpful with handling [laravel](https://laravel.com/docs/7.x) form errors.
