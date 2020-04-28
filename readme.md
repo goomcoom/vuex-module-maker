@@ -549,4 +549,74 @@ store.getters.getLoginForm === new Form(); // true
 
 ### Typescript
 
+The module maker was designed in a way that requires the minimum number of type variables – `state`, `root_state` and
+`types`. If you would like to use/append the default types you can import the `DefaultTypes` type.
+
+```typescript
+// An example module's state
+import { DefaultTypes } from "vuex-module-maker"; 
+
+interface UserState {
+    id: number|null,
+    name: string|null,
+}
+
+interface ExampleRootState {
+    user: UserState
+}
+
+// DefaultTypes === 'string' | 'number' | 'boolean' | 'array' | 'object' | 'any'
+type Types = DefaultTypes | 'form';
+```
+
+Vuex can be used with typescript but is limited to the use of the `State` and `RootState` interfaces.
+```typescript
+import {ActionTree, GetterTree,ModuleTree,MutationTree} from "vuex";
+
+interface VuexModule<S, R> {
+  namespaced?: boolean;
+  state?: S | (() => S);
+  getters?: GetterTree<S, R>;
+  actions?: ActionTree<S, R>;
+  mutations?: MutationTree<S>;
+  modules?: ModuleTree<R>;
+}
+```
+
+The ModuleMaker class also accepts the three types.
+
+```typescript
+import ModuleMaker from "vuex-module-maker";
+
+const maker = new ModuleMaker<State, RootState, Types>();
+```
+
+If you would like type hinting you may import the following types:
+| Object           | Type                                           |
+| ---------------- | ---------------------------------------------- |
+| Config           | `CustomConfig<State, RootState>`               |
+| ConfigGetter     | `ConfigGetter<State, RootState>`               |
+| ConfigMutation   | `ConfigMutation<State>`                        |
+| Template         | `Template<State, RootState, Types`             |
+| Instructions     | `Instructions<State, RootState, Types>`        |
+| Instruction      | `Instructions<Type, State, RootState, Types>`  |
+
 ### Useful Type Declarations
+
+```typescript
+/* Getters */
+type StringGetter = <S>(state: S) => string;
+type NumberGetter = <S>(state: S) => number|null;
+type BooleanGetter = <S>(state: S) => boolean;
+type ArrayGetter = <S>(state: S) => any[];
+type ObjectGetter = <S>(state: S) => object|null;
+type AnyGetter = <S>(state: S) => any;
+
+/* Mutations */
+type StringMutation = <S>(state: S, value?: string ) => void;
+type NumberMutation = <S>(state: S, value?: number ) => void;
+type BooleanMutation = <S>(state: S, value?: boolean ) => void;
+type ArrayMutation = <S>(state: S, value?: any[] ) => void;
+type ObjectMutation = <S>(state: S, value?: object ) => void;
+type AnyMutation = <S>(state: S, value?: any ) => void;
+```
