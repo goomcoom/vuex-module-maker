@@ -6,6 +6,96 @@
 
 ### Template
 
+A module is created from a **template** object with instructions, state, getters, mutations, actions & modules. All the
+properties of the template except for the instructions are added to the module as is – passing a already generated
+module into the module maker should return an exact replica. The module properties that are added from the template's
+state, getters, mutations, modules properties take precedence over any of the properties generated from instructions,
+for example if a getter is created from an instruction and another getter is defined in the template's getters objects
+with the same name, the latter will be in the generated module.
+
+The defaults used to generate the module are very configurable, see the [config](#config) section on how to change the
+defaults.
+
+Instructions are backbone of this package, each instruction is processed to generate a state property, getter and
+mutation. Each instruction is expected to have at least a `type` option, this type is important for returning the
+correct format when using the getter generated getter. The instruction can be in the form of a `key`:`value` pair where
+the key is the raw name of state property and the value is either a string equal to the type or an object with
+instruction options.
+
+```javascript
+const instructions = {
+    id: 'number',
+    name: {
+        type: 'string',
+
+        // State options
+        set_state: true,
+        state_name: '',
+        initial_value: null,
+
+        // Getter options
+        set_getter: true,
+        getter_name: '',
+        getter: state => {
+            return (state[state_name] == null) ? default_value : state[state_name];
+        },
+        default_value: null | '' | false | [], // Depending on type
+        
+        // Mutation options
+        set_mutation: true,
+        mutation_name: '',
+        mutation: (state, value = undefined) => {
+            state[state_name] = (value == null) ? null : value;
+        },
+    },
+}
+```
+
+###### Instruction Key
+
+The instruction key is used to generate the names of the state property, getter and mutation. If you want to control any
+of the name you can do so using the `state_name`, `getter_name` & `mutation_name` options.
+- state – the key is converted to snake case
+- getter – the key is prefixed with 'get' and converted to camel case
+- mutation – the key is prefixed with 'set' and converted to camel case
+
+```javascript
+    const instructions = {
+        'First Name': 'string' // [state = first_name] [getter = getFirstName] [mutation = setFirstName]
+    }
+```
+
+###### `set_state`, `set_getter` & `set_mutation`
+
+If you want either the state property, getter or mutation to not be set, simply set the relevant option to `false`.
+
+###### `state_name`, `getter_name` & `mutation_name`
+
+If you would like to manually set the state, getter or mutation name set the relevant option. If you set the
+`state_name` option, the getter and mutation names will be generated from that specified name, however, setting the
+getter or mutation name does not affect any other name.
+
+###### `initial_value`
+
+All state properties are initially set to `null` by default. If you would like to set the state property with any other
+initial value, you may pass that value using the `initial_value` option.
+
+###### `default_value`
+
+The purpose of the default value is to ensure that the correct type it always returned (where possible), for example if
+the expected type is an `array`, to avoid checking if the value is `null` or an `array`, we return an empty array.
+The returned default value is dependent on the type set in the instruction option. If you would like to return a
+specific value if the state value is `null` you can pass the value using the `default_value` option. If you would like
+the default value to be applied to all getters or getters of a specific type you can change the [config](#config)
+settings.
+
+###### `getter` & `mutation`
+
+If you would like to customize the getter or mutation that is used to you can pass in the functions using the relevant
+options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guide/getters.html) & 
+[mutations](https://vuex.vuejs.org/guide/mutations.html)). If you would like to change the default getters & mutations
+for all types or specific types you can change the [config](#config) settings.
+
 ### Namespaced
 Because the generated module is designed to be reusable, the namespace is set to `true` by default
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing)). If you would like to set it to `false` you may
