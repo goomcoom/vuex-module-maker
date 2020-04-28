@@ -5,14 +5,19 @@
 # Usage
 
 ### Namespaced
-Because the generated module is designed to be a reusable one the namespace is set to `true` by
-default. If you would like to set the namespaced property to `false` *(not recommended)* you may
-do so during the creation of the ModuleMaker instance. You can learn more about namespaced modules
-from the [vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing).
+Because the generated module is designed to be reusable, the namespace is set to `true` by default
+([vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing)). If you would like to set it to `false` you may
+do so by passing a namespaced property in the config object during instantiation.
+
 ```javascript
 import ModuleMaker from 'vuex-module-maker';
 
-const maker = ModuleMaker(false);
+const config = {
+    namespaced: false
+    //...
+};
+
+const maker = ModuleMaker(config);
 const module = maker.make({}); // module.namespaced === false
 ```
 
@@ -206,6 +211,8 @@ The generated mutations set the state value equal to the passed value and `null`
 
 ### Actions & Modules
 
+### Available types
+
 ### Precedence & Gotchas
 
 - State properties are assigned in order of assignment in the instructions object, if two
@@ -218,8 +225,8 @@ Note that this does not extend to other parts of the module – if a state prope
 the getter/mutation will remain as is unless they are overwritten by a later instruction with
 the same getter/mutation name.
 
-### Types
+# Config
 
-## Typescript
+# Typescript
 
 ### Useful Type Declarations
