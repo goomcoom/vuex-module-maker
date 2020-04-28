@@ -174,8 +174,15 @@ const generated_module = {
 
 ### Mutations
 
-The names assigned to generated mutations follow a similar pattern to the [getters](#getters), with the only difference
-being we prefix the mutations with 'set' instead of 'get' and we use the `mutation_name` instead of the `getter_name`.
+The mutations follow the same rules as [getters](#getters) but in the context of mutations the names are prefixed with
+'set' instead of 'get'.
+
+The generated mutations set the state value equal to the passed value and `null` if no value has been passed.
+
+The mutations rely on the correct value type being passed, no type checks are done within the mutations as this
+package was designed to work best with [typescript](https://www.typescriptlang.org/docs/home.html). Using typescript
+allows us to have complete control over the value types are passed. See the typescript section [below](#typescript)
+for usage with typescript.
 
 ```javascript
 const instructions = {
@@ -189,6 +196,20 @@ const instructions = {
         state_name: 'user_comments',
         mutation_name: 'comments',
     },
+    friends: {
+        type: 'array',
+        set_mutation: false, // The mutation will not be created
+    },
+    full_name: {
+        type: 'string',
+        mutation: (state, value = undefined) => {
+            if (value == null) {
+                state.full_name = `${state.first_name} ${state.last_name}`;
+            } else {
+                state.full_name = state.full_name;
+            }
+        },
+    },
 };
 
 const generated_module = {
@@ -196,15 +217,15 @@ const generated_module = {
     mutations: {
         // instruction key used
         // id prefixed with 'set' and converted to camel case
-        setId(state, value = undefined) {
+        setId: (state, value = undefined) => {
             state.id = value == null ? null : value;
         },
         
         // instruction key ignored
         // the provided state_name used to generate the mutation name
         // state_name prefixed with set and converted to camel case
-        setUserName(state, value = undefined) {
-            if (value == null || value.length === 0) {
+        setUserName: (state, value = undefined) => {
+            if (value == null) {
                 state.user_name = null;
             } else {
                 state.user_name = value;
@@ -213,24 +234,26 @@ const generated_module = {
 
         // instruction key and state_name ignored
         // provided mutation_name option used as is
-        comments(state) {
-            if (value == null || value.length === 0) {
+        comments: (state, value = undefined) => {
+            if (value == null) {
                 state.user_comments = null;
             } else {
                 state.user_comments = value;
             }
         },
+
+        // A custom mutation was defined in the options
+        setFullName: (state, value = undefined) => {
+             if (value == null) {
+                 state.full_name = `${state.first_name} ${state.last_name}`;
+             } else {
+                 state.full_name = state.full_name;
+             }
+         },
     },
     //...
 };
 ```
-
-The mutation function is assigned based on the given type. The mutations rely on the correct value type being passed,
-no type checks are done within the mutations as this package was designed to work best with
-[typescript](https://www.typescriptlang.org/docs/home.html). Using typescript allows us to have complete control over
-the value types are passed. See the typescript section [below](#typescript) for usage with typescript.
-
-The generated mutations set the state value equal to the passed value and `null` if no value has been passed.
 
 ### Actions & Modules
 
