@@ -99,14 +99,14 @@ for all types or specific types you can change the [config](#config) settings.
 
 ### Available types
 
-| Type       | Default Value    |
-| ---------- | ---------------- |
-| `string`   | `''`             |
-| `number`   | `null`           |
-| `boolean`  | `false`          |
-| `array`    | `[]`             |
-| `object`   | `null`           |
-| `default`   | `null`          |
+| Type     | Default Value |
+| -------- | ------------- |
+| string   | `''`          |
+| number   | `null`        |
+| boolean  | `false`       |
+| array    | `[]`          |
+| object   | `null`        |
+| default  | `null`        |
 
 ### Namespaced
 Because the generated module is designed to be reusable, the namespace is set to `true` by default
