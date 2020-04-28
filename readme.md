@@ -1,5 +1,25 @@
 # Vuex Module Maker
 
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Template](#template)
+        - [`key`](#key)
+        - [`set_state`, `set_getter` & `set_mutation`](#set_state-set_getter--set_mutation)
+        - [`state_name`, `getter_name` & `mutation_name`](#state_name-getter_name--mutation_name)
+        - [`initial_value`](#initial_value)
+        - [`default_value`](#default_value)
+        - [`getter` & `mutation`](#getter--mutation)
+    - [Available Types](#available-types)
+    - [Namespaced](#namespaced)
+    - [State](#state)
+    - [Getters](#getters)
+    - [Mutations](#mutations)
+    - [Actions & Modules](#actions--modules)
+    - [Precedence & Gotchas](#precedence--gotchas)
+    - [Config](#config)
+    - [Typescript](#typescript)
+    - [Useful Type Declarations](#useful-type-declarations)
+
 # Installation
 
 # Usage
