@@ -15,7 +15,6 @@
     - [Getters](#getters)
     - [Mutations](#mutations)
     - [Actions and Modules](#actions-and-modules)
-    - [Precedence and Gotchas](#precedence-and-gotchas)
     - [Config](#config)
     - [Typescript](#typescript)
     - [Useful Type Declarations](#useful-type-declarations)
@@ -453,18 +452,6 @@ const generated_module = {
     },
 }
 ```
-
-### Precedence and Gotchas
-
-- State properties are assigned in order of assignment in the instructions object, if two
-instructions have the same state name the last called instruction will be assigned to the module
-state.
-- The state properties defined in the template's state property take precedence over
-instructions.
-
-Note that this does not extend to other parts of the module – if a state property is overwritten
-the getter/mutation will remain as is unless they are overwritten by a later instruction with
-the same getter/mutation name.
 
 ### Config
 
