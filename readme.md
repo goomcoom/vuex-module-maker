@@ -553,9 +553,9 @@ The module maker was designed in a way that requires the minimum number of type 
 `types`. If you would like to use/append the default types you can import the `DefaultTypes` type.
 
 ```typescript
-// An example module's state
 import { DefaultTypes } from "vuex-module-maker"; 
 
+// An example module's state
 interface UserState {
     id: number|null,
     name: string|null,
@@ -592,6 +592,7 @@ const maker = new ModuleMaker<State, RootState, Types>();
 ```
 
 If you would like type hinting you may import the following types:
+
 | Object           | Type                                           |
 | ---------------- | ---------------------------------------------- |
 | Config           | `CustomConfig<State, RootState>`               |
