@@ -101,6 +101,17 @@ const generated_module = {
 
 # Usage
 
+1. Import `vuex-module-maker` 
+2. Instantiate the ModuleMaker class (pass in any config settings if necessary)
+3. Call the `make()` method and pass in your template, that's it!
+
+```javascript
+import ModuleMaker from "vuex-module-maker";
+
+const maker = new ModuleMaker();
+const my_module = maker.make(template)
+```
+
 ### Template
 
 A module is created from a template object with instructions, state, getters, mutations, actions and modules properties.
