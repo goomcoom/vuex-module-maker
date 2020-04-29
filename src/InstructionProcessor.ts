@@ -73,7 +73,9 @@ class InstructionProcessor<S, R, Ts> {
 
     formatGetterName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string {
         if (options.getter_name) return options.getter_name;
-        return toCamelCase(`get_${this.state_name}`)
+
+        const config = this.config.naming.getter;
+        return config.transformer(config.prefix + this.state_name + config.suffix);
     }
 
     formatGetter <T extends Ts> (options: D.Instruction<T, S, R, Ts>): VGetter<S, R>

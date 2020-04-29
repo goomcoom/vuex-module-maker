@@ -67,7 +67,7 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         let processor = new InstructionProcessor({ 'user Id': { type: 'number'}}, config);
         expect(processor.process()[0].state_name).toEqual('user_id');
 
-        processor = new InstructionProcessor({ 'first_name': { type: 'string'}}, config);
+        processor = new InstructionProcessor({ first_name: { type: 'string'}}, config);
         expect(processor.process()[0].state_name).toEqual('first_name');
     });
 
@@ -122,14 +122,23 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(processor.process()[0].set_getter).toEqual(false)
     });
 
-    test('Getter names are prefixed with "get"', () => {
+    test('The getter_name option can be controlled', () => {
+        const processor = new InstructionProcessor({id:{type: 'number', getter_name: 'getUserId'}}, config);
+        expect(processor.process()[0].getter_name).toEqual('getUserId')
+    });
+
+    test('Default getter naming config sets names as expected', () => {
         let processor = new InstructionProcessor({id:{type: 'number'}}, config);
         expect(processor.process()[0].getter_name).toEqual('getId')
     });
 
-    test('The getter_name option can be controlled', () => {
-        const processor = new InstructionProcessor({id:{type: 'number', getter_name: 'getUserId'}}, config);
-        expect(processor.process()[0].getter_name).toEqual('getUserId')
+    test('The getter naming config can be controlled', () => {
+        config.naming.getter.prefix = 'getter_';
+        config.naming.getter.suffix = '_method';
+        config.naming.getter.transformer = (raw) => raw.toUpperCase();
+
+        let processor = new InstructionProcessor({ 'user_Id': { type: 'number'}}, config);
+        expect(processor.process()[0].getter_name).toEqual('GETTER_USER_ID_METHOD');
     });
 
     test('The getter can be controlled', () => {

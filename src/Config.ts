@@ -91,12 +91,12 @@ class Config<S, R> {
                 transformer: toSnakeCase
             },
             getter: {
-                prefix: 'get',
+                prefix: 'get_',
                 suffix: '',
                 transformer: toCamelCase
             },
             mutation: {
-                prefix: 'set',
+                prefix: 'set_',
                 suffix: '',
                 transformer: toCamelCase
             },
