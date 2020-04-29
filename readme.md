@@ -10,6 +10,13 @@ are made up of the same data types and the state tends to be manipulated in the 
 in question (all `string` type properties have the same kind of getter and mutation). Adding testing to these modules
 just makes it even more laborious and let's be honest, it's discouraging!
 
+The idea is to centralize all the repetitive getter and mutation logic, organize it by type and ensure its tested. The
+module maker is also completely configurable all the way from the default getter (used when the passed type doesn't
+exist or does not have a specified getter) to the name given to the custom mutation defined for a specific value. The
+example below shows the module generated from the short defined template.
+
+Don't forget to test your actions, customized getters & customized mutations :wink:!
+
 ```javascript
 const template = {
     instructions: {
