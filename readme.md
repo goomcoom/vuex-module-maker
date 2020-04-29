@@ -234,17 +234,14 @@ similar to how we define the state in vue components
 When the state property is created from an instruction, the name is extracted from the instruction's key and converted
 to snake case. The name can be controlled by passing a `state_name` option with the desired name.
 
-If the state property is created from the template's state property, the name will be identical to the key of the
-defined property.
-
-The initial value is set to `null` (or `false` if it's a 'boolean' type) by default but it can also be controlled by passing an
-`initial_value` option whose value will be used as the initial value.
-
-If the state property is created from the template's state property, the property's value will be set as the initial
-value.
+The initial value is set to `null` (or `false` if it's a 'boolean' type) by default but it can also be controlled by
+passing an `initial_value` option whose value will be used as the initial value.
 
 If you would like to prevent the state property from being created, you can include the `set_state` option with a
 `false` value.
+
+If the state property is created from the `template.state` property, the name will be identical to the key of the
+defined property and its value will be set as the initial value.
 
 ```javascript
 const template = {
@@ -286,24 +283,22 @@ const resulting_module = {
 
 ### Getters
 
-The getter names are created from the instructions's key or the `state_name` option if supplied. The names are
-converted to camel case and prefixed with 'get'. The getter name can be overwritten by passing a `getter_name` option,
-the passed option is not manipulated at all.
+The getter names are created from the instructions's key (or the `state_name` option when supplied). The names are
+converted to camel case and prefixed with 'get'. The getter name can be overwritten by passing a `getter_name` option.
 
-If you don't want the getter to be created from the instruction you can pass a `set_getter` option as a false, this
+If you don't want the getter to be created from the instruction you can pass a `set_getter` option as a `false`, this
 does not affect the creation of the state or mutation.
 
-The generated getters follow the same pattern – if the state property is `null` return the default value
+The generated getters follow a similar pattern – if the state property is `null` return the default value
 otherwise return the state property. No other checks are done because the we assume that all state manipulations are
-done through their respective mutations – the value is either valid or `null`.
-
-The default value that is returned is dependent on the type set in the instruction, see the
-[available types](#available-types) sections. The default value can also be manually set using the `default_value`
-option where that value will be returned without any alterations when the state value is `null`.
+done through their respective mutations – the value is either valid or `null`. The default value that is returned is
+dependent on the type set in the instruction, see the [available types](#available-types) sections. The default value
+can also be manually set using the `default_value` option where that value will be returned without any alterations
+when the state value is `null`.
 
 If you would like to specify the getter that should be use you can provide the getter function as the `getter` option.
 
-Any getters passed through the template's getters object are added as is, no alterations are made.
+Any getters passed through the `template.getters` object are added as is, no alterations are made.
 
 ```javascript
 const instructions = {
