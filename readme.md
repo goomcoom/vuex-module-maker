@@ -34,7 +34,8 @@ module maker is also completely configurable all the way from the default getter
 exist or does not have a specified getter) to the name given to the custom mutation defined for a specific value. The
 example below shows the module generated from the short defined template.
 
-Don't forget to test your actions, customized getters & customized mutations :wink:!
+When it comes to testing, you are no longer testing the standard functionality, rather the configuration but don't
+forget to test your actions, customized getters & customized mutations :wink:!
 
 ```javascript
 const template = {
@@ -58,6 +59,7 @@ const generated_module = {
         return {
             id: null,
             name: null,
+            dob: null,
             comments: null,
         };
     },
