@@ -158,7 +158,7 @@ class Config<S, R> {
     }
 
     private configureNaming(): void {
-        if (this.custom_config.naming !== undefined) return;
+        if (this.custom_config.naming === undefined) return;
         const custom = this.custom_config.naming;
 
         ['state','getter','mutation'].forEach((o) => {
