@@ -197,161 +197,6 @@ options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guid
 [mutations](https://vuex.vuejs.org/guide/mutations.html)). If you would like to change the default getters and
 mutations for all types or specific types you can change the [config](#config) settings.
 
-### Available types
-
-The module maker comes pre-loaded with common types but are completely configurable and more can be added. If you would
-like to change the default that is returned for a specific type (including the default) or to create a new type you can
-follow the instructions stated in the [config](#config) section.
-
-###### `default`
-
-The `default` type is important because if a specified type does not exist all settings are pulled from the default,
-when you change the default config be mindful of any ripple effects.
-
-```javascript
-// The initial value of the state property
-const initial_value = null;
-
-// The value returned when the state property === null
-const default_value = null;
-
-// The getter used when the type specified doesn't exist or does't have a specified getter
-const default_getter = state => {
-   return (state[state_name] == null) ? default_value : state[state_name];
-};
-
-// The mutation used when the type specified doesn't exist or does't have a specified mutation
-const default_mutation = (state, value = undefined) => {
-    state[state_name] = (value == null) ? null : value;
-};
-```
-
-###### `string`
-
-```javascript
-// The initial value of the state property
-const initial_value = null;
-
-// The value returned when the state property === null
-const default_value = '';
-
-// The getter used when the type === 'string'
-const string_getter = default_getter;
-
-// The mutation used when the type === 'string'
-const string_mutation = default_mutation;
-```
-
-###### `number`
-
-```javascript
-// The initial value of the state property
-const initial_value = null;
-
-// The value returned when the state property === null
-const default_value = null;
-
-// The getter used when the type === 'number'
-const number_getter = default_getter;
-
-// The mutation used when the type === 'number'
-const number_mutation = (state, value = undefined) => {
-    if (value == null) {
-        state[state_name] = null;
-    } else if (typeof value === 'number') {
-        state[state_name] = value;
-    } else {
-        const num = parseInt(value);
-        state[state_name] = isNaN(num) ? null : num;
-    }
-};
-```
-
-###### `boolean`
-
-```javascript
-// The initial value of the state property
-const initial_value = false;
-
-// The value returned when the state property === null
-const default_value = false;
-
-// The getter used when the type === 'boolean'
-const boolean_getter = default_getter;
-
-// The mutation used when the type === 'boolean'
-const boolean_mutation = (state, value = undefined) => {
-    state[state_name] = !!value;
-};
-```
-
-###### `date`
-
-```javascript
-// The initial value of the state property
-const initial_value = null;
-
-// The value returned when the state property === null
-const default_value = null;
-
-// The getter used when the type === 'date'
-const date_getter = default_getter;
-
-// The mutation used when the type === 'date'
-const date_mutation = (state, value = undefined) => {
-    if (value) {
-        const date = new Date(value);
-        state[state_name] = (date.toDateString() === 'Invalid Date') ? null : date;
-    } else {
-        state[state_name] = null;
-    }
-};
-```
-
-###### `array`
-
-```javascript
-// The initial value of the state property
-const initial_value = null;
-
-// The value returned when the state property === null
-const default_value = [];
-
-// The getter used when the type === 'array'
-const array_getter = default_getter;
-
-// The mutation used when the type === 'array'
-const array_mutation = default_mutation;
-```
-
-###### `object`
-
-```javascript
-// The initial value of the state property
-const initial_value = null;
-
-// The value returned when the state property === null
-const default_value = null;
-
-// The getter used when the type === 'object'
-const object_getter = default_getter;
-
-// The mutation used when the type === 'object'
-const object_mutation = (state, value = undefined) => {
-    if (typeof value === 'object') {
-        state[state_name] = value;
-    } else if (typeof value === 'string') {
-        try {
-            state[state_name] = JSON.parse(value);
-        } catch (e) {
-            state[state_name] = null;
-        }
-    } else {
-        state[state_name] = null;
-    }
-};
-```
-
 ### Namespaced
 Because the generated module is designed to be reusable, the namespace is set to `true` by default
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing)). If you would like to set it to `false` you may
@@ -667,6 +512,161 @@ const generated_module = {
         },
     },
 }
+```
+
+### Available types
+
+The module maker comes pre-loaded with common types but are completely configurable and more can be added. If you would
+like to change the default that is returned for a specific type (including the default) or to create a new type you can
+follow the instructions stated in the [config](#config) section.
+
+###### `default`
+
+The `default` type is important because if a specified type does not exist all settings are pulled from the default,
+when you change the default config be mindful of any ripple effects.
+
+```javascript
+// The initial value of the state property
+const initial_value = null;
+
+// The value returned when the state property === null
+const default_value = null;
+
+// The getter used when the type specified doesn't exist or does't have a specified getter
+const default_getter = state => {
+   return (state[state_name] == null) ? default_value : state[state_name];
+};
+
+// The mutation used when the type specified doesn't exist or does't have a specified mutation
+const default_mutation = (state, value = undefined) => {
+    state[state_name] = (value == null) ? null : value;
+};
+```
+
+###### `string`
+
+```javascript
+// The initial value of the state property
+const initial_value = null;
+
+// The value returned when the state property === null
+const default_value = '';
+
+// The getter used when the type === 'string'
+const string_getter = default_getter;
+
+// The mutation used when the type === 'string'
+const string_mutation = default_mutation;
+```
+
+###### `number`
+
+```javascript
+// The initial value of the state property
+const initial_value = null;
+
+// The value returned when the state property === null
+const default_value = null;
+
+// The getter used when the type === 'number'
+const number_getter = default_getter;
+
+// The mutation used when the type === 'number'
+const number_mutation = (state, value = undefined) => {
+    if (value == null) {
+        state[state_name] = null;
+    } else if (typeof value === 'number') {
+        state[state_name] = value;
+    } else {
+        const num = parseInt(value);
+        state[state_name] = isNaN(num) ? null : num;
+    }
+};
+```
+
+###### `boolean`
+
+```javascript
+// The initial value of the state property
+const initial_value = false;
+
+// The value returned when the state property === null
+const default_value = false;
+
+// The getter used when the type === 'boolean'
+const boolean_getter = default_getter;
+
+// The mutation used when the type === 'boolean'
+const boolean_mutation = (state, value = undefined) => {
+    state[state_name] = !!value;
+};
+```
+
+###### `date`
+
+```javascript
+// The initial value of the state property
+const initial_value = null;
+
+// The value returned when the state property === null
+const default_value = null;
+
+// The getter used when the type === 'date'
+const date_getter = default_getter;
+
+// The mutation used when the type === 'date'
+const date_mutation = (state, value = undefined) => {
+    if (value) {
+        const date = new Date(value);
+        state[state_name] = (date.toDateString() === 'Invalid Date') ? null : date;
+    } else {
+        state[state_name] = null;
+    }
+};
+```
+
+###### `array`
+
+```javascript
+// The initial value of the state property
+const initial_value = null;
+
+// The value returned when the state property === null
+const default_value = [];
+
+// The getter used when the type === 'array'
+const array_getter = default_getter;
+
+// The mutation used when the type === 'array'
+const array_mutation = default_mutation;
+```
+
+###### `object`
+
+```javascript
+// The initial value of the state property
+const initial_value = null;
+
+// The value returned when the state property === null
+const default_value = null;
+
+// The getter used when the type === 'object'
+const object_getter = default_getter;
+
+// The mutation used when the type === 'object'
+const object_mutation = (state, value = undefined) => {
+    if (typeof value === 'object') {
+        state[state_name] = value;
+    } else if (typeof value === 'string') {
+        try {
+            state[state_name] = JSON.parse(value);
+        } catch (e) {
+            state[state_name] = null;
+        }
+    } else {
+        state[state_name] = null;
+    }
+};
 ```
 
 ### Config
