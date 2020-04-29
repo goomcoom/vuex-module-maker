@@ -3,7 +3,7 @@ import {
     Getter as VGetter, Mutation as VMutation
 } from "vuex";
 
-export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'object' | 'any';
+export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'object';
 
 export type Type<T> =
     T extends 'string' ? string :
