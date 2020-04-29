@@ -146,6 +146,7 @@ class Config<S, R> {
 
     public configure():D.Config<S, R> {
         this.configureNamespaced();
+        this.configureNaming();
         this.configureTypes();
         return this.config;
     }
@@ -154,6 +155,23 @@ class Config<S, R> {
         if (this.custom_config.namespaced !== undefined) {
             this.config.namespaced = this.custom_config.namespaced
         }
+    }
+
+    private configureNaming(): void {
+        if (this.custom_config.naming !== undefined) return;
+        const custom = this.custom_config.naming;
+
+        ['state','getter','mutation'].forEach((o) => {
+            // @ts-ignore
+            if (custom[o] !== undefined) {
+                // @ts-ignore
+                if (custom[o].prefix !== undefined) this.config.naming[o].prefix = custom[o].prefix;
+                // @ts-ignore
+                if (custom[o].suffix !== undefined) this.config.naming[o].suffix = custom[o].suffix;
+                // @ts-ignore
+                if (custom[o].transformer !== undefined) this.config.naming[o].transformer = custom[o].transformer;
+            }
+        });
     }
 
     private configureTypes(): void {
