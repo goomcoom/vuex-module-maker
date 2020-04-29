@@ -17,6 +17,14 @@ class Config<S, R> {
     };
     get default_mutation() { return this._default_mutation; };
 
+    readonly _date_mutation: D.ConfigMutation<S> = (state_name) => {
+        return (state: S, value?: Date|string|number) => {
+            // @ts-ignore
+            state[state_name] = (value == null) ? null : new Date(value);
+        };
+    };
+    get date_mutation() { return this._date_mutation; };
+
     readonly _custom_config: D.CustomConfig<S, R>;
     get custom_config() { return this._custom_config; };
 
@@ -29,11 +37,11 @@ class Config<S, R> {
                 mutation: this.default_mutation
             },
             string: { default_value: '' },
-            number: { default_value: null },
             boolean: { default_value: false },
+            date: { mutation: this.date_mutation },
             array: { default_value: [] },
             object: { default_value: null },
-        }
+        },
     };
     get config() { return this._config; };
 
