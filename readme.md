@@ -1,5 +1,56 @@
 # Vuex Module Maker
 
+```javascript
+const template = {
+    instructions: {
+        id: 'number',
+        name: 'string',
+        comments: {
+            type: 'array',
+            getter_name: 'getAllComments',
+        },
+    },
+    getters: {
+        getFilteredComments: state => (liked = true) => state.comments.filter(c => liked === !!c.likes),
+    },
+};
+
+const generated_module = {
+    namespaced: true,
+    state() {
+        return {
+            id: null,
+            name: null,
+            comments: null,
+        };
+    },
+    getters: {
+        getId: state => state.id,
+        getName: state => (state.name == null) ? '' : state.name,
+        getAllComments: state => (state.comments == null) ? [] : state.comments,
+        getFilteredComments: state => (liked = true) => state.comments.filter(c => liked === !!c.likes),
+    },
+    mutations: {
+        setId: (state, value = undefined) => {
+           if (value == null) {
+               state.id = null;
+           } else if (typeof value === 'number') {
+               state.id = value;
+           } else {
+               const num = parseInt(value);
+               state.id = isNaN(num) ? null : num;
+           }
+       },
+       setName: (state, value) => {
+           state.name = (value == null) ? null : value;
+       },
+       setComments: (state, value) => {
+            state.name = (value == null) ? null : value;
+        }
+    }
+}
+```
+
 - [Installation](#installation)
 - [Usage](#usage)
     - [Template](#template)
@@ -25,17 +76,17 @@
 
 ### Template
 
-A module is created from a **template** object with instructions, state, getters, mutations, actions and modules. All
-the properties of the template except for the instructions are added to the module as is – passing a already generated
-module into the module maker should return an exact replica. The module properties that are added from the template's
-state, getters, mutations, modules properties take precedence over any of the properties generated from instructions,
-for example if a getter is created from an instruction and another getter is defined in the template's getters objects
-with the same name, the latter will be in the generated module.
+A module is created from a template object with instructions, state, getters, mutations, actions and modules properties.
+All the properties of the template except for the instructions are added to the module as is – passing a already
+generated module into the module maker should return an exact replica. The module properties that are added from the
+template's state, getters, mutations, modules properties take precedence over any of the properties generated from
+instructions, for example if a getter is created from an instruction and another getter is defined in the template's
+getters objects with the same name, the latter will be in the generated module.
 
 The defaults used to generate the module are very configurable, see the [config](#config) section on how to change the
 defaults.
 
-Instructions are backbone of this package, each instruction is processed to generate a state property, getter and
+Instructions are the backbone of this package, each instruction is processed to generate a state property, getter and
 mutation. Each instruction is expected to have at least a `type` option, this type is important for returning the
 correct format when using the generated getter. The instruction can be in the form of a `key`:`value` pair where
 the key is the raw name of state property and the value is either a string equal to the type or an object with
