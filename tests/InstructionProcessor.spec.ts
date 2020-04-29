@@ -8,8 +8,12 @@ interface R { [x: string]: any }
 type Ts = unknown;
 
 describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
-    const config_class = new Config();
-    const config = config_class.configure();
+    let config: D.Config<S, R>;
+
+    beforeEach(() => {
+        const config_class = new Config<S, R>();
+        config = config_class.configure()
+    });
 
     test('The formatter has an instruction property', () => {
         const formatter = new InstructionProcessor({id: {type: 'number'}}, config);
@@ -59,9 +63,21 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(processor.process()[0].state_name).toEqual('userId')
     });
 
-    test('State names are converted to snake case', () => {
-        const processor = new InstructionProcessor({ 'user Id': { type: 'number'}}, config);
-        expect(processor.process()[0].state_name).toEqual('user_id')
+    test('Default state naming config work as expected', () => {
+        let processor = new InstructionProcessor({ 'user Id': { type: 'number'}}, config);
+        expect(processor.process()[0].state_name).toEqual('user_id');
+
+        processor = new InstructionProcessor({ 'first_name': { type: 'string'}}, config);
+        expect(processor.process()[0].state_name).toEqual('first_name');
+    });
+
+    test('The state naming config can be controlled', () => {
+        config.naming.state.prefix = 'state_';
+        config.naming.state.suffix = '_prop';
+        config.naming.state.transformer = (raw) => raw.toUpperCase();
+
+        let processor = new InstructionProcessor({ 'user_Id': { type: 'number'}}, config);
+        expect(processor.process()[0].state_name).toEqual('STATE_USER_ID_PROP');
     });
 
     test('The set_state option can be controlled', () => {

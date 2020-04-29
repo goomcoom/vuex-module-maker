@@ -55,8 +55,10 @@ class InstructionProcessor<S, R, Ts> {
     }
 
     formatStateName <T extends Ts> (name: string, options: D.Instruction<T, S, R, Ts>): string {
-        name = options.state_name ? options.state_name : toSnakeCase(name);
-        return this.state_name = name;
+        if (options.state_name) return this.state_name = options.state_name;
+
+        const config = this.config.naming.state;
+        return this.state_name = config.transformer(config.prefix + name + config.suffix);
     }
 
     formatStateValue <T extends Ts> (options: D.Instruction<T, S, R, Ts>): D.Type<T>|null {
