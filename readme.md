@@ -45,7 +45,7 @@ const generated_module = {
     getters: {
         getId: state => state.id,
         getName: state => (state.name == null) ? '' : state.name,
-        getDob: state => (state.dob == null) ? null : state.dob,
+        getDob: state => state.dob,
         getAllComments: state => (state.comments == null) ? [] : state.comments,
         getFilteredComments: state => (liked = true) => state.comments.filter(c => liked === !!c.likes),
     },
