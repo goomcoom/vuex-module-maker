@@ -176,6 +176,20 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(processor.process()[0].set_mutation).toEqual(false)
     });
 
+    test('Default mutation naming config sets names as expected', () => {
+        let processor = new InstructionProcessor({id:{type: 'number'}}, config);
+        expect(processor.process()[0].mutation_name).toEqual('setId')
+    });
+
+    test('The mutation naming config can be controlled', () => {
+        config.naming.mutation.prefix = 'mutation_';
+        config.naming.mutation.suffix = '_method';
+        config.naming.mutation.transformer = (raw) => raw.toUpperCase();
+
+        let processor = new InstructionProcessor({ 'user_Id': { type: 'number'}}, config);
+        expect(processor.process()[0].mutation_name).toEqual('MUTATION_USER_ID_METHOD');
+    });
+
     test('The mutation_name can be controlled', () => {
         const processor = new InstructionProcessor({id:{type: 'number', mutation_name: 'setUserId'}}, config);
         expect(processor.process()[0].mutation_name).toEqual('setUserId')

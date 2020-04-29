@@ -78,8 +78,7 @@ class InstructionProcessor<S, R, Ts> {
         return config.transformer(config.prefix + this.state_name + config.suffix);
     }
 
-    formatGetter <T extends Ts> (options: D.Instruction<T, S, R, Ts>): VGetter<S, R>
-    {
+    formatGetter <T extends Ts> (options: D.Instruction<T, S, R, Ts>): VGetter<S, R> {
         if (options.getter) return options.getter;
         const getters = new Getter(this.config);
 
@@ -87,14 +86,14 @@ class InstructionProcessor<S, R, Ts> {
         return getters.format(options.type, this.state_name, options.default_value)
     }
 
-    formatMutationName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string
-    {
+    formatMutationName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string {
         if (options.mutation_name) return options.mutation_name;
-        return toCamelCase(`set_${this.state_name}`)
+
+        const config = this.config.naming.mutation;
+        return config.transformer(config.prefix + this.state_name + config.suffix);
     }
 
-    formatMutation <T extends Ts> (type: T): VMutation<S>
-    {
+    formatMutation <T extends Ts> (type: T): VMutation<S> {
         const raw = new Mutation<S, R, Ts>(this.config);
         return raw.format(type, this.state_name)
     }
