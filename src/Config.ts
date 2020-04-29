@@ -87,18 +87,36 @@ class Config<S, R> {
                 initial_value: null,
                 default_value: null,
                 getter: this.default_getter,
-                mutation: this.default_mutation
+                mutation: this.default_mutation,
             },
-            string: { default_value: '' },
+            string: {
+                initial_value: null,
+                default_value: '',
+            },
             boolean: {
                 initial_value: false,
                 default_value: false,
                 mutation: this.boolean_mutation,
             },
-            number: { mutation: this.number_mutation },
-            date: { mutation: this.date_mutation },
-            array: { default_value: [] },
-            object: { mutation: this.object_mutation },
+            number: {
+                initial_value: null,
+                default_value: null,
+                mutation: this.number_mutation,
+            },
+            date: {
+                initial_value: null,
+                default_value: null,
+                mutation: this.date_mutation,
+            },
+            array: {
+                initial_value: null,
+                default_value: [],
+            },
+            object: {
+                initial_value: null,
+                default_value: null,
+                mutation: this.object_mutation
+            },
         },
     };
     get config() { return this._config; };

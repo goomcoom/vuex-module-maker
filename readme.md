@@ -205,6 +205,9 @@ follow the instructions stated in the [config](#config) section.
 
 ###### `default`
 
+The `default` type is important because if a specified type does not exist all settings are pulled from the default,
+when you change the default config be mindful of any ripple effects.
+
 ```javascript
 // The initial value of the state property
 const initial_value = null;
