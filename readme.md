@@ -1,5 +1,25 @@
 # Vuex Module Maker
 
+- [Introduction](#vuex-module-maker)
+- [Installation](#installation)
+- [Usage](#usage)
+    - [Template](#template)
+        - [`key`](#key)
+        - [`set_state`, `set_getter` and `set_mutation`](#set_state-set_getter-and-set_mutation)
+        - [`state_name`, `getter_name` and `mutation_name`](#state_name-getter_name-and-mutation_name)
+        - [`initial_value`](#initial_value)
+        - [`default_value`](#default_value)
+        - [`getter` and `mutation`](#getter-and-mutation)
+    - [Available Types](#available-types)
+    - [Namespaced](#namespaced)
+    - [State](#state)
+    - [Getters](#getters)
+    - [Mutations](#mutations)
+    - [Actions and Modules](#actions-and-modules)
+    - [Config](#config)
+    - [Typescript](#typescript)
+    - [Useful Type Declarations](#useful-type-declarations)
+
 The module maker has been designed to remove the overhead involved in implementing the reusable-modules pattern.
 
 > Every object that has mutable properties and specific methods should have its own module that can be reused across
@@ -77,25 +97,6 @@ const generated_module = {
     },
 };
 ```
-
-- [Installation](#installation)
-- [Usage](#usage)
-    - [Template](#template)
-        - [`key`](#key)
-        - [`set_state`, `set_getter` and `set_mutation`](#set_state-set_getter-and-set_mutation)
-        - [`state_name`, `getter_name` and `mutation_name`](#state_name-getter_name-and-mutation_name)
-        - [`initial_value`](#initial_value)
-        - [`default_value`](#default_value)
-        - [`getter` and `mutation`](#getter-and-mutation)
-    - [Available Types](#available-types)
-    - [Namespaced](#namespaced)
-    - [State](#state)
-    - [Getters](#getters)
-    - [Mutations](#mutations)
-    - [Actions and Modules](#actions-and-modules)
-    - [Config](#config)
-    - [Typescript](#typescript)
-    - [Useful Type Declarations](#useful-type-declarations)
 
 # Installation
 
