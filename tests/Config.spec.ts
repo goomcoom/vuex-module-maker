@@ -70,7 +70,7 @@ describe('Config.ts', () => {
         expect(config.configure().types.default.mutation).toEqual(custom.types.default.mutation);
     });
 
-    test('New types can added', () => {
+    test('New types can be added', () => {
         // Rename the example type from default to example
         const custom: D.CustomConfig<any, any> = {
             types: {

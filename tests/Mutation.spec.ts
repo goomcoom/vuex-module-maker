@@ -16,6 +16,11 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
         expect(state.name).toEqual(null)
     });
 
+    test('The mutation class sets the config property on instantiation', () => {
+        const mutation = new Mutation(config);
+        expect(JSON.stringify(mutation.config)).toEqual(JSON.stringify(config));
+    });
+
     test('The mutation sets the state prop equal to the value if passed', () => {
         let state = {name: null};
         const raw = new Mutation(config);
@@ -23,11 +28,6 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
         mutation(state, 'example');
         expect(state.name).toEqual('example')
-    });
-
-    test('The mutation class sets the config property on instantiation', () => {
-        const mutation = new Mutation(config);
-        expect(JSON.stringify(mutation.config)).toEqual(JSON.stringify(config));
     });
 
     test('The mutation class returns the correct config mutation', () => {
