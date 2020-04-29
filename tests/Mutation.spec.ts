@@ -67,6 +67,26 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
     });
 
+    test('The boolean mutation sets the correct value', () => {
+        const state = { active: null };
+        const number_mutation = mutation.format('boolean', 'active');
+
+        number_mutation(state, null);
+        expect(state.active).toBe(false);
+
+        number_mutation(state, 1);
+        expect(state.active).toBe(true);
+
+        number_mutation(state, 0);
+        expect(state.active).toBe(false);
+
+        number_mutation(state, true);
+        expect(state.active).toBe(true);
+
+        number_mutation(state, false);
+        expect(state.active).toBe(false);
+    });
+
     test('The date mutation sets the correct value', () => {
         const state = { dob: null };
         const date_mutation = mutation.format('date', 'dob');

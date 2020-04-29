@@ -34,6 +34,14 @@ class Config<S, R> {
     };
     get number_mutation() { return this._number_mutation; };
 
+    readonly _boolean_mutation: D.ConfigMutation<S> = (state_name) => {
+        return (state: S, value?: any) => {
+                // @ts-ignore
+                state[state_name] = !!value;
+        };
+    };
+    get boolean_mutation() { return this._boolean_mutation; };
+
     readonly _date_mutation: D.ConfigMutation<S> = (state_name) => {
         return (state: S, value?: Date|string|number) => {
             if (value) {
@@ -81,7 +89,10 @@ class Config<S, R> {
                 mutation: this.default_mutation
             },
             string: { default_value: '' },
-            boolean: { default_value: false },
+            boolean: {
+                default_value: false,
+                mutation: this.boolean_mutation,
+            },
             number: { mutation: this.number_mutation },
             date: { mutation: this.date_mutation },
             array: { default_value: [] },
