@@ -19,8 +19,14 @@ class Config<S, R> {
 
     readonly _date_mutation: D.ConfigMutation<S> = (state_name) => {
         return (state: S, value?: Date|string|number) => {
-            // @ts-ignore
-            state[state_name] = (value == null) ? null : new Date(value);
+            if (value) {
+                const date = new Date(value);
+                // @ts-ignore
+                state[state_name] = (date.toDateString() === 'Invalid Date') ? null : date;
+            } else {
+                // @ts-ignore
+                state[state_name] = null;
+            }
         };
     };
     get date_mutation() { return this._date_mutation; };

@@ -4,6 +4,7 @@ import Config from "~/Config";
 describe('store/ModuleGenerator/Mutation.ts', () => {
     const config_class = new Config();
     const config = config_class.configure();
+    const mutation = new Mutation(config);
 
     test('If no value is passed the state property is set as null', () => {
         let state = {name: null};
@@ -46,5 +47,34 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
 
         mutation(state, ['I', 'hate', 'this']);
         expect(state.thoughts).toEqual(['I', 'hate', 'this']);
+    });
+
+    test('The date mutation sets the correct value', () => {
+        const state = { dob: null };
+        const date_mutation = mutation.format('date', 'dob');
+
+        date_mutation(state, new Date('2020-01-01'));
+        // @ts-ignore
+        expect(state.dob.toDateString()).toEqual('Wed Jan 01 2020');
+
+        date_mutation(state);
+        expect(state.dob).toEqual(null);
+
+        date_mutation(state, '1900-01-01');
+        // @ts-ignore
+        expect(state.dob.toDateString()).toEqual('Mon Jan 01 1900');
+
+        date_mutation(state, '');
+        expect(state.dob).toEqual(null);
+
+        date_mutation(state, 997654290934);
+        // @ts-ignore
+        expect(state.dob.toDateString()).toEqual('Sun Aug 12 2001');
+
+        date_mutation(state, 0);
+        expect(state.dob).toEqual(null);
+
+        date_mutation(state, config); // invalid date
+        expect(state.dob).toEqual(null);
     });
 });
