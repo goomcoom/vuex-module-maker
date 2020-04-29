@@ -88,6 +88,12 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(processor.process()[0].state_value).toEqual(22)
     });
 
+    test('The processor returns the type specific config initial_value if defined', () => {
+        // Boolean config has initial_value prop
+        let processor = new InstructionProcessor({id:{type: 'boolean'}}, config);
+        expect(processor.process()[0].state_value).toEqual(false);
+    });
+
     test('The set_getter option can be controlled', () => {
         // Default
         let processor = new InstructionProcessor({id:{type: 'array'}}, config);

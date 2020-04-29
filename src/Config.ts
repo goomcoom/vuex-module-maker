@@ -91,6 +91,7 @@ class Config<S, R> {
             },
             string: { default_value: '' },
             boolean: {
+                initial_value: false,
                 default_value: false,
                 mutation: this.boolean_mutation,
             },

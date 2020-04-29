@@ -60,7 +60,13 @@ class InstructionProcessor<S, R, Ts> {
     }
 
     formatStateValue <T extends Ts> (options: D.Instruction<T, S, R, Ts>): D.Type<T>|null {
-        return options.initial_value == null ? null : options.initial_value
+        if (options.initial_value !== undefined) return options.initial_value;
+        // @ts-ignore
+        if (this.config.types[options.type] === null || this.config.types[options.type].initial_value === undefined) {
+            return this.config.types.default.initial_value;
+        }
+        // @ts-ignore
+        return this.config.types[options.type].initial_value;
     }
 
     formatGetterName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string {
