@@ -22,6 +22,7 @@ const template = {
     instructions: {
         id: 'number',
         name: 'string',
+        dob: 'date',
         comments: {
             type: 'array',
             getter_name: 'getAllComments',
@@ -44,6 +45,7 @@ const generated_module = {
     getters: {
         getId: state => state.id,
         getName: state => (state.name == null) ? '' : state.name,
+        getDob: state => (state.dob == null) ? null : state.dob,
         getAllComments: state => (state.comments == null) ? [] : state.comments,
         getFilteredComments: state => (liked = true) => state.comments.filter(c => liked === !!c.likes),
     },
@@ -61,11 +63,19 @@ const generated_module = {
        setName: (state, value) => {
            state.name = (value == null) ? null : value;
        },
+        setDob: (state, value = undefined) => {
+            if (value) {
+                const date = new Date(value);
+                state.dob = (date.toDateString() === 'Invalid Date') ? null : date;
+            } else {
+                state.dob = null;
+            }
+        },
        setComments: (state, value) => {
             state.name = (value == null) ? null : value;
-        }
-    }
-}
+        },
+    },
+};
 ```
 
 - [Installation](#installation)
