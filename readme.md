@@ -228,24 +228,23 @@ const module = maker.make({}); // module.namespaced === false
 ### State
 
 Inline with the vuex instructions on creating reusable modules, the state is a callback that returns the state object,
-similar to how we define the state in the vue components
+similar to how we define the state in vue components 
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#module-reuse)).
 
 When the state property is created from an instruction, the name is extracted from the instruction's key and converted
-to snake case. The name can be controlled by passing a `state_name` option with the desired name, the passed value
-is not altered in any way.
+to snake case. The name can be controlled by passing a `state_name` option with the desired name.
 
-If the state property is created from the template's state property, the name will be identical to
-the key of the defined property.
+If the state property is created from the template's state property, the name will be identical to the key of the
+defined property.
 
-The initial value is set to `null` by default but it can also be controlled by passing an
+The initial value is set to `null` (or `false` if it's a 'boolean' type) by default but it can also be controlled by passing an
 `initial_value` option whose value will be used as the initial value.
 
-If the state property is created from the template's state property, the property's value will be
-set as the initial value.
+If the state property is created from the template's state property, the property's value will be set as the initial
+value.
 
-If you would like to prevent the state property from being created, you can include the `set_state` options with a
-false value.
+If you would like to prevent the state property from being created, you can include the `set_state` option with a
+`false` value.
 
 ```javascript
 const template = {
@@ -258,10 +257,10 @@ const template = {
         },
         age: {
             type: 'number',
-            default_value: 18,
+            initial_value: 18,
         },
         expired: {
-            type: 'function',
+            type: 'function', // Non-standard type
             set_state: false, // The state property will not be created
         },
     },
@@ -275,7 +274,7 @@ const resulting_module = {
     state() {
         return {
             id: null, // No adjustments to the name
-            user_active: null, // Converted to snake case
+            user_active: false, // Converted to snake case & boolean types have `false` initial value
             userName: null, // Specified state name
             age: 18, // initial value defined using the initial_value option
             RoLe: 'admin', // No alterations to the name or value
