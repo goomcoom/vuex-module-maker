@@ -5,6 +5,7 @@ describe('Config.ts', () => {
     const example_custom_config: D.CustomConfig<any, any> = {
         types: {
             default: {
+                initial_value: 'banana',
                 default_value: 'default value',
                 getter: (state_name, default_value) => {
                     return (state: any): any => {
