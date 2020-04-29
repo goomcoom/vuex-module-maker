@@ -77,4 +77,24 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
         date_mutation(state, config); // invalid date
         expect(state.dob).toEqual(null);
     });
+
+    test('The object mutation sets the correct value', () => {
+        const state = { title: null};
+        const object_mutation = mutation.format('object', 'title');
+
+        object_mutation(state, {id: 1, name: 'Mr'});
+        expect(state.title).toEqual({id: 1, name: 'Mr'});
+
+        object_mutation(state, {});
+        expect(state.title).toEqual({});
+
+        object_mutation(state);
+        expect(state.title).toEqual(null);
+
+        object_mutation(state, '{"id": 3, "name": "Dr"}');
+        expect(state.title).toEqual({id: 3, name: 'Dr'});
+
+        object_mutation(state, 'invalid JSON');
+        expect(state.title).toEqual(null);
+    })
 });

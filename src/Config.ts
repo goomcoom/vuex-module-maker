@@ -31,6 +31,27 @@ class Config<S, R> {
     };
     get date_mutation() { return this._date_mutation; };
 
+    readonly _object_mutation: D.ConfigMutation<S> = (state_name) => {
+        return (state: S, value?: object|string) => {
+            if (typeof value === 'object') {
+                // @ts-ignore
+                state[state_name] = value;
+            } else if (typeof value === 'string') {
+                try {
+                    // @ts-ignore
+                    state[state_name] = JSON.parse(value);
+                } catch (e) {
+                    // @ts-ignore
+                    state[state_name] = null;
+                }
+            } else {
+                // @ts-ignore
+                state[state_name] = null;
+            }
+        };
+    };
+    get object_mutation() { return this._object_mutation; };
+
     readonly _custom_config: D.CustomConfig<S, R>;
     get custom_config() { return this._custom_config; };
 
@@ -46,7 +67,7 @@ class Config<S, R> {
             boolean: { default_value: false },
             date: { mutation: this.date_mutation },
             array: { default_value: [] },
-            object: { default_value: null },
+            object: { mutation: this.object_mutation },
         },
     };
     get config() { return this._config; };
