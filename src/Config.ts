@@ -1,4 +1,6 @@
 import * as D from "../types";
+import { toCamelCase, toSnakeCase } from "~/helpers";
+
 
 class Config<S, R> {
     readonly _default_getter: D.ConfigGetter<S, R> = (state_name, default_value) => {
@@ -82,6 +84,23 @@ class Config<S, R> {
 
     private _config: D.Config<S, R> = {
         namespaced: true,
+        naming: {
+            state: {
+                prefix: '',
+                suffix: '',
+                transformer: toSnakeCase
+            },
+            getter: {
+                prefix: 'get',
+                suffix: '',
+                transformer: toCamelCase
+            },
+            mutation: {
+                prefix: 'set',
+                suffix: '',
+                transformer: toCamelCase
+            },
+        },
         types: {
             default: {
                 initial_value: null,
