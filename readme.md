@@ -1,14 +1,14 @@
 # Vuex Module Maker
 
 The module maker has been designed to remove the overhead involved in implementing the reusable-modules pattern.
+
 > Every object that has mutable properties and specific methods should have its own module that can be reused across
 > an application.
+
 One of the major drawbacks of this pattern is that modules are verbose and their compositions are repetitive – modules
 are made up of the same data types and the state tends to be manipulated in the same way depending on the state property
 in question (all `string` type properties have the same kind of getter and mutation). Adding testing to these modules
 just makes it even more laborious and let's be honest, it's discouraging!
-
-The idea
 
 ```javascript
 const template = {
