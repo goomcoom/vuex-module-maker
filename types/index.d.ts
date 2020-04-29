@@ -78,6 +78,7 @@ export interface Config<S, R> {
     namespaced: boolean,
     types: {
         default: {
+            initial_value: null,
             default_value: null,
             getter: ConfigGetter<S, R>,
             mutation: ConfigMutation<S>
@@ -94,6 +95,7 @@ export interface CustomConfig<S, R> {
 }
 
 export interface ConfigTypeOptions<S, R> {
+    initial_value?: any,
     default_value?: any,
     getter?: ConfigGetter<S, R>,
     mutation?: ConfigMutation<S>

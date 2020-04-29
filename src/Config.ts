@@ -84,6 +84,7 @@ class Config<S, R> {
         namespaced: true,
         types: {
             default: {
+                initial_value: null,
                 default_value: null,
                 getter: this.default_getter,
                 mutation: this.default_mutation
