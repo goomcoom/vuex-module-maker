@@ -76,6 +76,11 @@ export interface RawModule {
 
 export interface Config<S, R> {
     namespaced: boolean,
+    naming: {
+        state: ConfigNamingOptions,
+        getter: ConfigNamingOptions,
+        mutation: ConfigNamingOptions,
+    },
     types: {
         default: {
             initial_value: null,
@@ -89,6 +94,11 @@ export interface Config<S, R> {
 
 export interface CustomConfig<S, R> {
     namespaced?: boolean,
+    naming?: {
+        state?: CustomConfigNamingOptions,
+        getter?: CustomConfigNamingOptions,
+        mutation?: CustomConfigNamingOptions,
+    },
     types?: {
         [x: string]: ConfigTypeOptions<S, R>
     }
@@ -103,3 +113,15 @@ export interface ConfigTypeOptions<S, R> {
 
 type ConfigGetter<S, R> = (state_name: string, default_value: any) => VGetter<S, R>
 type ConfigMutation<S> = (state_name: string) => VMutation<S>
+
+export interface ConfigNamingOptions {
+    prefix: string,
+    suffix: string,
+    transformer: (raw: string) => string,
+}
+
+type MapUndefined<T> = {
+    [P in keyof T]?: T[P]
+}
+
+export type CustomConfigNamingOptions = MapUndefined<ConfigNamingOptions>
