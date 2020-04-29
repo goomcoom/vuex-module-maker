@@ -49,6 +49,24 @@ describe('store/ModuleGenerator/Mutation.ts', () => {
         expect(state.thoughts).toEqual(['I', 'hate', 'this']);
     });
 
+    test('The number mutation sets the correct value', () => {
+        const state = { id: null };
+        const number_mutation = mutation.format('number', 'id');
+
+        number_mutation(state, 1);
+        expect(state.id).toEqual(1);
+
+        number_mutation(state, null);
+        expect(state.id).toEqual(null);
+
+        number_mutation(state, '34567');
+        expect(state.id).toEqual(34567);
+
+        number_mutation(state, 'not a number');
+        expect(state.id).toEqual(null);
+
+    });
+
     test('The date mutation sets the correct value', () => {
         const state = { dob: null };
         const date_mutation = mutation.format('date', 'dob');

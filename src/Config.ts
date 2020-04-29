@@ -17,6 +17,23 @@ class Config<S, R> {
     };
     get default_mutation() { return this._default_mutation; };
 
+    readonly _number_mutation: D.ConfigMutation<S> = (state_name) => {
+        return (state: S, value?: number|string) => {
+            if (value == null) {
+                // @ts-ignore
+                state[state_name] = null;
+            } else if (typeof value === 'number') {
+                // @ts-ignore
+                state[state_name] = value;
+            } else {
+                const num = parseInt(value);
+                // @ts-ignore
+                state[state_name] = isNaN(num) ? null : num;
+            }
+        };
+    };
+    get number_mutation() { return this._number_mutation; };
+
     readonly _date_mutation: D.ConfigMutation<S> = (state_name) => {
         return (state: S, value?: Date|string|number) => {
             if (value) {
@@ -65,6 +82,7 @@ class Config<S, R> {
             },
             string: { default_value: '' },
             boolean: { default_value: false },
+            number: { mutation: this.number_mutation },
             date: { mutation: this.date_mutation },
             array: { default_value: [] },
             object: { mutation: this.object_mutation },
