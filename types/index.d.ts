@@ -16,22 +16,6 @@ export interface Object {
     [x: string]: any
 }
 
-/* Getters */
-export type StringGetter = <S>(state: S) => string;
-export type NumberGetter = <S>(state: S) => number|null;
-export type BooleanGetter = <S>(state: S) => boolean;
-export type ArrayGetter = <S>(state: S) => any[];
-export type ObjectGetter = <S>(state: S) => object|null;
-export type AnyGetter = <S>(state: S) => any;
-
-/* Mutations */
-export type StringMutation = <S>(state: S, value?: string ) => void;
-export type NumberMutation = <S>(state: S, value?: number ) => void;
-export type BooleanMutation = <S>(state: S, value?: boolean ) => void;
-export type ArrayMutation = <S>(state: S, value?: any[] ) => void;
-export type ObjectMutation = <S>(state: S, value?: object ) => void;
-export type AnyMutation = <S>(state: S, value?: any ) => void;
-
 /* Instructions */
 export interface Instruction<T extends Ts, S, R, Ts> {
     type: T,

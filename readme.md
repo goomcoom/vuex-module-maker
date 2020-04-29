@@ -573,13 +573,13 @@ Vuex can be used with typescript but is limited to the use of the `State` and `R
 ```typescript
 import {ActionTree, GetterTree,ModuleTree,MutationTree} from "vuex";
 
-interface VuexModule<S, R> {
+interface VuexModule<State, RootState> {
   namespaced?: boolean;
-  state?: S | (() => S);
-  getters?: GetterTree<S, R>;
-  actions?: ActionTree<S, R>;
-  mutations?: MutationTree<S>;
-  modules?: ModuleTree<R>;
+  state?: State | (() => State);
+  getters?: GetterTree<State, RootState>;
+  actions?: ActionTree<State, RootState>;
+  mutations?: MutationTree<State>;
+  modules?: ModuleTree<RootState>;
 }
 ```
 
@@ -601,23 +601,3 @@ If you would like type hinting you may import the following types:
 | Template         | `Template<State, RootState, Types`             |
 | Instructions     | `Instructions<State, RootState, Types>`        |
 | Instruction      | `Instructions<Type, State, RootState, Types>`  |
-
-###### Useful Type Declarations
-
-```typescript
-/* Getters */
-type StringGetter = <S>(state: S) => string;
-type NumberGetter = <S>(state: S) => number|null;
-type BooleanGetter = <S>(state: S) => boolean;
-type ArrayGetter = <S>(state: S) => any[];
-type ObjectGetter = <S>(state: S) => object|null;
-type AnyGetter = <S>(state: S) => any;
-
-/* Mutations */
-type StringMutation = <S>(state: S, value?: string ) => void;
-type NumberMutation = <S>(state: S, value?: number ) => void;
-type BooleanMutation = <S>(state: S, value?: boolean ) => void;
-type ArrayMutation = <S>(state: S, value?: any[] ) => void;
-type ObjectMutation = <S>(state: S, value?: object ) => void;
-type AnyMutation = <S>(state: S, value?: any ) => void;
-```
