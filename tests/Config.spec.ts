@@ -1,26 +1,31 @@
 import Config from "~/Config";
 import * as D from "../types";
+import {toCamelCase, toSnakeCase} from "../src/helpers";
 
 describe('Config.ts', () => {
-    const example_custom_config: D.CustomConfig<any, any> = {
-        types: {
-            default: {
-                initial_value: 'banana',
-                default_value: 'default value',
-                getter: (state_name, default_value) => {
-                    return (state: any): any => {
-                        default_value = state[state_name] == null ? 'is null' : 'not null';
-                        return default_value;
-                    }
-                },
-                mutation: (state_name) => {
-                    return (state: any, value: string): void => {
-                        state[state_name] = value ? 'is NULL' : 'is not NULL';
+    let example_custom_config: D.CustomConfig<any, any>;
+
+    beforeEach(() => {
+        example_custom_config = {
+            types: {
+                default: {
+                    initial_value: 'banana',
+                    default_value: 'default value',
+                    getter: (state_name, default_value) => {
+                        return (state: any): any => {
+                            default_value = state[state_name] == null ? 'is null' : 'not null';
+                            return default_value;
+                        }
+                    },
+                    mutation: (state_name) => {
+                        return (state: any, value: string): void => {
+                            state[state_name] = value ? 'is NULL' : 'is not NULL';
+                        }
                     }
                 }
             }
-        }
-    };
+        };
+    });
 
     test('The config class can be instantiated', () => {
         expect(() => new Config()).not.toThrow();
@@ -104,5 +109,58 @@ describe('Config.ts', () => {
 
         config = new Config(custom);
         expect(config.configure().types.example).toEqual({});
+    });
+
+    test.each`
+        option        | prefix    | test_prefix | suffix | test_suffix | transformer    | test_transformer
+        ${'state'}    | ${''}     | ${'S_x'}    | ${''}  | ${'x_S'}    | ${toSnakeCase} | ${(x: string) => x.toUpperCase()}
+        ${'getter'}   | ${'get_'} | ${'G_x'}    | ${''}  | ${'x_G'}    | ${toCamelCase} | ${(x: string) => x.toUpperCase()}
+        ${'mutation'} | ${'set_'} | ${'M_x'}    | ${''}  | ${'x_M'}    | ${toCamelCase} | ${(x: string) => x.toUpperCase()}
+    `('The $option naming config can be controlled', (vars) => {
+        /* If an empty naming config is passed, the config should remain as is. */
+        const custom = {naming: {}};
+        let ConfigClass = new Config(custom);
+        let config = ConfigClass.configure();
+        // @ts-ignore
+        expect(config.naming[vars.option].prefix).toEqual(vars.prefix);
+        // @ts-ignore
+        expect(config.naming[vars.option].suffix).toEqual(vars.suffix);
+        // @ts-ignore
+        expect(config.naming[vars.option].transformer).toEqual(vars.transformer);
+
+        /* If the naming options are empty the config should still remain the same */
+        custom.naming = {
+            state: {},
+            getter: {},
+            mutation: {},
+        }
+
+        ConfigClass = new Config(custom);
+        config = ConfigClass.configure();
+
+        // @ts-ignore
+        expect(config.naming[vars.option].prefix).toEqual(vars.prefix);
+        // @ts-ignore
+        expect(config.naming[vars.option].suffix).toEqual(vars.suffix);
+        // @ts-ignore
+        expect(config.naming[vars.option].transformer).toEqual(vars.transformer);
+
+
+        /* The custom options should override the default */
+        // @ts-ignore
+        custom.naming[vars.option] = {
+            prefix: vars.test_prefix,
+            suffix: vars.test_suffix,
+            transformer: vars.test_transformer,
+        };
+
+        ConfigClass = new Config(custom);
+        config = ConfigClass.configure();
+        // @ts-ignore
+        expect(config.naming[vars.option].prefix).toEqual(custom.naming[vars.option].prefix);
+        // @ts-ignore
+        expect(config.naming[vars.option].suffix).toEqual(custom.naming[vars.option].suffix);
+        // @ts-ignore
+        expect(config.naming[vars.option].transformer).toEqual(custom.naming[vars.option].transformer);
     });
 });
