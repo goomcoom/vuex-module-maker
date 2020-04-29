@@ -6,9 +6,9 @@ The module maker has been designed to remove the overhead involved in implementi
 > an application.
 
 One of the major drawbacks of this pattern is that modules are verbose and their compositions are repetitive – modules
-are made up of the same data types and the state tends to be manipulated in the same way depending on the state property
-in question (all `string` type properties have the same kind of getter and mutation). Adding testing to these modules
-just makes it even more laborious and let's be honest, it's discouraging!
+are made up of the same data types and the state tends to be manipulated in the same way depending on the type of the
+state property in question (all `string` type properties tend to have the same kind of getter and mutation). Adding
+testing to these modules just makes it even more laborious and let's be honest, it's discouraging!
 
 The idea is to centralize all the repetitive getter and mutation logic, organize it by type and ensure its tested. The
 module maker is also completely configurable all the way from the default getter (used when the passed type doesn't
@@ -105,9 +105,9 @@ defaults.
 
 Instructions are the backbone of this package, each instruction is processed to generate a state property, getter and
 mutation. Each instruction is expected to have at least a `type` option, this type is important for returning the
-correct format when using the generated getter. The instruction can be in the form of a `key`:`value` pair where
-the key is the raw name of state property and the value is either a string equal to the type or an object with
-instruction options.
+correct format when using the generated getter and ensuring that values are formatted correctly before being added to
+the state. The instruction is in the form of a `key`:`value` pair where the key is the name of state property and
+the value is either a string equal to the type or an object with instruction options.
 
 ```javascript
 const instructions = {
@@ -154,20 +154,22 @@ options.
     }
 ```
 
-###### `set_state`, `set_getter` and `set_mutation`
-
-If you want either the state property, getter or mutation to not be set, simply set the relevant option to `false`.
-
 ###### `state_name`, `getter_name` and `mutation_name`
 
-If you would like to manually set the state, getter or mutation name set the respective option. If you set the
-`state_name` option, the getter and mutation names will be generated from that specified name, however, setting the
-getter or mutation name does not affect any other name.
+If you would like to manually set the state, getter or mutation name set the respective option.<br>
+If you set the `state_name` option, the getter and mutation names will be generated from that specified name, however,
+setting the getter or mutation name does not affect any other name.
+
+###### `set_state`, `set_getter` and `set_mutation`
+
+If you want either the state property, getter or mutation to not be set, simply set the respective option to `false`.
 
 ###### `initial_value`
 
-All state properties are initially set to `null` by default. If you would like to set the state property with any other
-initial value, you may pass that value using the `initial_value` option.
+All state properties except for booleans are initially set to `null` by default, booleans are initially set to `false`.
+If you would like to set the state property with any other initial value, you may pass that value using the
+`initial_value` option. If you would like the initial value to be applied to all or a specific type you can change the
+[config](#config) settings.
 
 ###### `default_value`
 
