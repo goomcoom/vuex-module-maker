@@ -401,10 +401,14 @@ const generated_module = {
 ### Mutations
 
 Mutations follow the same rules as [getters](#getters) but in the context of mutations the names are prefixed with
-'set' instead of 'get' by default. See the [config](#config) section on how to control how names are generated.
+'set' instead of 'get' by default.
+
+> See the [config](#config-naming) section for details on changing the naming rules.
 
 The mutations that are assigned depend on the type, see the [available types](#available-types) section for more info
 about type specific mutations.
+
+> See the [config](#config-types) section for details on changing the mutation settings.
 
 ```javascript
 const template = {
@@ -562,8 +566,8 @@ const generated_module = {
 ### Available types
 
 The module maker comes pre-loaded with common types but are completely configurable and more can be added. If you would
-like to change the default that is returned for a specific type (including the default) or to create a new type you can
-follow the instructions stated in the [config](#config) section.
+like to change the default values used for a specific type or create a new type you can follow the instructions stated
+in the [config](#config) section.
 
 ###### `default`
 
@@ -746,7 +750,9 @@ const module = maker.make(template); // module.namespaced === false
 ### Config - `naming`
 
 The naming config is split into state, getter and mutation; they each have a prefix, suffix and transformer option. The
-naming process follows the same procedure:
+naming process follows the same procedure: The naming config options are independent of each other meaning you only
+need to submit the options you would like to change, for example if you just want to change the `prefix` you only need
+to supply the `prefix` option, all other settings will remain the same.
 
 ```javascript
 const raw_name = 'example';
@@ -763,14 +769,11 @@ The table below shows the default naming options and how they would transform th
 | getter        | `get_`    | `''`     | `toCamelCase()`     | `getExampleWord`  |
 | mutation      | `set_`    | `''`     | `toCamelCase()`     | `setExampleWord`  |
 
-###### `state`
+The state property, getter and mutation all get their names from the instruction key or the `state_name`, `getter_name`
+& `mutation_name` instruction options respectively.
 
-The state gets the raw name from the key of the instruction, or the state_name property; the state_name takes precedence
-over the key. The config options are independent of each other, so you only have to define the options you would like to
-change.
-
-The example below shows the config options necessary to add a suffix and prefix to the state and convert
-the name to uppercase.
+The example below shows the config options necessary to add a suffix and prefix to the state property and convert the
+name to uppercase; set the getter prefix as 'getter'; remove the mutation prefix and add a 'mutation' suffix.
 
 ```javascript
 import ModuleMaker from "vuex-module-maker";
@@ -783,6 +786,13 @@ const config = {
             suffix: '_prop',
             transformer: raw => raw.toUpperCase();,
         },
+        getter: {
+            prefix: 'getter_'
+        },
+        mutation: {
+            prefix: '',
+            suffix: ' mutation'
+        }
     },
 };
 
@@ -799,19 +809,33 @@ const template = {
 const Maker = new ModuleMaker(config);
 const module = Maker.make(template);
 
-module.state() === {
-    STATE_ACTIVE_PROP: false,
-    STATE_USER_ID_PROP: null,
-}; // true
+module === {
+    // ...
+    state() {
+        return {
+            STATE_ACTIVE_PROP: false,
+            STATE_USER_ID_PROP: null,
+        }
+    },
+    getters: {
+        getterActive: ...,
+        getterId: ...
+    },
+    mutations: {
+        activeMutation: ...,
+        idMutation: ...
+    },
+    // ...
+};
 ```
 
 ### Config - `types`
 
-The types config is broken down into 3 parts – `default_value, getter & mutation`. When an instruction is
-being processed each of the parts are processed individually; if the given type does not exist the default is used, if
-the type exists but does not have the that specific part defined, the de fault is used.
+The `types` config is broken down into 4 parts – `initial_value, default_value, getter & mutation`. When an instruction
+is being processed each of the parts are processed individually; if the given type does not exist the default is used,
+if the type exists but does not have the that specific part defined, the default is used.
 
-All pre-configured [types](#available-types) use the default getters and mutations.
+All pre-configured [types](#available-types) use the default getter.
 
 ```javascript
 const default_getter = (state) => {
@@ -823,30 +847,28 @@ const default_mutation = (state, value = undefined) => {
 }
 ```
 
-If you would like to change/create a type you can pass a type-config into the types config object, if you would like to
+If you would like to change/create a type you can pass a type-config into the `types` config object, if you would like to
 change the default you can pass the type-config under the type name `default`.
 
 The example below shows how to create a new type, the same process can be used to edit any of the existing types or
-default. Defining config types does not replace the current types, it updates the affected types and adds the new types
-for example supplying a config object with just the `string` type will not remove all the other types so they do not
-need to be re-defined.
+default.
 
 ###### Example – Creating a `form` Type
 
 We will be using the [vform](https://github.com/cretueusebiu/vform) package as an example, the package provides us with
 a form object that is extremely helpful with handling [laravel](https://laravel.com/docs/7.x) form errors.
 
-1. We would like the type to be assignable to state properties and we want a new form to be returned if the state
-property is `null` – `config.types.form.default_value = new Form`.
+1. We would like the type to be assignable to state properties with the type 'form', and we want a new form to be
+returned if the state property is `null` – `config.types.form.default_value = new Form`.
 2. The current default function already returns the default value if the `state_property === null` so we do not need to
 add a getter config for our `form` type – If a type does not have a specified getter, the default getter is used.
 However, an example has been provided to show the wrapping function. Every config getter should be returned by a
-function that accepts the `state_name & default_value`. The getter will be re-used so we need a way of passing the
+function that accepts the `state_name & default_value`. The getter will be re-used, so we need a way of passing the
 variables to the getter.
 3. For the mutation we want to accept both the `Form` class and an `object` that we can use in the construction of the
 form but if the value is `null` or `undefined` we would like to set the state prop to `null`. The default mutation does
-not provide this kind of functionality so we need to define a custom mutation. Similar to the getter, we need to wrap
-the mutation in a function that will make state_names available to the mutation.
+not provide this kind of functionality, so we need to define a custom mutation. Similar to the getter, we need to wrap
+the mutation in a function that will make `state_name` available to the mutation.
 
 ```javascript
 import Form from "vform";
@@ -855,6 +877,9 @@ import Maker from "vuex-module-maker";
 const config = {
     types: {
         form: {
+            // No need to define the initial_value as the default is already null but can be added for certainty
+            initial_value: null,
+
             default_value: new Form(),
 
             // Because the getter will be used over many instances
@@ -897,11 +922,11 @@ store.getters.getLoginForm === new Form(); // true
 
 ### Typescript
 
-The module maker was designed in a way that requires the minimum number of type variables – `state, root_state` and
-`types`. If you would like to use/append the default types you can import the `DefaultTypes` type.
+The module maker was designed in a way that requires the minimum number of type variables – `State, RootState` and
+`Types`. If you would like to use/append the default types you can import the `DefaultTypes` type.
 
 ```typescript
-import { DefaultTypes } from "vuex-module-maker"; 
+import ModuleMaker, { DefaultTypes } from "vuex-module-maker"; 
 
 // An example module's state
 interface UserState {
@@ -915,12 +940,12 @@ interface ExampleRootState {
 
 // DefaultTypes === 'string' | 'number' | 'boolean' | 'array' | 'object' | 'any'
 type Types = DefaultTypes | 'form';
+
+const maker = new ModuleMaker<UserState, ExampleRootState, Types>();
 ```
 
 Vuex can be used with typescript but is limited to the use of the `State & RootState` interfaces.
 ```typescript
-import {ActionTree, GetterTree,ModuleTree,MutationTree} from "vuex";
-
 interface VuexModule<State, RootState> {
   namespaced?: boolean;
   state?: State | (() => State);
@@ -929,14 +954,6 @@ interface VuexModule<State, RootState> {
   mutations?: MutationTree<State>;
   modules?: ModuleTree<RootState>;
 }
-```
-
-The ModuleMaker class also accepts the three types.
-
-```typescript
-import ModuleMaker from "vuex-module-maker";
-
-const maker = new ModuleMaker<State, RootState, Types>();
 ```
 
 If you would like type hinting you may import the following types:
