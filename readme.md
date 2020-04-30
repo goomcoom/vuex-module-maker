@@ -246,7 +246,7 @@ const module = maker.make(template); // module.namespaced === false
 
 ### State
 
-Inline with the vuex instructions on creating reusable modules, the state is a callback that returns the state object,
+Inline with vuex instructions on creating reusable modules, the state is a callback that returns the state object,
 similar to how we define the state in vue components 
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#module-reuse)).
 
@@ -285,6 +285,7 @@ const template = {
     state: {
         RoLe: 'admin',
     },
+    // ...
 };
 
 const resulting_module = {
@@ -723,10 +724,46 @@ const object_mutation = (state, value = undefined) => {
 };
 ```
 
-### Config
+# Config
 
-The config object is made up of two sections – the namespaced property and types. The namespaced config option is
-discussed [above](#namespaced).
+The config is split into three parts – namespaced, naming & types.
+
+### Config - namespaced
+
+Because the generated module is designed to be reusable, the namespace property is set to `true` by default
+([vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing)). If you would like to set it to `false` you may
+do so by passing a namespaced property in the config object during instantiation.
+
+```javascript
+import ModuleMaker from 'vuex-module-maker';
+
+const config = {
+    namespaced: false,
+    // ...
+};
+
+const maker = ModuleMaker(config);
+const module = maker.make(template); // module.namespaced === false
+```
+
+### Config - naming
+
+The naming config is split into state, getter and mutation; they each have a prefix, suffix and transformer option. The
+naming process follows the same procedure:
+
+```javascript
+const raw_name = 'example';
+const formatted_name = transformer(prefix + raw_name + suffix);
+```
+
+**Default Types**
+| Option        | Prefix        | Suffix        | Transformer       |
+| ------------- | ------------- | ------------- | ----------------- |
+| state         | ''            | ''            | `to_snake_case`   |
+| getter        | 'get_'        | ''            | `toCamelCase`     |
+| mutation      | 'set_'        | ''            | `toCamelCase`     |
+
+### Config - types
 
 The types config is broken down into 3 parts – `default_value, getter & mutation`. When an instruction is
 being processed each of the parts are processed individually; if the given type does not exist the default is used, if
