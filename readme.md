@@ -760,9 +760,9 @@ const formatted_name = transformer(prefix + raw_name + suffix);
 
 | Option        | Prefix        | Suffix        | Transformer       |
 | ------------- | ------------- | ------------- | ----------------- |
-| state         | ''            | ''            | `to_snake_case`   |
-| getter        | 'get_'        | ''            | `toCamelCase`     |
-| mutation      | 'set_'        | ''            | `toCamelCase`     |
+| state         | `''`          | `''`          | `to_snake_case`   |
+| getter        | `get_`        | `''`          | `toCamelCase`     |
+| mutation      | `set_`        | `''`          | `toCamelCase`     |
 
 ### Config - types
 
