@@ -757,6 +757,7 @@ const formatted_name = transformer(prefix + raw_name + suffix);
 ```
 
 **Default Types**
+
 | Option        | Prefix        | Suffix        | Transformer       |
 | ------------- | ------------- | ------------- | ----------------- |
 | state         | ''            | ''            | `to_snake_case`   |
