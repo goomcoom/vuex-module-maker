@@ -756,7 +756,7 @@ const raw_name = 'example';
 const formatted_name = transformer(prefix + raw_name + suffix);
 ```
 
-####### Default Types
+###### Default Types
 
 The table below shows the default naming options and how they would transform the example – `Example word`
 
@@ -765,6 +765,44 @@ The table below shows the default naming options and how they would transform th
 | state         | `''`      | `''`     | `to_snake_case()`   | `example_word`    |
 | getter        | `get_`    | `''`     | `toCamelCase()`     | `getExampleWord`  |
 | mutation      | `set_`    | `''`     | `toCamelCase()`     | `setExampleWord`  |
+
+###### `state`
+
+The state gets the raw name from the key of the instruction, or the state_name property; the state_name takes precedence
+over the key. The config options are independent of each other, so you only have to define the options you would like to
+change.
+
+The example below shows the config options necessary to add a suffix and prefix to the state and convert
+the name to uppercase.
+
+```javascript
+import ModuleMaker from "vuex-module-maker";
+
+const config = {
+    // ...
+    naming: {
+        state: {
+            prefix: 'state_',
+            suffix: '_prop',
+            transformer: raw => raw.toUpperCase();,
+        },
+    },
+};
+
+const template = {
+    instruction: {
+        id: {
+            type: 'number',
+            state_name: 'user_id',
+        },
+    },
+};
+
+const Maker = new ModuleMaker(config);
+const module = Maker.make(template);
+
+module.state() === { STATE_USER_ID_PROP: null } // true
+```
 
 ### Config - types
 
