@@ -728,7 +728,7 @@ const object_mutation = (state, value = undefined) => {
 
 The config is split into three parts – namespaced, naming & types.
 
-### Config - namespaced
+### Config - `namespaced`
 
 Because the generated module is designed to be reusable, the namespace property is set to `true` by default
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing)). If you would like to set it to `false` you may
@@ -746,7 +746,7 @@ const maker = ModuleMaker(config);
 const module = maker.make(template); // module.namespaced === false
 ```
 
-### Config - naming
+### Config - `naming`
 
 The naming config is split into state, getter and mutation; they each have a prefix, suffix and transformer option. The
 naming process follows the same procedure:
@@ -808,7 +808,7 @@ module.state() === {
 }; // true
 ```
 
-### Config - types
+### Config - `types`
 
 The types config is broken down into 3 parts – `default_value, getter & mutation`. When an instruction is
 being processed each of the parts are processed individually; if the given type does not exist the default is used, if
