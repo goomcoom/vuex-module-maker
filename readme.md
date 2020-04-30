@@ -791,6 +791,7 @@ const config = {
 
 const template = {
     instruction: {
+        active: 'boolean',
         id: {
             type: 'number',
             state_name: 'user_id',
@@ -801,7 +802,10 @@ const template = {
 const Maker = new ModuleMaker(config);
 const module = Maker.make(template);
 
-module.state() === { STATE_USER_ID_PROP: null } // true
+module.state() === {
+    STATE_ACTIVE_PROP: false,
+    STATE_USER_ID_PROP: null,
+}; // true
 ```
 
 ### Config - types
