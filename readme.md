@@ -1,12 +1,11 @@
 # Vuex Module Maker
 
-- [Introduction](#vuex-module-maker)
 - [Installation](#installation)
 - [Usage](#usage)
     - [Template](#template)
         - [`key`](#key)
-        - [`state_name`, `getter_name` & `mutation_name`](#state_name-getter_name-and-mutation_name)
-        - [`set_state`, `set_getter` & `set_mutation`](#set_state-set_getter-and-set_mutation)
+        - [`state_name, getter_name` & `mutation_name`](#state_name-getter_name-and-mutation_name)
+        - [`set_state, set_getter` & `set_mutation`](#set_state-set_getter-and-set_mutation)
         - [`initial_value`](#initial_value)
         - [`default_value`](#default_value)
         - [`getter` & `mutation`](#getter-and-mutation)
@@ -24,18 +23,14 @@ The module maker has been designed to remove the overhead involved in implementi
 > Every object that has mutable properties and specific methods should have its own module that can be reused across
 > an application.
 
-One of the major drawbacks of this pattern is that modules are verbose and their compositions are repetitive – modules
-are made up of the same data types and the state tends to be manipulated in the same way depending on the type of the
+One of the major drawbacks of this pattern is that modules are verbose, and their compositions are repetitive – modules
+are made-up of the same data types, and the state tends to be manipulated in the same way depending on the type of the
 state property in question (all `string` type properties tend to have the same kind of getter and mutation). Adding
 testing to these modules just makes it even more laborious and let's be honest, it's discouraging!
 
 The idea is to centralize all the repetitive getter and mutation logic, organize it by type and ensure its tested. The
-module maker is also completely configurable all the way from the default getter (used when the passed type doesn't
-exist or does not have a specified getter) to the name given to the custom mutation defined for a specific value. The
-example below shows the module generated from the short defined template.
-
-When it comes to testing, you are no longer testing the standard functionality, rather the configuration but don't
-forget to test your actions, customized getters & customized mutations :wink:!
+module maker is also completely configurable all the way from the default getter signature to how the property names are
+generated. The example below shows the module generated from the short template.
 
 ```javascript
 const template = {
@@ -117,8 +112,8 @@ const my_module = maker.make(template)
 ### Template
 
 A module is created from a template object with instructions, state, getters, mutations, actions and modules properties.
-All the properties of the template except for the instructions are added to the module as is – passing a already
-generated module into the module maker should return an exact replica. The module properties that are added from the
+All the properties of the template except for the instructions are added to the module as is – passing an already
+generated module into the module maker should return a replica. The module properties that are added from the
 template's state, getters, mutations, modules properties take precedence over any of the properties generated from
 instructions, for example if a getter is created from an instruction and another getter is defined in the template's
 getters objects with the same name, the latter will be in the generated module.
@@ -128,36 +123,54 @@ defaults.
 
 Instructions are the backbone of this package, each instruction is processed to generate a state property, getter and
 mutation. Each instruction is expected to have at least a `type` option, this type is important for returning the
-correct format when using the generated getter and ensuring that values are formatted correctly before being added to
-the state. The instruction is in the form of a `key`:`value` pair where the key is the name of state property and
-the value is either a string equal to the type or an object with instruction options.
+correct format when using the generated getter and mutations format payloads correctly before being added to the state.
+
+The instruction is in the form of a `key: value` pair where the key is the name of state property, and the value is
+either a string equal to the type, or an object with instruction options.
 
 ```javascript
-const instructions = {
-    id: 'number', // Instruction with just the type declared
-    name: {
-        type: 'string',
-
-        // State options
-        set_state: true,
-        state_name: 'name', 
-        initial_value: null,
-
-        // Getter options
-        set_getter: true,
-        getter_name: 'getName',
-        getter: state => {
-            return (state[state_name] == null) ? default_value : state[state_name];
-        },
-        default_value: null | '' | false | [], // Depending on type
-        
-        // Mutation options
-        set_mutation: true,
-        mutation_name: 'setName',
-        mutation: (state, value = undefined) => {
-            state[state_name] = (value == null) ? null : value;
+const template = {
+    instructions {
+        id: 'number', // Instruction with just the type declared
+        name: {
+            type: 'string',
+    
+            // State options
+            set_state: true,
+            state_name: 'name', 
+            initial_value: null,
+    
+            // Getter options
+            set_getter: true,
+            getter_name: 'getName',
+            getter: state => {
+                return (state[state_name] == null) ? default_value : state[state_name];
+            },
+            default_value: null | '' | false | [], // Depending on type
+            
+            // Mutation options
+            set_mutation: true,
+            mutation_name: 'setName',
+            mutation: (state, value = undefined) => {
+                state[state_name] = (value == null) ? null : value;
+            },
         },
     },
+    state: {
+        // ...
+    },
+    getters: {
+        // ...
+    },
+    mutations: {
+        // ...
+    },
+    actions: {
+        // ...
+    },
+    modules: {
+        // ...
+    }
 }
 ```
 
@@ -165,25 +178,30 @@ const instructions = {
 
 The instruction key is used to generate the names of the state property, getter and mutation. If you want to control
 any of the names you can do so using the
-[`state_name`, `getter_name` and `mutation_name`](#state_name-getter_name-and-mutation_name)
-options.
+[`state_name, getter_name & mutation_name`](#state_name-getter_name-and-mutation_name)
+options. If you would like to control how the names are generated you can use the naming [config](#config) option, the
+default naming rules are as follows:
 - state – the key is converted to snake case
 - getter – the key is prefixed with 'get' and converted to camel case
 - mutation – the key is prefixed with 'set' and converted to camel case
 
 ```javascript
-    const instructions = {
+const template = {
+    instructions: {
         'First Name': 'string' // [state = first_name] [getter = getFirstName] [mutation = setFirstName]
     }
+    // ...
+};
 ```
 
-###### `state_name`, `getter_name` and `mutation_name`
+###### `state_name, getter_name & mutation_name`
 
 If you would like to manually set the state, getter or mutation name set the respective option.<br>
 If you set the `state_name` option, the getter and mutation names will be generated from that specified name, however,
-setting the getter or mutation name does not affect any other name.
+setting the getter or mutation name does not affect any other name. If you would like to control how the names are
+generated, see the [config](#config) section.
 
-###### `set_state`, `set_getter` and `set_mutation`
+###### `set_state, set_getter & set_mutation`
 
 If you want either the state property, getter or mutation to not be set, simply set the respective option to `false`.
 
@@ -191,19 +209,18 @@ If you want either the state property, getter or mutation to not be set, simply 
 
 All state properties except for booleans are initially set to `null` by default, booleans are initially set to `false`.
 If you would like to set the state property with any other initial value, you may pass that value using the
-`initial_value` option. If you would like the initial value to be applied to all or a specific type you can change the
+`initial_value` option. If you would like the initial value to be applied to all, or a specific type you can change the
 [config](#config) settings.
 
 ###### `default_value`
 
 The purpose of the default value is to ensure that the correct type it always returned (where possible), for example if
-the expected type is an `array`, to avoid checking if the value is `null` or an `array`, we return an empty array.
-The returned default value is dependent on the type set in the instruction option. If you would like to return a
-specific value if the state value is `null` you can pass the value using the `default_value` option. If you would like
-the default value to be applied to all getters or getters of a specific type you can change the [config](#config)
-settings.
+the expected type is an `array`, to avoid checking if the value is `null` or an `array`, we return an empty array
+instead of null. The returned default value is dependent on the type set. If you would like to return a specific value
+if the state value is `null` you can pass the value using the `default_value` option. If you would like the default
+value to be applied to all getters or getters of a specific type you can change the [config](#config) settings.
 
-###### `getter` and `mutation`
+###### `getter & mutation`
 
 If you would like to customize the getter or mutation that is used to you can pass in the functions using the relevant
 options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guide/getters.html) and 
@@ -211,7 +228,7 @@ options. Be mindful of the vuex standards ([getters](https://vuex.vuejs.org/guid
 mutations for all types or specific types you can change the [config](#config) settings.
 
 ### Namespaced
-Because the generated module is designed to be reusable, the namespace is set to `true` by default
+Because the generated module is designed to be reusable, the namespace property is set to `true` by default
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#namespacing)). If you would like to set it to `false` you may
 do so by passing a namespaced property in the config object during instantiation.
 
@@ -220,11 +237,11 @@ import ModuleMaker from 'vuex-module-maker';
 
 const config = {
     namespaced: false,
-    //...
+    // ...
 };
 
 const maker = ModuleMaker(config);
-const module = maker.make({}); // module.namespaced === false
+const module = maker.make(template); // module.namespaced === false
 ```
 
 ### State
@@ -234,16 +251,18 @@ similar to how we define the state in vue components
 ([vuex guide](https://vuex.vuejs.org/guide/modules.html#module-reuse)).
 
 When the state property is created from an instruction, the name is extracted from the instruction's key and converted
-to snake case. The name can be controlled by passing a `state_name` option with the desired name.
+to snake case by default. The name can be controlled by passing a `state_name` option with the desired name. If you
+would like to changed how the names are generated, see the [config](#config) section.
 
-The initial value is set to `null` (or `false` if it's a 'boolean' type) by default but it can also be controlled by
-passing an `initial_value` option whose value will be used as the initial value.
+The initial value is set to `null` (or `false` if it's a 'boolean' type) by default, but it can also be controlled by
+passing an `initial_value` option whose value will be used as the initial value. You can also change the default
+initial values that are used, see the [config](#config) section.
 
 If you would like to prevent the state property from being created, you can include the `set_state` option with a
-`false` value.
+`false` value, this does not affect the creation of the getter or mutation.
 
 If the state property is created from the `template.state` property, the name will be identical to the key of the
-defined property and its value will be set as the initial value.
+defined property and so will be the initial value.
 
 ```javascript
 const template = {
@@ -259,7 +278,7 @@ const template = {
             initial_value: 18,
         },
         expired: {
-            type: 'function', // Non-standard type
+            type: 'function', // Custom type
             set_state: false, // The state property will not be created
         },
     },
@@ -285,56 +304,63 @@ const resulting_module = {
 
 ### Getters
 
-The getter names are created from the instructions's key (or the `state_name` option when supplied). The names are
-converted to camel case and prefixed with 'get'. The getter name can be overwritten by passing a `getter_name` option.
+The getter names are created from the instructions' keys (or the `state_name` option when supplied). The names are
+converted to camel case and prefixed with 'get' by default. The getter name can be overwritten by passing a
+`getter_name` option. If you would like to control how the names are generated, see the [config](#config) section.
 
 If you don't want the getter to be created from the instruction you can pass a `set_getter` option as a `false`, this
 does not affect the creation of the state or mutation.
 
 The generated getters follow a similar pattern – if the state property is `null` return the default value
-otherwise return the state property. No other checks are done because the we assume that all state manipulations are
+otherwise return the state property. No other checks are done because we assume that all state manipulations are
 done through their respective mutations – the value is either valid or `null`. The default value that is returned is
-dependent on the type set in the instruction, see the [available types](#available-types) sections. The default value
+dependent on the type set in the instruction, see the [available types](#available-types) section. The default value
 can also be manually set using the `default_value` option where that value will be returned without any alterations
 when the state value is `null`.
 
-If you would like to specify the getter that should be use you can provide the getter function as the `getter` option.
+If you would like to specify the getter that should be used you can provide the getter function as the `getter` option.
 
 Any getters passed through the `template.getters` object are added as is, no alterations are made.
 
 ```javascript
-const instructions = {
-    id: 'number',
-    name: {
-        type: 'string',
-        state_name: 'user_name',
-    },
-    comments: {
-        type: 'array',
-        state_name: 'user_comments',
-        getter_name: 'comments',
-    },
-    friends: {
-        type: 'array',
-        set_getter: false, // The getter will not be created
-    },
-    date_of_birth: {
-        type: 'date',
-        default_value: new Date('2000-01-01'),
-    },
-    full_name: {
-        type: 'string',
-        getter: state => {
-            if (state.full_name == null) {
-                return `${state.first_name} ${state.last_name}`;
-            }
-            return state.full_name;
+const template = {
+    instructions: {
+        id: 'number',
+        name: {
+            type: 'string',
+            state_name: 'user_name',
+        },
+        comments: {
+            type: 'array',
+            state_name: 'user_comments',
+            getter_name: 'comments',
+        },
+        friends: {
+            type: 'array',
+            set_getter: false, // The getter will not be created
+        },
+        date_of_birth: {
+            type: 'date',
+            default_value: new Date('2000-01-01'),
+        },
+        full_name: {
+            type: 'string',
+            getter: state => {
+                if (state.full_name == null) {
+                    return `${state.first_name} ${state.last_name}`;
+                }
+                return state.full_name;
+            },
         },
     },
+    getters: {
+        'Get Liked Comments': state => state.comments.filter(c => !!c.likes)
+    }
+    // ...
 };
 
 const generated_module = {
-    //...
+    // ...
     getters: {
         // instruction key used
         // id prefixed with 'get' and converted to camel case
@@ -365,53 +391,61 @@ const generated_module = {
              }
              return state.full_name;
          },
+
+        // Added from the template.getters object
+        // Added as-is
+        'Get Liked Comments': state => state.comments.filter(c => !!c.likes)
     },
-    //...
+    // ...
 };
 ```
 
 ### Mutations
 
-The mutations follow the same rules as [getters](#getters) but in the context of mutations the names are prefixed with
-'set' instead of 'get'.
+Mutations follow the same rules as [getters](#getters) but in the context of mutations the names are prefixed with
+'set' instead of 'get' by default. See the [config](#config) section on how to control how names are generated.
 
-The generated mutations set the state value equal to the passed value and `null` if no value has been passed.
-
-The mutations rely on the correct value type being passed, no type checks are done within the mutations as this
-package was designed to work best with [typescript](https://www.typescriptlang.org/docs/home.html). Using typescript
-allows us to have complete control over the value types are passed. See the typescript section [below](#typescript)
-for usage with typescript.
+The mutations that are assigned depend on the type, see the [available types](#available-types) section for more info
+about type specific mutations.
 
 ```javascript
-const instructions = {
-    id: 'number',
-    name: {
-        type: 'string',
-        state_name: 'user_name',
-    },
-    comments: {
-        type: 'array',
-        state_name: 'user_comments',
-        mutation_name: 'comments',
-    },
-    friends: {
-        type: 'array',
-        set_mutation: false, // The mutation will not be created
-    },
-    full_name: {
-        type: 'string',
-        mutation: (state, value = undefined) => {
-            if (value == null) {
-                state.full_name = `${state.first_name} ${state.last_name}`;
-            } else {
-                state.full_name = state.full_name;
-            }
+const template = {
+    instructions: {
+        id: 'number',
+        name: {
+            type: 'string',
+            state_name: 'user_name',
+        },
+        comments: {
+            type: 'array',
+            state_name: 'user_comments',
+            mutation_name: 'comments',
+        },
+        friends: {
+            type: 'array',
+            set_mutation: false, // The mutation will not be created
+        },
+        full_name: {
+            type: 'string',
+            mutation: (state, value = undefined) => {
+                if (value == null) {
+                    state.full_name = `${state.first_name} ${state.last_name}`;
+                } else {
+                    state.full_name = state.full_name;
+                }
+            },
         },
     },
+    mutations: {
+        'set name to uppercase': (state, value) => {
+            state.name = value.toUpperCase();
+        },
+    },
+    // ...
 };
 
 const generated_module = {
-    //...
+    // ...
     mutations: {
         // instruction key used
         // id prefixed with 'set' and converted to camel case
@@ -448,20 +482,26 @@ const generated_module = {
                  state.full_name = state.full_name;
              }
          },
+         
+        // Defined in template.mutations
+        // Added to module as-is
+        'set name to uppercase': (state, value) => {
+            state.name = value.toUpperCase();
+        },
     },
-    //...
+    // ...
 };
 ```
 
 ### Actions and Modules
 
-Actions and modules are not directly related to the [state](#state), [getters](#getters) and [mutations](#mutations) so
-it's impossible to know what actions and modules will be used in a module, this means that the module maker only adds
-actions and modules that have been defined in the actions and modules template properties respectively.
+Actions and modules are not directly related to the [state](#state) so it's impossible to know what actions and modules
+will be used in a module, this means that the module maker only adds actions and modules that have been defined in their
+respective template properties.
 
 ```javascript
 const template = {
-    //...
+    // ...
     actions: {
         resetUser: (context) => {
             context.commit('setUserName');
@@ -491,7 +531,7 @@ const template = {
 }
 
 const generated_module = {
-    //...
+    // ...
     actions: {
         resetUser: (context) => {
             context.commit('setUserName')
@@ -529,22 +569,29 @@ follow the instructions stated in the [config](#config) section.
 
 ###### `default`
 
-The `default` type is important because if a specified type does not exist all settings are pulled from the default,
+The `default` type is important because if the specified type does not exist all settings are pulled from the default,
 when you change the default config be mindful of any ripple effects.
 
 ```javascript
-// The initial value of the state property
 const initial_value = null;
 
-// The value returned when the state property === null
 const default_value = null;
 
-// The getter used when the type specified doesn't exist or does't have a specified getter
+/**
+* The getter used when the type specified doesn't exist or does't have a specified getter
+*
+* @param state
+*/
 const default_getter = state => {
    return (state[state_name] == null) ? default_value : state[state_name];
 };
 
-// The mutation used when the type specified doesn't exist or does't have a specified mutation
+/**
+* The mutation used when the type specified doesn't exist or does't have a specified mutation
+*
+* @param state
+* @param {*} value
+*/
 const default_mutation = (state, value = undefined) => {
     state[state_name] = (value == null) ? null : value;
 };
@@ -553,32 +600,30 @@ const default_mutation = (state, value = undefined) => {
 ###### `string`
 
 ```javascript
-// The initial value of the state property
 const initial_value = null;
 
-// The value returned when the state property === null
 const default_value = '';
 
-// The getter used when the type === 'string'
 const string_getter = default_getter;
 
-// The mutation used when the type === 'string'
 const string_mutation = default_mutation;
 ```
 
 ###### `number`
 
 ```javascript
-// The initial value of the state property
 const initial_value = null;
 
-// The value returned when the state property === null
 const default_value = null;
 
-// The getter used when the type === 'number'
 const number_getter = default_getter;
 
-// The mutation used when the type === 'number'
+/**
+* Mutation used when type === 'number'.
+* 
+* @param state
+* @param {number|string} value
+*/
 const number_mutation = (state, value = undefined) => {
     if (value == null) {
         state[state_name] = null;
@@ -594,16 +639,18 @@ const number_mutation = (state, value = undefined) => {
 ###### `boolean`
 
 ```javascript
-// The initial value of the state property
 const initial_value = false;
 
-// The value returned when the state property === null
 const default_value = false;
 
-// The getter used when the type === 'boolean'
 const boolean_getter = default_getter;
 
-// The mutation used when the type === 'boolean'
+/**
+* The mutation used when the type === 'boolean'.
+* 
+* @param state
+* @param {*} value
+*/
 const boolean_mutation = (state, value = undefined) => {
     state[state_name] = !!value;
 };
@@ -612,16 +659,18 @@ const boolean_mutation = (state, value = undefined) => {
 ###### `date`
 
 ```javascript
-// The initial value of the state property
 const initial_value = null;
 
-// The value returned when the state property === null
 const default_value = null;
 
-// The getter used when the type === 'date'
 const date_getter = default_getter;
 
-// The mutation used when the type === 'date'
+/**
+* The mutation used when the type === 'date'.
+* 
+* @param state
+* @param {number|string|Date} value
+*/
 const date_mutation = (state, value = undefined) => {
     if (value) {
         const date = new Date(value);
@@ -635,32 +684,30 @@ const date_mutation = (state, value = undefined) => {
 ###### `array`
 
 ```javascript
-// The initial value of the state property
 const initial_value = null;
 
-// The value returned when the state property === null
 const default_value = [];
 
-// The getter used when the type === 'array'
 const array_getter = default_getter;
 
-// The mutation used when the type === 'array'
 const array_mutation = default_mutation;
 ```
 
 ###### `object`
 
 ```javascript
-// The initial value of the state property
 const initial_value = null;
 
-// The value returned when the state property === null
 const default_value = null;
 
-// The getter used when the type === 'object'
 const object_getter = default_getter;
 
-// The mutation used when the type === 'object'
+/**
+* The mutation used when the type === 'object'.
+* 
+* @param state
+* @param {string|object} value
+*/
 const object_mutation = (state, value = undefined) => {
     if (typeof value === 'object') {
         state[state_name] = value;
@@ -681,7 +728,7 @@ const object_mutation = (state, value = undefined) => {
 The config object is made up of two sections – the namespaced property and types. The namespaced config option is
 discussed [above](#namespaced).
 
-The types config is broken down into 3 parts – `default_value`, `getter` and `mutation`. When an instruction is
+The types config is broken down into 3 parts – `default_value, getter & mutation`. When an instruction is
 being processed each of the parts are processed individually; if the given type does not exist the default is used, if
 the type exists but does not have the that specific part defined, the de fault is used.
 
@@ -715,7 +762,7 @@ property is `null` – `config.types.form.default_value = new Form`.
 2. The current default function already returns the default value if the `state_property === null` so we do not need to
 add a getter config for our `form` type – If a type does not have a specified getter, the default getter is used.
 However, an example has been provided to show the wrapping function. Every config getter should be returned by a
-function that accepts the `state_name` and `default_value`. The getter will be re-used so we need a way of passing the
+function that accepts the `state_name & default_value`. The getter will be re-used so we need a way of passing the
 variables to the getter.
 3. For the mutation we want to accept both the `Form` class and an `object` that we can use in the construction of the
 form but if the value is `null` or `undefined` we would like to set the state prop to `null`. The default mutation does
@@ -771,7 +818,7 @@ store.getters.getLoginForm === new Form(); // true
 
 ### Typescript
 
-The module maker was designed in a way that requires the minimum number of type variables – `state`, `root_state` and
+The module maker was designed in a way that requires the minimum number of type variables – `state, root_state` and
 `types`. If you would like to use/append the default types you can import the `DefaultTypes` type.
 
 ```typescript
@@ -791,7 +838,7 @@ interface ExampleRootState {
 type Types = DefaultTypes | 'form';
 ```
 
-Vuex can be used with typescript but is limited to the use of the `State` and `RootState` interfaces.
+Vuex can be used with typescript but is limited to the use of the `State & RootState` interfaces.
 ```typescript
 import {ActionTree, GetterTree,ModuleTree,MutationTree} from "vuex";
 
