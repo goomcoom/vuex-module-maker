@@ -45,11 +45,11 @@ class InstructionProcessor<S, R, Ts> {
             state_value: this.formatStateValue(options),
             // Getter options
             set_getter: options.set_getter == null ? true : options.set_getter,
-            getter_name: this.formatGetterName(options),
+            getter_name: this.formatGetterName(name, options),
             getter: this.formatGetter(options),
             // Mutation options
             set_mutation: options.set_mutation == null ? true : options.set_mutation,
-            mutation_name: this.formatMutationName(options),
+            mutation_name: this.formatMutationName(name, options),
             mutation: this.formatMutation(options.type),
         }
     }
@@ -71,11 +71,11 @@ class InstructionProcessor<S, R, Ts> {
         return this.config.types[options.type].initial_value;
     }
 
-    formatGetterName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string {
+    formatGetterName <T extends Ts> (name: string, options: D.Instruction<T, S, R, Ts>): string {
         if (options.getter_name) return options.getter_name;
 
         const config = this.config.naming.getter;
-        return config.transformer(config.prefix + this.state_name + config.suffix);
+        return config.transformer(config.prefix + name + config.suffix);
     }
 
     formatGetter <T extends Ts> (options: D.Instruction<T, S, R, Ts>): VGetter<S, R> {
@@ -86,11 +86,11 @@ class InstructionProcessor<S, R, Ts> {
         return getters.format(options.type, this.state_name, options.default_value)
     }
 
-    formatMutationName <T extends Ts> (options: D.Instruction<T, S, R, Ts>): string {
+    formatMutationName <T extends Ts> (name: string, options: D.Instruction<T, S, R, Ts>): string {
         if (options.mutation_name) return options.mutation_name;
 
         const config = this.config.naming.mutation;
-        return config.transformer(config.prefix + this.state_name + config.suffix);
+        return config.transformer(config.prefix + name + config.suffix);
     }
 
     formatMutation <T extends Ts> (type: T): VMutation<S> {

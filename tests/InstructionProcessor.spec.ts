@@ -128,6 +128,11 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     });
 
     test('Default getter naming config sets names as expected', () => {
+        // Ensure state_name processing is ignored
+        config.naming.state.prefix = 'S_';
+        config.naming.state.suffix = '_S';
+        config.naming.state.transformer = (raw: string) => raw.toUpperCase();
+
         let processor = new InstructionProcessor({id:{type: 'number'}}, config);
         expect(processor.process()[0].getter_name).toEqual('getId')
     });
@@ -177,6 +182,11 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     });
 
     test('Default mutation naming config sets names as expected', () => {
+        // Ensure state_name processing is ignored
+        config.naming.state.prefix = 'S_';
+        config.naming.state.suffix = '_S';
+        config.naming.state.transformer = (raw: string) => raw.toUpperCase();
+
         let processor = new InstructionProcessor({id:{type: 'number'}}, config);
         expect(processor.process()[0].mutation_name).toEqual('setId')
     });
