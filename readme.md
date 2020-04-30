@@ -756,13 +756,15 @@ const raw_name = 'example';
 const formatted_name = transformer(prefix + raw_name + suffix);
 ```
 
-**Default Types**
+####### Default Types
 
-| Option        | Prefix        | Suffix        | Transformer       |
-| ------------- | ------------- | ------------- | ----------------- |
-| state         | `''`          | `''`          | `to_snake_case`   |
-| getter        | `get_`        | `''`          | `toCamelCase`     |
-| mutation      | `set_`        | `''`          | `toCamelCase`     |
+The table below shows the default naming options and how they would transform the example – `Example word`
+
+| Option        | Prefix    | Suffix   | Transformer         | Result            |
+| ------------- | --------- | -------- | ------------------- | ----------------- |
+| state         | `''`      | `''`     | `to_snake_case()`   | `example_word`    |
+| getter        | `get_`    | `''`     | `toCamelCase()`     | `getExampleWord`  |
+| mutation      | `set_`    | `''`     | `toCamelCase()`     | `setExampleWord`  |
 
 ### Config - types
 
