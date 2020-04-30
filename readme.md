@@ -184,7 +184,7 @@ any of the names you can do so using the
 [`state_name, getter_name & mutation_name`](#state_name-getter_name-and-mutation_name)
 options.
 
-See the [config](#config---naming) section for details on changing the naming rules.
+> See the [config](#config-naming) section for details on changing the naming rules.
 
 
 ```javascript
