@@ -15,8 +15,10 @@
     - [Mutations](#mutations)
     - [Actions & Modules](#actions-and-modules)
     - [Available Types](#available-types)
-    - [Config](#config)
-    - [Typescript](#typescript)
+- [Config](#config)
+    - [`namespaced`](#config---namespaced)
+    - [`naming`](#config---naming)
+- [Typescript](#typescript)
 
 The module maker has been designed to remove the overhead involved in implementing the reusable-modules pattern.
 
@@ -123,7 +125,8 @@ defaults.
 
 Instructions are the backbone of this package, each instruction is processed to generate a state property, getter and
 mutation. Each instruction is expected to have at least a `type` option, this type is important for returning the
-correct format when using the generated getter and mutations format payloads correctly before being added to the state.
+correct format when using the generated getter and that the mutations format payloads correctly before being added to
+the state.
 
 The instruction is in the form of a `key: value` pair where the key is the name of state property, and the value is
 either a string equal to the type, or an object with instruction options.
@@ -179,11 +182,10 @@ const template = {
 The instruction key is used to generate the names of the state property, getter and mutation. If you want to control
 any of the names you can do so using the
 [`state_name, getter_name & mutation_name`](#state_name-getter_name-and-mutation_name)
-options. If you would like to control how the names are generated you can use the naming [config](#config) option, the
-default naming rules are as follows:
-- state – the key is converted to snake case
-- getter – the key is prefixed with 'get' and converted to camel case
-- mutation – the key is prefixed with 'set' and converted to camel case
+options.
+
+See the [config](#config---naming) section for details on changing the naming rules.
+
 
 ```javascript
 const template = {
