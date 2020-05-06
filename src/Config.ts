@@ -1,5 +1,5 @@
 import * as D from "../types";
-import { toCamelCase, toSnakeCase } from "~/helpers";
+import { toCamelCase, toSnakeCase } from "./helpers";
 
 
 class Config<S, R> {

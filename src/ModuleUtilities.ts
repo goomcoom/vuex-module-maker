@@ -1,4 +1,4 @@
-import Config from "~/Config";
+import Config from "./Config";
 import * as D from "../types";
 import { Getter, Mutation, Action, Module} from "vuex";
 
