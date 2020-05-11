@@ -1,6 +1,6 @@
 {
   "name": "vuex-module-maker",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": "Simon Msara",
   "license": "MIT",
   "description": "Automating the module creation process.",
@@ -16,7 +16,7 @@
   "typings": "types/index.d.ts",
   "files": [
     "dist",
-    "tests"
+    "types/index.d.ts"
   ],
   "private": true,
   "scripts": {

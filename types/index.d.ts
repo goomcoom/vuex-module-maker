@@ -3,6 +3,9 @@ import {
     Getter as VGetter, Mutation as VMutation
 } from "vuex";
 
+import ModuleMaker from '../src/ModuleMaker';
+export default ModuleMaker;
+
 export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'object';
 
 export type Type<T> =
