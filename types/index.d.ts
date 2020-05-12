@@ -106,8 +106,8 @@ export interface ConfigTypeOptions<S, R> {
     mutation?: ConfigMutation<S>
 }
 
-type ConfigGetter<S, R> = (state_name: string, default_value: any) => VGetter<S, R>
-type ConfigMutation<S> = (state_name: string) => VMutation<S>
+export type ConfigGetter<S, R> = (state_name: string, default_value: any) => VGetter<S, R>
+export type ConfigMutation<S> = (state_name: string) => VMutation<S>
 
 export interface ConfigNaming {
     state: ConfigNamingOptions,
@@ -121,7 +121,7 @@ export interface ConfigNamingOptions {
     transformer: (raw: string) => string,
 }
 
-interface CustomConfigNaming {
+export interface CustomConfigNaming {
     state?: CustomConfigNamingOptions,
     getter?: CustomConfigNamingOptions,
     mutation?: CustomConfigNamingOptions,
