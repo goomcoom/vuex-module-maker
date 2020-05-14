@@ -7,20 +7,28 @@ type R = S
 describe('src/ModuleGenerator.ts', () => {
 
     test('The namespaced property can be controlled', () => {
-        let generator = new ModuleMaker<R, DefaultTypes>();
+        let generator = new ModuleMaker<S, R, DefaultTypes>({});
         expect(generator.namespaced).toBe(true);
 
         const config = {
             namespaced: false
         };
-        generator = new ModuleMaker(config);
+        generator = new ModuleMaker({}, config);
         expect(generator.namespaced).toBe(false);
     });
 
     test('Passing an empty raw module returns an empty module', () => {
-        const generator = new ModuleMaker<R, DefaultTypes>();
-        const module  = JSON.stringify(generator.module);
-        expect(JSON.stringify(generator.make({}))).toEqual(module);
+        const module = new ModuleMaker<S, R, DefaultTypes>({});
+        expect(JSON.stringify(module)).toEqual(JSON.stringify({
+            namespaced: true,
+            state() {
+                return {}
+            },
+            getters: {},
+            mutations: {},
+            actions: {},
+            modules: {},
+        }));
     });
 
     test('Passing instructions sets the state if set_state != false', () => {
@@ -41,9 +49,9 @@ describe('src/ModuleGenerator.ts', () => {
             } as Instructions<S, R, DefaultTypes>
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
         // @ts-ignore
-        const state = generator.make(template).state();
+        const state = module.state();
 
         expect(state.hasOwnProperty('id')).toBe(true);
         expect(state.hasOwnProperty('name')).toBe(true);
@@ -59,8 +67,8 @@ describe('src/ModuleGenerator.ts', () => {
             } as Instructions<S, R, DefaultTypes>
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
-        const getters = generator.make(template).getters;
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
+        const getters = module.getters;
 
         if (getters) { // Interface dictates that getters may be undefined
             expect(getters.hasOwnProperty('getId')).toBe(true);
@@ -78,8 +86,8 @@ describe('src/ModuleGenerator.ts', () => {
             } as Instructions<S, R, DefaultTypes>
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
-        const mutations = generator.make(template).mutations;
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
+        const mutations = module.mutations;
 
         if (mutations) { // Interface dictates that mutations may be undefined
             expect(mutations.hasOwnProperty('setId')).toBe(true);
@@ -102,9 +110,9 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
         // @ts-ignore
-        const state = generator.make(template).state();
+        const state = module.state();
         if (template.state) {
             // @ts-ignore
             expect(state.example).toEqual(template.state.example);
@@ -126,8 +134,8 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
-        const getters = generator.make(template).getters;
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
+        const getters = module.getters;
 
         // @ts-ignore
         expect(getters.getExample).toEqual(template.getters.getExample);
@@ -152,8 +160,8 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
-        const mutations = generator.make(template).mutations;
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
+        const mutations = module.mutations;
         // @ts-ignore
         expect(mutations.setExample).toEqual(template.mutations.setExample);
         // @ts-ignore
@@ -170,8 +178,8 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
-        const actions = generator.make(template).actions;
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
+        const actions = module.actions;
         // @ts-ignore
         expect(actions.grow).toEqual(template.actions.grow);
     });
@@ -190,60 +198,50 @@ describe('src/ModuleGenerator.ts', () => {
             }
         };
 
-        const generator = new ModuleMaker<R, DefaultTypes>();
-        const modules = generator.make(template).modules;
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
+        const modules = module.modules;
         // @ts-ignore
         expect(JSON.stringify(modules.user)).toEqual(JSON.stringify(template.modules.user));
     });
 
     test('The make methods creates a fresh module every time', () => {
-        const Maker =  new ModuleMaker<R, DefaultTypes>();
-
         const first_template: Template<S, R, DefaultTypes> = {
             instructions: {
                 id: 'number',
             },
         };
-
-        const first_module = Maker.make<S>(first_template);
-        if (first_module.state) {
-            // @ts-ignore
-            expect(first_module.state()).toEqual({id: null});
-        }
+        const first_module = new ModuleMaker<S, R, DefaultTypes>(first_template);
+        // @ts-ignore
+        expect(first_module.state()).toEqual({id: null});
 
         const second_template: Template<S, R, DefaultTypes> = {
             instructions: {
                 name: 'string',
             },
         };
-
-        const second_module = Maker.make<S>(second_template);
-        if (second_module.state) {
-            // @ts-ignore
-            expect(second_module.state()).toEqual({name: null});
-        }
+        const second_module = new ModuleMaker<S, R, DefaultTypes>(second_template);
+        // @ts-ignore
+        expect(first_module.state()).toEqual({id: null});
+        // @ts-ignore
+        expect(second_module.state()).toEqual({name: null});
     });
 
     test('The namespaced property can be controlled from the template', () => {
         interface S { [x: string]: any }
 
-        const Maker =  new ModuleMaker<R, DefaultTypes>();
-
-        const default_module = Maker.make<S>({});
+        const default_module = new ModuleMaker<S, R, DefaultTypes>({});
         expect(default_module.namespaced).toBe(true);
 
         const false_namespaced_template: Template<S, R, DefaultTypes> = {namespaced: false};
-        const false_namespaced_module = Maker.make<S>(false_namespaced_template);
+        const false_namespaced_module = new ModuleMaker<S, R, DefaultTypes>(false_namespaced_template);
         expect(false_namespaced_module.namespaced).toEqual(false);
 
         const true_namespaced_template: Template<S, R, DefaultTypes> = { namespaced: true };
-        const true_namespaced_module = Maker.make<S>(true_namespaced_template);
+        const true_namespaced_module = new ModuleMaker<S, R, DefaultTypes>(true_namespaced_template);
         expect(true_namespaced_module.namespaced).toEqual(true);
     });
 
     test('Template sub-modules are converted to modules', () => {
-        const Maker =  new ModuleMaker<R, DefaultTypes>();
-
         const template: Template<S, R, DefaultTypes> = {
             modules: {
                 user: {
@@ -261,7 +259,7 @@ describe('src/ModuleGenerator.ts', () => {
             },
         };
 
-        const module = Maker.make<S>(template);
+        const module = new ModuleMaker<S, R, DefaultTypes>(template);
         // @ts-ignore
         expect(module.modules.user.state().name).toEqual(null)
         // @ts-ignore

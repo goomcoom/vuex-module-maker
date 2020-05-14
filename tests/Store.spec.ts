@@ -58,8 +58,7 @@ describe('Store Module Acceptance Tests', () => {
     };
 
     beforeEach(() => {
-        maker = new ModuleMaker<S, R, Ts>();
-        module = maker.make(template);
+        module = new ModuleMaker<S, R, Ts>(template);
         store = new Vuex.Store(module);
     });
 
@@ -105,7 +104,7 @@ describe('Store Module Acceptance Tests', () => {
 describe('Custom VForm type', () => {
     let store: Store<FormStore>;
     let module: Module<FormStore, R>;
-    const config: CustomConfig<FormStore, R> = {
+    const config: CustomConfig<R> = {
         types: {
             form: {
                 default_value: new Form,
@@ -125,30 +124,37 @@ describe('Custom VForm type', () => {
     };
 
     beforeEach(() => {
-        let maker = new ModuleMaker<FormStore, R, Ts>(config);
-        module = maker.make({
+        const template = {
             instructions: {
                 login_form: 'form'
             }
+        };
+        const module = new ModuleMaker<S, R, Ts>(template, config) as Module<S, R>;
+        store = new Vuex.Store<FormStore>({
+            modules: {
+                form: module
+            }
         });
-        store = new Vuex.Store<FormStore>(module);
     });
 
     test('The getter returns the correct value', () => {
-        expect(store.getters.getLoginForm).toEqual(new Form);
-
-        store.state.login_form = new Form({email: 'example@email.com'});
-        expect(store.getters.getLoginForm).toEqual(new Form({email: 'example@email.com'}));
+        expect(store.getters['form/getLoginForm']).toEqual(new Form);
+        // @ts-ignore
+        store.state.form.login_form = new Form({email: 'example@email.com'});
+        expect(store.getters['form/getLoginForm']).toEqual(new Form({email: 'example@email.com'}));
     });
 
     test('The mutation sets the correct value', () => {
-        store.commit('setLoginForm', {email: 'example@email.com'});
-        expect(store.state.login_form).toEqual(new Form({email: 'example@email.com'}));
+        store.commit('form/setLoginForm', {email: 'example@email.com'});
+        // @ts-ignore
+        expect(store.state.form.login_form).toEqual(new Form({email: 'example@email.com'}));
 
-        store.commit('setLoginForm', new Form({email: 'test@email.com'}));
-        expect(store.state.login_form).toEqual(new Form({email: 'test@email.com'}));
+        store.commit('form/setLoginForm', new Form({email: 'test@email.com'}));
+        // @ts-ignore
+        expect(store.state.form.login_form).toEqual(new Form({email: 'test@email.com'}));
 
-        store.commit('setLoginForm');
-        expect(store.state.login_form).toEqual(null);
+        store.commit('form/setLoginForm');
+        // @ts-ignore
+        expect(store.state.form.login_form).toEqual(null);
     });
 });

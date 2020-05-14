@@ -2,11 +2,24 @@ import * as D from "../types";
 import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex";
+import {Template} from "../types";
 
-class ModuleMaker<R, Ts> extends ModuleUtilities<R> {
+class ModuleMaker<S, R, Ts> extends ModuleUtilities<R> {
 
-    constructor(config: D.CustomConfig<R> = {}) {
+    constructor(template: Template<any, any, any>, config: D.CustomConfig<R> = {})
+    {
         super(config);
+        this.make<S>(template)
+
+        // @ts-ignore
+        return {
+            namespaced: this.namespaced,
+            state: () => this.state,
+            getters: this.getters,
+            mutations: this.mutations,
+            actions: this.actions,
+            modules: this.modules,
+        };
     }
 
     make<S>(template: D.Template<S, R, Ts>): Module<S, R>
@@ -15,7 +28,6 @@ class ModuleMaker<R, Ts> extends ModuleUtilities<R> {
 
         if (template.namespaced != null) this.namespaced = template.namespaced;
         if (template.instructions) this.executeInstructions<S>(template.instructions);
-        // @ts-ignore
         if (template.state) this.addStateProperties<S>(template.state);
         if (template.getters) this.addGetters<S>(template.getters);
         if (template.mutations) this.addMutations<S>(template.mutations);
@@ -37,7 +49,7 @@ class ModuleMaker<R, Ts> extends ModuleUtilities<R> {
         });
     }
 
-    private addStateProperties<S>(properties: S): void
+    private addStateProperties<S>(properties: Object | (() => S)): void
     {
         if (typeof properties === 'function') properties = properties();
 
@@ -70,7 +82,7 @@ class ModuleMaker<R, Ts> extends ModuleUtilities<R> {
     private addModules<S>(modules: Module<S, R>): void
     {
         for (const [key, value] of Object.entries(modules)) {
-            this.addModule(key, new ModuleMaker<R, Ts>(this.config).make<S>(value));
+            this.addModule(key, new ModuleMaker<S, R, Ts>(value, this.config));
         }
     }
 }

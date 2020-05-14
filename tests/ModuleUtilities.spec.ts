@@ -6,7 +6,7 @@ interface S { [x: string]: any }
 interface R { [x: string]: any }
 
 describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
-    let utilities: ModuleUtilities<S, R>;
+    let utilities: ModuleUtilities<R>;
     const test_filled_module = {
         namespaced: false,
         state() {return { key: 'value' }},
