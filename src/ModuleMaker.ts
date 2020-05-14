@@ -3,28 +3,29 @@ import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex";
 
-class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
+class ModuleMaker<R, Ts> extends ModuleUtilities<R> {
 
-    constructor(config: D.CustomConfig<S, R> = {}) {
+    constructor(config: D.CustomConfig<R> = {}) {
         super(config);
     }
 
-    make(template: D.Template<S, R, Ts>): Module<S, R>
+    make<S>(template: D.Template<S, R, Ts>): Module<S, R>
     {
         this.reset()
 
         if (template.namespaced != null) this.namespaced = template.namespaced;
-        if (template.instructions) this.executeInstructions(template.instructions);
-        if (template.state) this.addStateProperties(template.state);
-        if (template.getters) this.addGetters(template.getters);
-        if (template.mutations) this.addMutations(template.mutations);
-        if (template.actions) this.addActions(template.actions);
-        if (template.modules) this.addModules(template.modules);
+        if (template.instructions) this.executeInstructions<S>(template.instructions);
+        // @ts-ignore
+        if (template.state) this.addStateProperties<S>(template.state);
+        if (template.getters) this.addGetters<S>(template.getters);
+        if (template.mutations) this.addMutations<S>(template.mutations);
+        if (template.actions) this.addActions<S>(template.actions);
+        if (template.modules) this.addModules<S>(template.modules);
 
         return this.module;
     }
 
-    private executeInstructions(raw: D.Instructions<S, R, Ts>): void
+    private executeInstructions<S>(raw: D.Instructions<S, R, Ts>): void
     {
         const processor = new InstructionProcessor<S, R, Ts>(raw, this.config);
         const instructions = processor.process();
@@ -36,7 +37,7 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
         });
     }
 
-    private addStateProperties(properties: Object): void
+    private addStateProperties<S>(properties: S): void
     {
         if (typeof properties === 'function') properties = properties();
 
@@ -45,31 +46,31 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
         }
     }
 
-    private addGetters(getters: GetterTree<S, R>): void
+    private addGetters<S>(getters: GetterTree<S, R>): void
     {
         for (const [key, value] of Object.entries(getters)) {
             this.addGetter(key, value);
         }
     }
 
-    private addMutations(mutations: MutationTree<S>): void
+    private addMutations<S>(mutations: MutationTree<S>): void
     {
         for (const [key, value] of Object.entries(mutations)) {
             this.addMutation(key, value);
         }
     }
 
-    private addActions(actions: ActionTree<S, R>): void
+    private addActions<S>(actions: ActionTree<S, R>): void
     {
         for (const [key, value] of Object.entries(actions)) {
             this.addAction(key, value);
         }
     }
 
-    private addModules(modules: Module<S, R>): void
+    private addModules<S>(modules: Module<S, R>): void
     {
         for (const [key, value] of Object.entries(modules)) {
-            this.addModule(key, new ModuleMaker(this.config).make(value));
+            this.addModule(key, new ModuleMaker<R, Ts>(this.config).make<S>(value));
         }
     }
 }

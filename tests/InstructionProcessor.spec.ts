@@ -8,7 +8,7 @@ interface R { [x: string]: any }
 type Ts = unknown;
 
 describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
-    let config: D.Config<S, R>;
+    let config: D.Config<R>;
 
     beforeEach(() => {
         const config_class = new Config<S, R>();

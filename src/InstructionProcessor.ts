@@ -1,14 +1,13 @@
 import * as D from "../types";
 import Getter from "./Getter";
 import Mutation from "./Mutation";
-import { toCamelCase, toSnakeCase } from "./helpers";
 import {Getter as VGetter, Mutation as VMutation} from "vuex";
 
 class InstructionProcessor<S, R, Ts> {
     readonly _raw: D.Instructions<S, R, Ts>;
     get raw() { return this._raw }
 
-    readonly _config: D.Config<S, R>;
+    readonly _config: D.Config<R>;
     get config() { return this._config }
 
     private _instructions: D.FormattedInstructions<S, R, Ts> = [];
@@ -18,7 +17,7 @@ class InstructionProcessor<S, R, Ts> {
     get state_name() { return this._state_name }
     set state_name(value) { this._state_name = value }
 
-    constructor (instructions: D.Instructions<S, R, Ts>, config: D.Config<S, R>) {
+    constructor (instructions: D.Instructions<S, R, Ts>, config: D.Config<R>) {
         this._raw = instructions;
         this._config = config;
     }

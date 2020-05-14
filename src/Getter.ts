@@ -2,10 +2,10 @@ import * as D from "../types";
 import { Getter as VGetter } from "vuex";
 
 class Getter<S, R, Ts> {
-    readonly _config: D.Config<S, R>;
+    readonly _config: D.Config<R>;
     get config() { return this._config; };
 
-    constructor (config: D.Config<S, R>) {
+    constructor (config: D.Config<R>) {
         this._config = config;
     }
 

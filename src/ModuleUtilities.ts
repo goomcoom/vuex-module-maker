@@ -2,8 +2,8 @@ import Config from "./Config";
 import * as D from "../types";
 import { Getter, Mutation, Action, Module} from "vuex";
 
-class ModuleUtilities<S, R> {
-    readonly _config: D.Config<S, R>;
+class ModuleUtilities<R> {
+    readonly _config: D.Config<R>;
 
     protected _module: D.RawModule = {
         namespaced: true,
@@ -14,7 +14,7 @@ class ModuleUtilities<S, R> {
         modules: {}
     };
 
-    constructor(custom_config: D.CustomConfig<S, R> = {}) {
+    constructor(custom_config: D.CustomConfig<R> = {}) {
         const config = new Config(custom_config);
         this._config = config.configure();
         this.namespaced = this.config.namespaced;
@@ -23,7 +23,7 @@ class ModuleUtilities<S, R> {
     get module() {
         return {
             namespaced: this._module.namespaced,
-            state: () => this._module.state as S,
+            state: () => this._module.state as any,
             getters: this._module.getters,
             mutations: this._module.mutations,
             actions: this._module.actions,
@@ -35,7 +35,7 @@ class ModuleUtilities<S, R> {
     get namespaced(): boolean { return this._module.namespaced }
     set namespaced(value: boolean) { this._module.namespaced = value }
 
-    get config(): D.Config<S, R> { return this._config}
+    get config(): D.Config<R> { return this._config}
 
     get state() { return this._module.state }
     set state(value ) { this._module.state = value }
@@ -47,10 +47,10 @@ class ModuleUtilities<S, R> {
 
     reset(): void {
         this._module = {
-            namespaced: this.namespaced, state: {} as S, getters: {}, mutations: {}, actions: {}, modules: {}
+            namespaced: this.namespaced, state: {} as any, getters: {}, mutations: {}, actions: {}, modules: {}
         }
     }
-    resetState(): void { this._module.state = {} as S }
+    resetState(): void { this._module.state = {} as any }
     resetGetters(): void { this._module.getters = {} }
     resetMutations(): void { this._module.mutations = {} }
     resetActions(): void { this._module.actions = {} }
@@ -59,13 +59,13 @@ class ModuleUtilities<S, R> {
     addState(key: string, value: any): void {
         this.state[key] = value
     }
-    addGetter(key: string, value: Getter<S, R>): void {
+    addGetter(key: string, value: Getter<any, R>): void {
         this.getters[key] = value
     }
-    addMutation(key: string, value: Mutation<S>): void {
+    addMutation(key: string, value: Mutation<any>): void {
         this.mutations[key] = value
     }
-    addAction(key: string, value: Action<S, R>): void {
+    addAction(key: string, value: Action<any, R>): void {
         this.actions[key] = value
     }
     addModule(key: string, value: Module<any, R>): void {

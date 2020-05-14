@@ -80,25 +80,25 @@ export interface RawModule {
     modules: Object
 }
 
-export interface Config<S, R> {
+export interface Config<R> {
     namespaced: boolean,
     naming: ConfigNaming,
     types: {
         default: {
             initial_value: null,
             default_value: null,
-            getter: ConfigGetter<S, R>,
-            mutation: ConfigMutation<S>
+            getter: ConfigGetter<any, R>,
+            mutation: ConfigMutation<any>
         },
-        [x: string]: ConfigTypeOptions<S, R>
+        [x: string]: ConfigTypeOptions<any, R>
     }
 }
 
-export interface CustomConfig<S, R> {
+export interface CustomConfig<R> {
     namespaced?: boolean,
     naming?: CustomConfigNaming,
     types?: {
-        [x: string]: ConfigTypeOptions<S, R>
+        [x: string]: ConfigTypeOptions<any, R>
     }
 }
 

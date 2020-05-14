@@ -79,10 +79,10 @@ class Config<S, R> {
     };
     get object_mutation() { return this._object_mutation; };
 
-    readonly _custom_config: D.CustomConfig<S, R>;
+    readonly _custom_config: D.CustomConfig<R>;
     get custom_config() { return this._custom_config; };
 
-    private _config: D.Config<S, R> = {
+    private _config: D.Config<R> = {
         namespaced: true,
         naming: {
             state: {
@@ -140,11 +140,11 @@ class Config<S, R> {
     };
     get config() { return this._config; };
 
-    constructor(custom: D.CustomConfig<S, R> = {}) {
+    constructor(custom: D.CustomConfig<R> = {}) {
         this._custom_config = custom;
     }
 
-    public configure():D.Config<S, R> {
+    public configure():D.Config<R> {
         this.configureNamespaced();
         this.configureNaming();
         this.configureTypes();
