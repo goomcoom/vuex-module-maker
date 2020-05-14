@@ -225,4 +225,21 @@ describe('src/ModuleGenerator.ts', () => {
             expect(second_module.state()).toEqual({name: null});
         }
     });
+
+    test('The namespaced property can be controlled from the template', () => {
+        interface State { [x: string]: any }
+
+        const Maker =  new ModuleMaker<State, State, DefaultTypes>();
+
+        const default_module = Maker.make({});
+        expect(default_module.namespaced).toBe(true);
+
+        const false_namespaced_template: Template<State, State, DefaultTypes> = {namespaced: false};
+        const false_namespaced_module = Maker.make(false_namespaced_template);
+        expect(false_namespaced_module.namespaced).toEqual(false);
+
+        const true_namespaced_template: Template<State, State, DefaultTypes> = { namespaced: true };
+        const true_namespaced_module = Maker.make(true_namespaced_template);
+        expect(true_namespaced_module.namespaced).toEqual(true);
+    });
 });

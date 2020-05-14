@@ -60,6 +60,7 @@ export interface FormattedInstruction<T extends Ts, S, R, Ts> {
 export type FormattedInstructions<S, R, Ts> = FormattedInstruction<Ts, S, R, Ts>[];
 
 export interface Template<S, R, Ts> {
+    namespaced?: boolean,
     instructions?: Instructions<S, R, Ts>,
     state?: Object,
     getters?: GetterTree<S, R>,

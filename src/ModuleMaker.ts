@@ -12,6 +12,7 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
     make(template: D.Template<S, R, Ts>): Module<S, R>
     {
         this.reset()
+        if (template.namespaced != null) this.namespaced = template.namespaced;
         if (template.instructions) this.executeInstructions(template.instructions);
         if (template.state) this.addStateProperties(template.state);
         if (template.getters) this.addGetters(template.getters);
