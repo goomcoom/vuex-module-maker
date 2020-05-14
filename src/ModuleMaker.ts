@@ -6,7 +6,7 @@ import {Template} from "../types";
 
 class ModuleMaker<S, R, Ts> extends ModuleUtilities<R> {
 
-    constructor(template: Template<any, any, any>, config: D.CustomConfig<R> = {})
+    constructor(template: Template<S, R, Ts>, config: D.CustomConfig<R> = {})
     {
         super(config);
         this.make<S>(template)
