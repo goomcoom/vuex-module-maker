@@ -62,11 +62,13 @@ export type FormattedInstructions<S, R, Ts> = FormattedInstruction<Ts, S, R, Ts>
 export interface Template<S, R, Ts> {
     namespaced?: boolean,
     instructions?: Instructions<S, R, Ts>,
-    state?: Object,
+    state?: Object|(()=>S),
     getters?: GetterTree<S, R>,
     mutations?: MutationTree<S>,
     actions?: ActionTree<S, R>,
-    modules?: ModuleTree<R>
+    modules?: {
+        [x: string]: Template<S, R, Ts>
+    }
 }
 
 export interface RawModule {

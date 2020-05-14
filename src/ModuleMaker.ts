@@ -12,6 +12,7 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
     make(template: D.Template<S, R, Ts>): Module<S, R>
     {
         this.reset()
+
         if (template.namespaced != null) this.namespaced = template.namespaced;
         if (template.instructions) this.executeInstructions(template.instructions);
         if (template.state) this.addStateProperties(template.state);
@@ -37,6 +38,8 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
 
     private addStateProperties(properties: Object): void
     {
+        if (typeof properties === 'function') properties = properties();
+
         for (const [key, value] of Object.entries(properties)) {
             this.addState(key, value)
         }
@@ -66,7 +69,7 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<S, R> {
     private addModules(modules: Module<S, R>): void
     {
         for (const [key, value] of Object.entries(modules)) {
-            this.addModule(key, value);
+            this.addModule(key, new ModuleMaker(this.config).make(value));
         }
     }
 }
