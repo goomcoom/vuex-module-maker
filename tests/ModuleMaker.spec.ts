@@ -1,5 +1,5 @@
 import ModuleMaker from "~/ModuleMaker";
-import {Instruction, Instructions, Template} from "../types";
+import {DefaultTypes, Instruction, Instructions, Template} from "../types";
 
 interface S {
     example: any;
@@ -194,5 +194,35 @@ describe('src/ModuleGenerator.ts', () => {
         const modules = generator.make(template).modules;
         // @ts-ignore
         expect(modules.user).toEqual(template.modules.user);
+    });
+
+    test('The make methods creates a fresh module every time', () => {
+        interface State { [x: string]: any }
+
+        const Maker =  new ModuleMaker<State, State, DefaultTypes>();
+
+        const first_template: Template<State, State, DefaultTypes> = {
+            instructions: {
+                id: 'number',
+            },
+        };
+
+        const first_module = Maker.make(first_template);
+        if (first_module.state) {
+            // @ts-ignore
+            expect(first_module.state()).toEqual({id: null});
+        }
+
+        const second_template: Template<State, State, DefaultTypes> = {
+            instructions: {
+                name: 'string',
+            },
+        };
+
+        const second_module = Maker.make(second_template);
+        if (second_module.state) {
+            // @ts-ignore
+            expect(second_module.state()).toEqual({name: null});
+        }
     });
 });
