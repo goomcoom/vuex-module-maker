@@ -64,7 +64,7 @@ class InstructionProcessor<S, R, Ts> {
     formatStateValue <T extends Ts> (options: D.Instruction<T, S, R, Ts>): D.Type<T>|null {
         if (options.initial_value !== undefined) return options.initial_value;
         // @ts-ignore
-        if (this.config.types[options.type] === null || this.config.types[options.type].initial_value === undefined) {
+        if (this.config.types[options.type] == null || this.config.types[options.type].initial_value === undefined) {
             return this.config.types.default.initial_value;
         }
         // @ts-ignore

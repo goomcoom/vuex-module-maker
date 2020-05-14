@@ -104,6 +104,11 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(processor.process()[0].state_value).toEqual(22)
     });
 
+    test('The default initial value is used when an unknown type is used', () => {
+        let processor = new InstructionProcessor({id:{type: 'unknown-type'}}, config);
+        expect(processor.process()[0].state_value).toEqual(config.types.default.initial_value);
+    });
+
     test('The processor returns the type specific config initial_value if defined', () => {
         // Boolean config has initial_value prop
         let processor = new InstructionProcessor({id:{type: 'boolean'}}, config);
@@ -169,6 +174,12 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
         expect(processor.process()[0].getter(state, {}, {}, {})).toEqual('default text')
     });
 
+    test('The default getter is used when an unknown type is used', () => {
+        let processor = new InstructionProcessor({id:{type: 'unknown-type'}}, config);
+        expect(processor.process()[0].getter.toString())
+            .toEqual(config.types.default.getter('id', null).toString());
+    });
+
     test('The set_mutation property can be controlled', () => {
         // Default
         let processor = new InstructionProcessor({comments:{type: 'array'}}, config);
@@ -203,5 +214,11 @@ describe('store/ModuleGenerator/InstructionProcessor.ts', () => {
     test('The mutation_name can be controlled', () => {
         const processor = new InstructionProcessor({id:{type: 'number', mutation_name: 'setUserId'}}, config);
         expect(processor.process()[0].mutation_name).toEqual('setUserId')
+    });
+
+    test('The default mutation is used when an unknown type is used', () => {
+        let processor = new InstructionProcessor({id:{type: 'unknown-type'}}, config);
+        expect(processor.process()[0].mutation.toString())
+            .toEqual(config.types.default.mutation('id').toString());
     });
 });
