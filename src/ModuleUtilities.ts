@@ -1,9 +1,8 @@
 import Config from "./Config";
 import * as D from "../types";
-import { Getter, Mutation, Action, Module} from "vuex";
 
-class ModuleUtilities<R> {
-    readonly _config: D.Config<R>;
+class ModuleUtilities {
+    readonly _config: D.Config;
 
     protected _module: D.RawModule = {
         namespaced: true,
@@ -14,7 +13,7 @@ class ModuleUtilities<R> {
         modules: {}
     };
 
-    constructor(custom_config: D.CustomConfig<R> = {}) {
+    constructor(custom_config: D.CustomConfig = {}) {
         const config = new Config(custom_config);
         this._config = config.configure();
         this.namespaced = this.config.namespaced;
@@ -35,7 +34,7 @@ class ModuleUtilities<R> {
     get namespaced(): boolean { return this._module.namespaced }
     set namespaced(value: boolean) { this._module.namespaced = value }
 
-    get config(): D.Config<R> { return this._config}
+    get config(): D.Config { return this._config}
 
     get state() { return this._module.state }
     set state(value ) { this._module.state = value }
@@ -59,16 +58,16 @@ class ModuleUtilities<R> {
     addState(key: string, value: any): void {
         this.state[key] = value
     }
-    addGetter(key: string, value: Getter<any, R>): void {
+    addGetter(key: string, value: ()=>any): void {
         this.getters[key] = value
     }
-    addMutation(key: string, value: Mutation<any>): void {
+    addMutation(key: string, value: ()=>void): void {
         this.mutations[key] = value
     }
-    addAction(key: string, value: Action<any, R>): void {
+    addAction(key: string, value: ()=>any): void {
         this.actions[key] = value
     }
-    addModule(key: string, value: Module<any, R>): void {
+    addModule(key: string, value: { [x:string]: any }): void {
         this.modules[key] = value
     }
 
