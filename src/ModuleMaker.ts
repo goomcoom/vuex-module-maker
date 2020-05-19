@@ -10,7 +10,7 @@ class ModuleMaker<M, Ts> extends ModuleUtilities {
         super(config);
     }
 
-    make<M, Ts>(template: D.Template<Ts>): M
+    make<M>(template: D.Template<Ts>): M
     {
         this.reset()
 
@@ -22,7 +22,7 @@ class ModuleMaker<M, Ts> extends ModuleUtilities {
         if (template.actions) this.addActions(template.actions);
         if (template.modules) this.addModules(template.modules);
 
-        return this.module;
+        return this.module as any as M;
     }
     public static Make<M, Ts>(template: Template<Ts>, config?: Config): M
     {
@@ -75,7 +75,7 @@ class ModuleMaker<M, Ts> extends ModuleUtilities {
     private addModules(modules: { [x:string]: any }): void
     {
         for (const [key, value] of Object.entries(modules)) {
-            this.addModule(key, new ModuleMaker<M, Ts>(value, this.config));
+            this.addModule(key, ModuleMaker.Make<any, Ts>(value, this.config));
         }
     }
 }
