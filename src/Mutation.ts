@@ -8,7 +8,7 @@ class Mutation<Ts> {
         this._config = config
     }
 
-    format <T extends Ts>(type: T, state_name: string): ()=>void
+    format <T extends Ts>(type: T, state_name: string): (state: { [x:string]: any }, payload?: any)=>void
     {
         // @ts-ignore
         if (this.config.types[type] === undefined || this.config.types[type].mutation === undefined) {
