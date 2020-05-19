@@ -1,15 +1,14 @@
 import * as D from "../types";
-import { Mutation as VMutation } from "vuex";
 
-class Mutation<S, R, Ts> {
-    readonly _config: D.Config<R>;
+class Mutation<Ts> {
+    readonly _config: D.Config;
     get config() { return this._config; };
 
-    constructor(config: D.Config<R>) {
+    constructor(config: D.Config) {
         this._config = config
     }
 
-    format <T extends Ts>(type: T, state_name: string): VMutation<S>
+    format <T extends Ts>(type: T, state_name: string): ()=>void
     {
         // @ts-ignore
         if (this.config.types[type] === undefined || this.config.types[type].mutation === undefined) {
