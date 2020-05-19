@@ -3,7 +3,7 @@ import * as D from "../types";
 import {toCamelCase, toSnakeCase} from "../src/helpers";
 
 describe('Config.ts', () => {
-    let example_custom_config: D.CustomConfig<any>;
+    let example_custom_config: D.CustomConfig;
 
     beforeEach(() => {
         example_custom_config = {
@@ -32,7 +32,7 @@ describe('Config.ts', () => {
     });
 
     test('The custom config can be accessed after instantiation', () => {
-        const custom: D.CustomConfig<any> = { namespaced: true };
+        const custom: D.CustomConfig = { namespaced: true };
         const config = new Config(custom);
         expect(config.custom_config).toEqual(custom);
     });
@@ -51,7 +51,7 @@ describe('Config.ts', () => {
         let config = new Config();
         expect(config.configure().namespaced).toEqual(config.config.namespaced);
 
-        const custom: D.CustomConfig<any> = { namespaced: false };
+        const custom: D.CustomConfig = { namespaced: false };
         config = new Config(custom);
         expect(config.configure().namespaced).toEqual(custom.namespaced);
     });
@@ -78,7 +78,7 @@ describe('Config.ts', () => {
 
     test('New types can be added', () => {
         // Rename the example type from default to example
-        const custom: D.CustomConfig<any> = {
+        const custom: D.CustomConfig = {
             types: {
                 // @ts-ignore
                 example: example_custom_config.types.default
@@ -98,7 +98,7 @@ describe('Config.ts', () => {
     });
 
     test('Types with no options are left empty.', () => {
-        const custom: D.CustomConfig<any> = {
+        const custom: D.CustomConfig = {
             types: {
                 example: {}
             }
