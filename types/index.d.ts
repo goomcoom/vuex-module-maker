@@ -1,8 +1,3 @@
-import {
-    ActionTree, GetterTree, ModuleTree, MutationTree,
-    Getter as VGetter, Mutation as VMutation
-} from "vuex";
-
 import ModuleMaker from '../src/ModuleMaker';
 export default ModuleMaker;
 
@@ -20,7 +15,7 @@ export interface Object {
 }
 
 /* Instructions */
-export interface Instruction<T extends Ts, S, R, Ts> {
+export interface Instruction<T extends Ts, Ts> {
     type: T,
     // State options
     set_state?: boolean,
@@ -29,19 +24,19 @@ export interface Instruction<T extends Ts, S, R, Ts> {
     // Getter options
     set_getter?: boolean,
     getter_name?: string,
-    getter?: VGetter<S, R>,
+    getter?: ()=>any,
     default_value?: any,
     // Mutation options
     set_mutation?: boolean,
     mutation_name?: string,
-    mutation?: VMutation<S>
+    mutation?: ()=>void,
 }
 
-export interface Instructions<S, R, Ts> {
-    [x: string]: Ts | Instruction<Ts, S, R, Ts>
+export interface Instructions<Ts> {
+    [x: string]: Ts | Instruction<Ts, Ts>
 }
 
-export interface FormattedInstruction<T extends Ts, S, R, Ts> {
+export interface FormattedInstruction<T extends Ts, Ts> {
     type: T,
     // State options
     set_state: boolean,
@@ -50,24 +45,24 @@ export interface FormattedInstruction<T extends Ts, S, R, Ts> {
     // Getter options
     set_getter: boolean,
     getter_name: string,
-    getter: VGetter<S, R>,
+    getter: ()=>any,
     //Mutation options
     set_mutation: boolean,
     mutation_name: string,
-    mutation: VMutation<S>
+    mutation: ()=>void,
 }
 
-export type FormattedInstructions<S, R, Ts> = FormattedInstruction<Ts, S, R, Ts>[];
+export type FormattedInstructions<Ts> = FormattedInstruction<Ts, Ts>[];
 
-export interface Template<S, R, Ts> {
+export interface Template<Ts> {
     namespaced?: boolean,
-    instructions?: Instructions<S, R, Ts>,
-    state?: Object|(()=>S),
-    getters?: GetterTree<S, R>,
-    mutations?: MutationTree<S>,
-    actions?: ActionTree<S, R>,
+    instructions?: Instructions<Ts>,
+    state?: {[x: string]: any}|(()=>{[x: string]: any}),
+    getters?: {[x: string]: (()=>any)},
+    mutations?: {[x: string]: (()=>void)},
+    actions?: {[x: string]: (()=>any)},
     modules?: {
-        [x: string]: Template<any, R, Ts>
+        [x: string]: Template<Ts>
     }
 }
 
@@ -80,37 +75,37 @@ export interface RawModule {
     modules: Object
 }
 
-export interface Config<R> {
+export interface Config {
     namespaced: boolean,
     naming: ConfigNaming,
     types: {
         default: {
             initial_value: null,
             default_value: null,
-            getter: ConfigGetter<any, R>,
-            mutation: ConfigMutation<any>
+            getter: ConfigGetter,
+            mutation: ConfigMutation,
         },
-        [x: string]: ConfigTypeOptions<any, R>
+        [x: string]: ConfigTypeOptions
     }
 }
 
-export interface CustomConfig<R> {
+export interface CustomConfig {
     namespaced?: boolean,
     naming?: CustomConfigNaming,
     types?: {
-        [x: string]: ConfigTypeOptions<any, R>
+        [x: string]: ConfigTypeOptions
     }
 }
 
-export interface ConfigTypeOptions<S, R> {
+export interface ConfigTypeOptions {
     initial_value?: any,
     default_value?: any,
-    getter?: ConfigGetter<S, R>,
-    mutation?: ConfigMutation<S>
+    getter?: ConfigGetter,
+    mutation?: ConfigMutation,
 }
 
-export type ConfigGetter<S, R> = (state_name: string, default_value: any) => VGetter<S, R>
-export type ConfigMutation<S> = (state_name: string) => VMutation<S>
+export type ConfigGetter = (state_name: string, default_value: any) => () => any
+export type ConfigMutation = (state_name: string) => ()=>void
 
 export interface ConfigNaming {
     state: ConfigNamingOptions,

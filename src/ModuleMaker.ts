@@ -2,7 +2,7 @@ import * as D from "../types";
 import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
 import {ActionTree, GetterTree, Module, MutationTree} from "vuex";
-import {Template} from "../types";
+import {Config, Template} from "../types";
 
 class ModuleMaker<S, R, Ts> extends ModuleUtilities<R> {
 
@@ -22,7 +22,7 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<R> {
         };
     }
 
-    make<S>(template: D.Template<S, R, Ts>): Module<S, R>
+    make<S>(template: D.Template<S, R, Ts>): any
     {
         this.reset()
 
@@ -35,6 +35,11 @@ class ModuleMaker<S, R, Ts> extends ModuleUtilities<R> {
         if (template.modules) this.addModules<S>(template.modules);
 
         return this.module;
+    }
+    public static Make<Module, Types>(template: Template<Types>, config?: Config): Module
+    {
+        const maker = new ModuleMaker(config);
+        return maker.make(template) as Module;
     }
 
     private executeInstructions<S>(raw: D.Instructions<S, R, Ts>): void
