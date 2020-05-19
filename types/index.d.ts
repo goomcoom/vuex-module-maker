@@ -24,12 +24,12 @@ export interface Instruction<T extends Ts, Ts> {
     // Getter options
     set_getter?: boolean,
     getter_name?: string,
-    getter?: ()=>any,
+    getter?: (state: { [x:string]: any }, getters: any, rootState: any, rootGetters: any) => any,
     default_value?: any,
     // Mutation options
     set_mutation?: boolean,
     mutation_name?: string,
-    mutation?: ()=>void,
+    mutation?: (state: { [x:string]: any }, payload?: any)=>void,
 }
 
 export interface Instructions<Ts> {
@@ -45,11 +45,11 @@ export interface FormattedInstruction<T extends Ts, Ts> {
     // Getter options
     set_getter: boolean,
     getter_name: string,
-    getter: ()=>any,
+    getter: (state: { [x:string]: any }, getters: any, rootState: any, rootGetters: any) => any,
     //Mutation options
     set_mutation: boolean,
     mutation_name: string,
-    mutation: ()=>void,
+    mutation: (state: { [x:string]: any }, payload?: any)=>void,
 }
 
 export type FormattedInstructions<Ts> = FormattedInstruction<Ts, Ts>[];
