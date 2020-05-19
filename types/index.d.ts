@@ -104,8 +104,8 @@ export interface ConfigTypeOptions {
     mutation?: ConfigMutation,
 }
 
-export type ConfigGetter = (state_name: string, default_value: any) => () => any
-export type ConfigMutation = (state_name: string) => ()=>void
+export type ConfigGetter = (state_name: string, default_value: any) => any
+export type ConfigMutation = (state_name: string) => any
 
 export interface ConfigNaming {
     state: ConfigNamingOptions,

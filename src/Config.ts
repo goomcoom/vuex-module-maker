@@ -2,25 +2,25 @@ import * as D from "../types";
 import { toCamelCase, toSnakeCase } from "./helpers";
 
 
-class Config<S, R> {
-    readonly _default_getter: D.ConfigGetter<S, R> = (state_name, default_value) => {
-        return (state: S) => {
+class Config {
+    readonly _default_getter = (state_name: string, default_value: any) => {
+        return (state: {[x:string]:any}) => {
             // @ts-ignore
             return (state[state_name] == null) ? default_value : state[state_name];
         };
     };
     get default_getter() { return this._default_getter; };
 
-    readonly _default_mutation: D.ConfigMutation<S> = (state_name) => {
-        return (state: S, value?: any) => {
+    readonly _default_mutation = (state_name: string) => {
+        return (state: {[x:string]:any}, value?: any) => {
             // @ts-ignore
             state[state_name] = (value == null) ? null : value;
         };
     };
     get default_mutation() { return this._default_mutation; };
 
-    readonly _number_mutation: D.ConfigMutation<S> = (state_name) => {
-        return (state: S, value?: number|string) => {
+    readonly _number_mutation = (state_name: string) => {
+        return (state: {[x:string]:any}, value?: number|string) => {
             if (value == null) {
                 // @ts-ignore
                 state[state_name] = null;
@@ -36,16 +36,16 @@ class Config<S, R> {
     };
     get number_mutation() { return this._number_mutation; };
 
-    readonly _boolean_mutation: D.ConfigMutation<S> = (state_name) => {
-        return (state: S, value?: any) => {
+    readonly _boolean_mutation = (state_name: string) => {
+        return (state: {[x:string]:any}, value?: any) => {
                 // @ts-ignore
                 state[state_name] = !!value;
         };
     };
     get boolean_mutation() { return this._boolean_mutation; };
 
-    readonly _date_mutation: D.ConfigMutation<S> = (state_name) => {
-        return (state: S, value?: Date|string|number) => {
+    readonly _date_mutation = (state_name: string) => {
+        return (state: {[x:string]:any}, value?: Date|string|number) => {
             if (value) {
                 const date = new Date(value);
                 // @ts-ignore
@@ -58,8 +58,8 @@ class Config<S, R> {
     };
     get date_mutation() { return this._date_mutation; };
 
-    readonly _object_mutation: D.ConfigMutation<S> = (state_name) => {
-        return (state: S, value?: object|string) => {
+    readonly _object_mutation = (state_name: string) => {
+        return (state: {[x:string]:any}, value?: object|string) => {
             if (typeof value === 'object') {
                 // @ts-ignore
                 state[state_name] = value;
@@ -79,10 +79,10 @@ class Config<S, R> {
     };
     get object_mutation() { return this._object_mutation; };
 
-    readonly _custom_config: D.CustomConfig<R>;
+    readonly _custom_config: D.CustomConfig;
     get custom_config() { return this._custom_config; };
 
-    private _config: D.Config<R> = {
+    private _config: D.Config = {
         namespaced: true,
         naming: {
             state: {
@@ -140,11 +140,11 @@ class Config<S, R> {
     };
     get config() { return this._config; };
 
-    constructor(custom: D.CustomConfig<R> = {}) {
+    constructor(custom: D.CustomConfig = {}) {
         this._custom_config = custom;
     }
 
-    public configure():D.Config<R> {
+    public configure():D.Config {
         this.configureNamespaced();
         this.configureNaming();
         this.configureTypes();
@@ -177,7 +177,7 @@ class Config<S, R> {
     private configureTypes(): void {
         if (this.custom_config.types) {
             let type: string;
-            let options: D.ConfigTypeOptions<S, R>;
+            let options: D.ConfigTypeOptions;
             for ([type, options] of Object.entries(this.custom_config.types)) {
                 this.addType(type);
 
