@@ -1,25 +1,24 @@
 import ModuleUtilities from "~/ModuleUtilities";
-import {Module, GetterTree, MutationTree} from "vuex";
 import Config from "~/Config";
 
 interface S { [x: string]: any }
 interface R { [x: string]: any }
 
 describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
-    let utilities: ModuleUtilities<R>;
+    let utilities: ModuleUtilities;
     const test_filled_module = {
         namespaced: false,
         state() {return { key: 'value' }},
         getters: {
             key: (state: S): any => {
                 return state.name
-            }
-        } as GetterTree<S, R>,
+            },
+        },
         mutations: {
             key: (state: S, value: string): void => {
                 state.name = value
-            }
-        } as MutationTree<S>,
+            },
+        },
         actions: { key: 'value' },
         modules: { key: 'value' }
     };
@@ -179,7 +178,7 @@ describe('store/ModuleUtilities/ModuleUtilities.ts', () => {
     });
 
     test('Modules can be added and removed', () => {
-        const test_object: Module<S, R> = {
+        const test_object = {
             namespaced: true
         };
         // Add

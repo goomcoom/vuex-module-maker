@@ -58,13 +58,16 @@ class ModuleUtilities {
     addState(key: string, value: any): void {
         this.state[key] = value
     }
-    addGetter(key: string, value: ()=>any): void {
+
+    addGetter(key: string, value: (state: { [x: string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any): void {
         this.getters[key] = value
     }
-    addMutation(key: string, value: ()=>void): void {
+
+    addMutation(key: string, value: (state: { [x: string]: any }, payload?: any) => void): void {
         this.mutations[key] = value
     }
-    addAction(key: string, value: ()=>any): void {
+
+    addAction(key: string, value: any): void {
         this.actions[key] = value
     }
     addModule(key: string, value: { [x:string]: any }): void {
