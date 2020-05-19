@@ -124,7 +124,7 @@ describe('Custom VForm type', () => {
     };
 
     beforeEach(() => {
-        const template = {
+        const template: Template<S, R, Ts> = {
             instructions: {
                 login_form: 'form'
             }

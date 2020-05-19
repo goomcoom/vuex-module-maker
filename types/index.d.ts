@@ -6,7 +6,7 @@ import {
 import ModuleMaker from '../src/ModuleMaker';
 export default ModuleMaker;
 
-export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'object';
+export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'object' | 'date';
 
 export type Type<T> =
     T extends 'string' ? string :
@@ -67,7 +67,7 @@ export interface Template<S, R, Ts> {
     mutations?: MutationTree<S>,
     actions?: ActionTree<S, R>,
     modules?: {
-        [x: string]: Template<S, R, Ts>
+        [x: string]: Template<any, R, Ts>
     }
 }
 
