@@ -8,17 +8,16 @@ import Form from 'vform';
 Vue.use(Vuex);
 
 interface S { [x: string]: any }
-interface R { [x: string]: any }
+type R = S
 type Ts = DefaultTypes | 'form';
 interface FormStore {
     login_form: Form|null
 }
 
 describe('Store Module Acceptance Tests', () => {
-    let maker;
     let module;
     let store: Store<S>;
-    const instructions: Instructions<S, R, Ts> = {
+    const instructions: Instructions<Ts> = {
         id: 'number',
         example: {
             type: 'string',
@@ -27,7 +26,7 @@ describe('Store Module Acceptance Tests', () => {
         comments: 'array'
     };
 
-    const template: Template<S, R, Ts> = {
+    const template: Template<Ts> = {
         instructions,
         state: {
             name: null
@@ -41,7 +40,7 @@ describe('Store Module Acceptance Tests', () => {
             }
         },
         actions: {
-            updateUser: (context) => {
+            updateUser: (context: any) => {
                 context.commit('setName', 'Example Name');
             }
         },
@@ -58,7 +57,7 @@ describe('Store Module Acceptance Tests', () => {
     };
 
     beforeEach(() => {
-        module = new ModuleMaker<S, R, Ts>(template);
+        module = ModuleMaker.Make<S, Ts>(template);
         store = new Vuex.Store(module);
     });
 
@@ -103,8 +102,7 @@ describe('Store Module Acceptance Tests', () => {
 
 describe('Custom VForm type', () => {
     let store: Store<FormStore>;
-    let module: Module<FormStore, R>;
-    const config: CustomConfig<R> = {
+    const config: CustomConfig = {
         types: {
             form: {
                 default_value: new Form,
@@ -124,12 +122,12 @@ describe('Custom VForm type', () => {
     };
 
     beforeEach(() => {
-        const template: Template<S, R, Ts> = {
+        const template: Template<Ts> = {
             instructions: {
                 login_form: 'form'
             }
         };
-        const module = new ModuleMaker<S, R, Ts>(template, config) as Module<S, R>;
+        const module = ModuleMaker.Make<S, Ts>(template, config) as Module<S, R>;
         store = new Vuex.Store<FormStore>({
             modules: {
                 form: module

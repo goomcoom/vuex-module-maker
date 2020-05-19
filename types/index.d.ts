@@ -24,12 +24,12 @@ export interface Instruction<T extends Ts, Ts> {
     // Getter options
     set_getter?: boolean,
     getter_name?: string,
-    getter?: (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any,
+    getter?: (x:string, y:string)=>ConfigGetter,
     default_value?: any,
     // Mutation options
     set_mutation?: boolean,
     mutation_name?: string,
-    mutation?: (state: { [x:string]: any }, payload?: any)=>void,
+    mutation?: (X:string)=>ConfigMutation,
 }
 
 export interface Instructions<Ts> {
@@ -45,11 +45,11 @@ export interface FormattedInstruction<T extends Ts, Ts> {
     // Getter options
     set_getter: boolean,
     getter_name: string,
-    getter: (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any,
+    getter: ConfigGetter,
     //Mutation options
     set_mutation: boolean,
     mutation_name: string,
-    mutation: (state: { [x:string]: any }, payload?: any)=>void,
+    mutation: ConfigMutation,
 }
 
 export type FormattedInstructions<Ts> = FormattedInstruction<Ts, Ts>[];
@@ -58,8 +58,8 @@ export interface Template<Ts> {
     namespaced?: boolean,
     instructions?: Instructions<Ts>,
     state?: {[x: string]: any}|(()=>{[x: string]: any}),
-    getters?: {[x: string]: (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any,},
-    mutations?: {[x: string]: (state: { [x:string]: any }, payload?: any)=>void,},
+    getters?: {[x: string]: ConfigGetter,},
+    mutations?: {[x: string]: ConfigMutation,},
     actions?: {[x: string]: any},
     modules?: {
         [x: string]: Template<Ts>
@@ -82,8 +82,8 @@ export interface Config {
         default: {
             initial_value: null,
             default_value: null,
-            getter: ConfigGetter,
-            mutation: ConfigMutation,
+            getter: (x:string, y:string) => ConfigGetter,
+            mutation: (x: string) => ConfigMutation,
         },
         [x: string]: ConfigTypeOptions
     }
@@ -100,12 +100,12 @@ export interface CustomConfig {
 export interface ConfigTypeOptions {
     initial_value?: any,
     default_value?: any,
-    getter?: ConfigGetter,
-    mutation?: ConfigMutation,
+    getter?: (x:string, y:string) => ConfigGetter,
+    mutation?: (x: string) => ConfigMutation,
 }
 
-export type ConfigGetter = (state_name: string, default_value: any) => any
-export type ConfigMutation = (state_name: string) => any
+export type ConfigGetter = (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any;
+export type ConfigMutation = (state: { [x:string]: any }, payload?: any)=>void;
 
 export interface ConfigNaming {
     state: ConfigNamingOptions,

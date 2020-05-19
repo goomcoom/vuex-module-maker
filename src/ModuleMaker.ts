@@ -1,7 +1,7 @@
 import * as D from "../types";
 import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
-import {Config, Template} from "../types";
+import {Config, ConfigGetter, ConfigMutation, CustomConfig, Template} from "../types";
 
 class ModuleMaker<M, Ts> extends ModuleUtilities {
 
@@ -24,7 +24,7 @@ class ModuleMaker<M, Ts> extends ModuleUtilities {
 
         return this.module as any as M;
     }
-    public static Make<M, Ts>(template: Template<Ts>, config?: Config): M
+    public static Make<M, Ts>(template: Template<Ts>, config?: CustomConfig): M
     {
         const maker = new ModuleMaker<M, Ts>(config);
         return maker.make(template);
@@ -51,14 +51,14 @@ class ModuleMaker<M, Ts> extends ModuleUtilities {
         }
     }
 
-    private addGetters(getters: { [x:string]: ()=>any }): void
+    private addGetters(getters: { [x:string]: ConfigGetter }): void
     {
         for (const [key, value] of Object.entries(getters)) {
             this.addGetter(key, value);
         }
     }
 
-    private addMutations(mutations: { [x:string]: ()=>void }): void
+    private addMutations(mutations: { [x:string]: ConfigMutation}): void
     {
         for (const [key, value] of Object.entries(mutations)) {
             this.addMutation(key, value);

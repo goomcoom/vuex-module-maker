@@ -4,7 +4,7 @@ import { toCamelCase, toSnakeCase } from "./helpers";
 
 class Config {
     readonly _default_getter = (state_name: string, default_value: any) => {
-        return (state: {[x:string]:any}) => {
+        return (state: any) => {
             // @ts-ignore
             return (state[state_name] == null) ? default_value : state[state_name];
         };
@@ -12,7 +12,7 @@ class Config {
     get default_getter() { return this._default_getter; };
 
     readonly _default_mutation = (state_name: string) => {
-        return (state: {[x:string]:any}, value?: any) => {
+        return (state: any, value?: any) => {
             // @ts-ignore
             state[state_name] = (value == null) ? null : value;
         };
@@ -20,7 +20,7 @@ class Config {
     get default_mutation() { return this._default_mutation; };
 
     readonly _number_mutation = (state_name: string) => {
-        return (state: {[x:string]:any}, value?: number|string) => {
+        return (state: any, value?: number|string) => {
             if (value == null) {
                 // @ts-ignore
                 state[state_name] = null;
@@ -37,7 +37,7 @@ class Config {
     get number_mutation() { return this._number_mutation; };
 
     readonly _boolean_mutation = (state_name: string) => {
-        return (state: {[x:string]:any}, value?: any) => {
+        return (state: any, value?: any) => {
                 // @ts-ignore
                 state[state_name] = !!value;
         };
@@ -45,7 +45,7 @@ class Config {
     get boolean_mutation() { return this._boolean_mutation; };
 
     readonly _date_mutation = (state_name: string) => {
-        return (state: {[x:string]:any}, value?: Date|string|number) => {
+        return (state: any, value?: Date|string|number) => {
             if (value) {
                 const date = new Date(value);
                 // @ts-ignore
@@ -59,7 +59,7 @@ class Config {
     get date_mutation() { return this._date_mutation; };
 
     readonly _object_mutation = (state_name: string) => {
-        return (state: {[x:string]:any}, value?: object|string) => {
+        return (state: any, value?: object|string) => {
             if (typeof value === 'object') {
                 // @ts-ignore
                 state[state_name] = value;
