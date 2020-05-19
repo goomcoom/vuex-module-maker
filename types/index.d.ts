@@ -24,7 +24,7 @@ export interface Instruction<T extends Ts, Ts> {
     // Getter options
     set_getter?: boolean,
     getter_name?: string,
-    getter?: (state: { [x:string]: any }, getters: any, rootState: any, rootGetters: any) => any,
+    getter?: (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any,
     default_value?: any,
     // Mutation options
     set_mutation?: boolean,
@@ -45,7 +45,7 @@ export interface FormattedInstruction<T extends Ts, Ts> {
     // Getter options
     set_getter: boolean,
     getter_name: string,
-    getter: (state: { [x:string]: any }, getters: any, rootState: any, rootGetters: any) => any,
+    getter: (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any,
     //Mutation options
     set_mutation: boolean,
     mutation_name: string,
@@ -58,9 +58,9 @@ export interface Template<Ts> {
     namespaced?: boolean,
     instructions?: Instructions<Ts>,
     state?: {[x: string]: any}|(()=>{[x: string]: any}),
-    getters?: {[x: string]: (()=>any)},
-    mutations?: {[x: string]: (()=>void)},
-    actions?: {[x: string]: (()=>any)},
+    getters?: {[x: string]: (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any,},
+    mutations?: {[x: string]: (state: { [x:string]: any }, payload?: any)=>void,},
+    actions?: {[x: string]: any},
     modules?: {
         [x: string]: Template<Ts>
     }
