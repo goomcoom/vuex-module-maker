@@ -130,3 +130,27 @@ export interface CustomConfigNamingOptions {
     suffix?: string,
     transformer?: (raw: string) => string,
 }
+
+export type StringGetter<S> = (state: S) => string;
+export type NumberGetter<S> = (state: S) => number|null;
+export type BooleanGetter<S> = (state: S) => boolean;
+export type ArrayGetter<S> = (state: S) => any[];
+export type ObjectGetter<S> = (state: S) => object|null;
+
+export type Getter<T extends DefaultTypes, S> =
+    T extends 'string' ? StringGetter<S> :
+        T extends 'number' ? NumberGetter<S> :
+            T extends 'boolean' ? BooleanGetter<S> :
+                T extends 'array' ? ArrayGetter<S> : ObjectGetter<S>;
+
+export type StringMutation<S> = (state: S, value?: string ) => void;
+export type NumberMutation<S> = (state: S, value?: number ) => void;
+export type BooleanMutation<S> = (state: S, value?: boolean ) => void;
+export type ArrayMutation<S> = (state: S, value?: any[] ) => void;
+export type ObjectMutation<S> = (state: S, value?: object ) => void;
+
+export type Mutation<T extends DefaultTypes, S> =
+    T extends 'string' ? StringMutation<S> :
+        T extends 'number' ? NumberMutation<S> :
+            T extends 'boolean' ? BooleanMutation<S> :
+                T extends 'array' ? ArrayMutation<S> : ObjectMutation<S>;
