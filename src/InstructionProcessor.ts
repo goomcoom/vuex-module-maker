@@ -76,7 +76,7 @@ class InstructionProcessor<Ts> {
         return config.transformer(config.prefix + name + config.suffix);
     }
 
-    formatGetter <T extends Ts> (options: D.Instruction<T, Ts>): ()=>any {
+    formatGetter <T extends Ts> (options: D.Instruction<T, Ts>): D.ConfigGetter {
         if (options.getter) return options.getter;
         const getters = new Getter(this.config);
         // @ts-ignore
@@ -89,7 +89,7 @@ class InstructionProcessor<Ts> {
         return config.transformer(config.prefix + name + config.suffix);
     }
 
-    formatMutation <T extends Ts> (type: T): ()=>void {
+    formatMutation <T extends Ts> (type: T): D.ConfigMutation {
         const raw = new Mutation<Ts>(this.config);
         return raw.format(type, this.state_name);
     }

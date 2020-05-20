@@ -24,12 +24,12 @@ export interface Instruction<T extends Ts, Ts> {
     // Getter options
     set_getter?: boolean,
     getter_name?: string,
-    getter?: (x:string, y:string)=>ConfigGetter,
+    getter?: AnyGetter<any, any>,
     default_value?: any,
     // Mutation options
     set_mutation?: boolean,
     mutation_name?: string,
-    mutation?: (X:string)=>ConfigMutation,
+    mutation?: AnyMutation<any>,
 }
 
 export interface Instructions<Ts> {
@@ -45,11 +45,11 @@ export interface FormattedInstruction<T extends Ts, Ts> {
     // Getter options
     set_getter: boolean,
     getter_name: string,
-    getter: ConfigGetter,
+    getter: AnyGetter<any, any>,
     //Mutation options
     set_mutation: boolean,
     mutation_name: string,
-    mutation: ConfigMutation,
+    mutation: AnyMutation<any>,
 }
 
 export type FormattedInstructions<Ts> = FormattedInstruction<Ts, Ts>[];
@@ -58,8 +58,8 @@ export interface Template<Ts> {
     namespaced?: boolean,
     instructions?: Instructions<Ts>,
     state?: {[x: string]: any}|(()=>{[x: string]: any}),
-    getters?: {[x: string]: ConfigGetter,},
-    mutations?: {[x: string]: ConfigMutation,},
+    getters?: {[x: string]: AnyGetter<any, any>,},
+    mutations?: {[x: string]: AnyMutation<any>,},
     actions?: {[x: string]: any},
     modules?: {
         [x: string]: Template<Ts>
@@ -82,8 +82,8 @@ export interface Config {
         default: {
             initial_value: null,
             default_value: null,
-            getter: (x:string, y:string) => ConfigGetter,
-            mutation: (x: string) => ConfigMutation,
+            getter: (x:string, y:string) => AnyGetter<any, any>,
+            mutation: (x: string) => AnyMutation<any>,
         },
         [x: string]: ConfigTypeOptions
     }
@@ -100,8 +100,8 @@ export interface CustomConfig {
 export interface ConfigTypeOptions {
     initial_value?: any,
     default_value?: any,
-    getter?: (x:string, y:string) => ConfigGetter,
-    mutation?: (x: string) => ConfigMutation,
+    getter?: (x:string, y:string) => AnyGetter<any, any>,
+    mutation?: (x: string) => AnyMutation<any>,
 }
 
 export type ConfigGetter = (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any;
@@ -131,26 +131,30 @@ export interface CustomConfigNamingOptions {
     transformer?: (raw: string) => string,
 }
 
-export type StringGetter<S> = (state: S) => string;
-export type NumberGetter<S> = (state: S) => number|null;
-export type BooleanGetter<S> = (state: S) => boolean;
-export type ArrayGetter<S> = (state: S) => any[];
-export type ObjectGetter<S> = (state: S) => object|null;
+export type StringGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => string;
+export type NumberGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => number|null;
+export type BooleanGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => boolean;
+export type ArrayGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => any[];
+export type ObjectGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => object|null;
+export type AnyGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => any;
 
-export type Getter<T extends DefaultTypes, S> =
-    T extends 'string' ? StringGetter<S> :
-        T extends 'number' ? NumberGetter<S> :
-            T extends 'boolean' ? BooleanGetter<S> :
-                T extends 'array' ? ArrayGetter<S> : ObjectGetter<S>;
+export type Getter<T extends DefaultTypes, S, R> =
+    T extends 'string' ? StringGetter<S, R> :
+        T extends 'number' ? NumberGetter<S, R> :
+            T extends 'boolean' ? BooleanGetter<S, R> :
+                T extends 'array' ? ArrayGetter<S, R> :
+                    T extends 'object' ? ObjectGetter<S, R> : AnyGetter<S, R>;
 
 export type StringMutation<S> = (state: S, value?: string ) => void;
 export type NumberMutation<S> = (state: S, value?: number ) => void;
 export type BooleanMutation<S> = (state: S, value?: boolean ) => void;
 export type ArrayMutation<S> = (state: S, value?: any[] ) => void;
 export type ObjectMutation<S> = (state: S, value?: object ) => void;
+export type AnyMutation<S> = (state: S, payload?: any) => void;
 
 export type Mutation<T extends DefaultTypes, S> =
     T extends 'string' ? StringMutation<S> :
         T extends 'number' ? NumberMutation<S> :
             T extends 'boolean' ? BooleanMutation<S> :
-                T extends 'array' ? ArrayMutation<S> : ObjectMutation<S>;
+                T extends 'array' ? ArrayMutation<S> :
+                    T extends 'object' ? ObjectMutation<S> : AnyMutation<S>;
