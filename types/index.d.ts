@@ -1,14 +1,15 @@
 import ModuleMaker from '../src/ModuleMaker';
 export default ModuleMaker;
 
-export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'object' | 'date';
+export type DefaultTypes = 'string' | 'number' | 'boolean' | 'array' | 'date' | 'object';
 
 export type Type<T> =
     T extends 'string' ? string :
         T extends 'number' ? number :
             T extends 'boolean' ? boolean :
                 T extends 'array' ? any[] :
-                    T extends 'object' ? object : any;
+                    T extends 'date' ? Date :
+                        T extends 'object' ? object : any;
 
 export interface Object {
     [x: string]: any
@@ -104,9 +105,6 @@ export interface ConfigTypeOptions {
     mutation?: (x: string) => AnyMutation<any>,
 }
 
-export type ConfigGetter = (state: { [x:string]: any }, getters?: any, rootState?: any, rootGetters?: any) => any;
-export type ConfigMutation = (state: { [x:string]: any }, payload?: any)=>void;
-
 export interface ConfigNaming {
     state: ConfigNamingOptions,
     getter: ConfigNamingOptions,
@@ -135,6 +133,7 @@ export type StringGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGe
 export type NumberGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => number|null;
 export type BooleanGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => boolean;
 export type ArrayGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => any[];
+export type DateGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => Date|null;
 export type ObjectGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => object|null;
 export type AnyGetter<S, R> = (state: S, getters?: any, rootState?: R, rootGetters?: any) => any;
 
@@ -143,12 +142,14 @@ export type Getter<T extends DefaultTypes, S, R> =
         T extends 'number' ? NumberGetter<S, R> :
             T extends 'boolean' ? BooleanGetter<S, R> :
                 T extends 'array' ? ArrayGetter<S, R> :
-                    T extends 'object' ? ObjectGetter<S, R> : AnyGetter<S, R>;
+                    T extends 'date' ? DateGetter<S, R> :
+                        T extends 'object' ? ObjectGetter<S, R> : AnyGetter<S, R>;
 
 export type StringMutation<S> = (state: S, value?: string ) => void;
 export type NumberMutation<S> = (state: S, value?: number ) => void;
 export type BooleanMutation<S> = (state: S, value?: boolean ) => void;
 export type ArrayMutation<S> = (state: S, value?: any[] ) => void;
+export type DateMutation<S> = (state: S, value?: Date|string ) => void;
 export type ObjectMutation<S> = (state: S, value?: object ) => void;
 export type AnyMutation<S> = (state: S, payload?: any) => void;
 
@@ -157,4 +158,5 @@ export type Mutation<T extends DefaultTypes, S> =
         T extends 'number' ? NumberMutation<S> :
             T extends 'boolean' ? BooleanMutation<S> :
                 T extends 'array' ? ArrayMutation<S> :
-                    T extends 'object' ? ObjectMutation<S> : AnyMutation<S>;
+                    T extends 'date' ? DateMutation<S> :
+                        T extends 'object' ? ObjectMutation<S> : AnyMutation<S>;
