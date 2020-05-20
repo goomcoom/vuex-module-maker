@@ -1,7 +1,7 @@
 import * as D from "../types";
 import ModuleUtilities from "./ModuleUtilities";
 import InstructionProcessor from "./InstructionProcessor";
-import {Config, ConfigGetter, ConfigMutation, CustomConfig, Template} from "../types";
+import {AnyGetter, AnyMutation, CustomConfig, Template} from "../types";
 
 class ModuleMaker<M, Ts> extends ModuleUtilities {
 
@@ -51,14 +51,14 @@ class ModuleMaker<M, Ts> extends ModuleUtilities {
         }
     }
 
-    private addGetters(getters: { [x:string]: ConfigGetter }): void
+    private addGetters(getters: { [x:string]: AnyGetter<any, any> }): void
     {
         for (const [key, value] of Object.entries(getters)) {
             this.addGetter(key, value);
         }
     }
 
-    private addMutations(mutations: { [x:string]: ConfigMutation}): void
+    private addMutations(mutations: { [x:string]: AnyMutation<any>}): void
     {
         for (const [key, value] of Object.entries(mutations)) {
             this.addMutation(key, value);
