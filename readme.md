@@ -21,12 +21,11 @@
 - [Typescript](#typescript)
 
 The module maker has been designed to remove the overhead involved in implementing the reusable-modules pattern. Every
-object that has mutable properties and specific methods should have its own module that can be reused across an
-application. One of the major drawbacks of this pattern is that modules are verbose, and their compositions are
-repetitive – modules are made-up of the same data types, and the state tends to be manipulated in the same way
-depending on the type of the state property in question (all `string` type properties tend to have the same kind of
-getter and mutation). Adding testing to these modules just makes it even more laborious and let's be honest, it's
-discouraging!
+object that has mutable properties and methods should have its own module that can be reused across an
+application. One major drawback of this pattern is that modules become verbose, and repetitive – modules are made-up of
+the same data types, and their state tends to be manipulated in the same way (all `string` type properties tend to
+have the same kind of getter and mutation). Adding testing to these modules just makes it even more laborious and
+let's be honest, it's discouraging!
 
 The idea is to centralize all the repetitive getter and mutation logic, organize it by type and ensure its tested. The
 module maker is also completely configurable all the way from the default getter signature to how the property names are
@@ -101,12 +100,16 @@ const generated_module = {
 1. Import `vuex-module-maker` 
 2. Instantiate the ModuleMaker class (pass in any config settings if necessary)
 3. Call the `make()` method and pass in your template, that's it!
+4. You can make use of the static `Make` method to combine step 2 and 3.
 
 ```javascript
 import ModuleMaker from "vuex-module-maker";
 
-const maker = new ModuleMaker();
+const maker = new ModuleMaker(config);
 const my_module = maker.make(template)
+
+// Alternatively
+const module = MaduleMaker.Make(template, config);
 ```
 
 ### Template
@@ -134,7 +137,7 @@ const template = {
     instructions {
         id: 'number', // Instruction with just the type declared
         name: {
-            type: 'string',
+            type: 'string' | 'number' | 'boolean' | 'array' | 'date' | 'object',
     
             // State options
             set_state: true,
@@ -922,47 +925,64 @@ store.getters.getLoginForm === new Form(); // true
 
 ### Typescript
 
-The module maker was designed in a way that requires the minimum number of type variables – `State, RootState` and
-`Types`. If you would like to use/append the default types you can import the `DefaultTypes` type.
+The make methods take 2 type properties – final Module interface and types.
+If you would like to use/append the default types you can import the `DefaultTypes` type.
 
 ```typescript
-import ModuleMaker, { DefaultTypes } from "vuex-module-maker"; 
+import ModuleMaker, { DefaultTypes, Template } from "vuex-module-maker";
 
-// An example module's state
 interface UserState {
     id: number|null,
     name: string|null,
 }
 
-interface ExampleRootState {
+interface RootState {
     user: UserState
 }
 
-// DefaultTypes === 'string' | 'number' | 'boolean' | 'array' | 'object' | 'any'
-type Types = DefaultTypes | 'form';
-
-const maker = new ModuleMaker<UserState, ExampleRootState, Types>();
-```
-
-Vuex can be used with typescript but is limited to the use of the `State & RootState` interfaces.
-```typescript
-interface VuexModule<State, RootState> {
-  namespaced?: boolean;
-  state?: State | (() => State);
-  getters?: GetterTree<State, RootState>;
-  actions?: ActionTree<State, RootState>;
-  mutations?: MutationTree<State>;
-  modules?: ModuleTree<RootState>;
+interface UserModule {
+    namespaced: true,
+    state(): UserState,
+    getters: {
+        getId(state: UserState, getters?: any, rootState?: RootState, rootGetters?: any): number|null,
+        getName(state: UserState, getters?: any, rootState?: RootState, rootGetters?: any): string,
+    },
+    mutations: {
+        setId(state: UserState, payload?: number): void,
+        setName(state: UserState, payload?: string): void,
+    },
 }
+
+const template: Template<DefaultTypes> = {
+    instructions: {
+        id: "number",
+        name: "string",
+    },
+}
+
+const module = ModuleMaker.Make<UserModule, DefaultTypes>(template);
 ```
 
 If you would like type hinting you may import the following types:
+
+type: 'string' | 'number' | 'boolean' | 'array' | 'date' | 'object',
 
 | Object           | Type                                           |
 | ---------------- | ---------------------------------------------- |
 | Config           | `CustomConfig<State, RootState>`               |
 | ConfigGetter     | `ConfigGetter<State, RootState>`               |
 | ConfigMutation   | `ConfigMutation<State>`                        |
-| Template         | `Template<State, RootState, Types`             |
-| Instructions     | `Instructions<State, RootState, Types>`        |
-| Instruction      | `Instructions<Type, State, RootState, Types>`  |
+| Template         | `Template<STypes>`                             |
+| Instructions     | `Instructions<Types>`                          |
+| StringGetter     | `StringGetter<State, RootState>`               |
+| NumberGetter     | `NumberGetter<State, RootState>`               |
+| BooleanGetter    | `BooleanGetter<State, RootState>`              |
+| ArrayGetter      | `ArrayGetter<State, RootState>`                |
+| DateGetter       | `DateGetter<State, RootState>`                 |
+| ObjectGetter     | `ObjectGetter<State, RootState>`               |
+| StringMutation   | `StringMutation<State>`                        |
+| NumberMutation   | `NumberMutation<State>`                        |
+| BooleanMutation  | `BooleanMutation<State>`                       |
+| ArrayMutation    | `ArrayMutation<State>`                         |
+| DateMutation     | `DateMutation<State>`                          |
+| ObjectMutation   | `ObjectMutation<State>`                        |
