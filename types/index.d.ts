@@ -83,7 +83,7 @@ export interface Config {
         default: {
             initial_value: null,
             default_value: null,
-            getter: (x:string, y:string) => AnyGetter<any, any>,
+            getter: (x:string, y:any) => AnyGetter<any, any>,
             mutation: (x: string) => AnyMutation<any>,
         },
         [x: string]: ConfigTypeOptions
