@@ -3,15 +3,27 @@
   "version": "1.0.0",
   "author": "Simon Msara",
   "license": "MIT",
-  "description": "Automating the module creation process.",
+  "description": "Reduce the amount of work involved in creating reusable vuex modules, simply define the type and voila! You have a state property, getter and mutation.",
   "keywords": [
     "vue",
     "vuex",
     "modules",
     "module",
-    "generator",
-    "module-generator"
+    "maker",
+    "module-maker",
+    "vuex-module-maker",
+    "module-generator",
+    "generator"
   ],
+  "homepage": "https://github.com/goomcoom/vuex-module-maker",
+  "bugs": {
+    "url" : "https://github.com/goomcoom/vuex-module-maker/issues",
+    "email" : "simonmsaraone@gmail.com"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/goomcoom/vuex-module-maker"
+  },
   "main": "dist/ModuleMaker.js",
   "module": "dist/ModuleMaker.js",
   "typings": "types/index.d.ts",
@@ -19,7 +31,7 @@
     "dist",
     "types/index.d.ts"
   ],
-  "private": true,
+  "private": false,
   "scripts": {
     "prod": "npm run production",
     "production": "tsc && npx webpack --config webpack.config.js --mode production",
