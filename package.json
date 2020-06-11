@@ -1,6 +1,6 @@
 {
   "name": "vuex-module-maker",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Simon Msara",
   "license": "MIT",
   "description": "Reduce the amount of work involved in creating reusable vuex modules, simply define the type and voila! You have a state property, getter and mutation.",
@@ -17,12 +17,12 @@
   ],
   "homepage": "https://github.com/goomcoom/vuex-module-maker",
   "bugs": {
-    "url" : "https://github.com/goomcoom/vuex-module-maker/issues",
-    "email" : "simonmsaraone@gmail.com"
+    "url": "https://github.com/goomcoom/vuex-module-maker/issues",
+    "email": "simonmsaraone@gmail.com"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/goomcoom/vuex-module-maker"
+    "type": "git",
+    "url": "https://github.com/goomcoom/vuex-module-maker"
   },
   "main": "dist/ModuleMaker.js",
   "module": "dist/ModuleMaker.js",
