@@ -95,6 +95,13 @@ const generated_module = {
 
 # Installation
 
+```shell script
+$ npm i vuex-module-maker
+```
+```shell script
+$ yarn add vuex-module-maker
+```
+
 # Usage
 
 1. Import `vuex-module-maker` 
