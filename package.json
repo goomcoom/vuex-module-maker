@@ -1,6 +1,6 @@
 {
   "name": "vuex-module-maker",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Simon Msara",
   "license": "MIT",
   "description": "Reduce the amount of work involved in creating reusable vuex modules, simply define the type and voila! You have a state property, getter and mutation.",
